@@ -1,0 +1,13 @@
+# Ignore artifacts:
+build
+coverage
+kustomize
+.github
+.react-router
+
+# Ignore specific files:
+react-router.config.ts
+package.json
+package-lock.json
+tsconfig.json
+vite.config.ts
