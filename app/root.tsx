@@ -8,9 +8,27 @@ import {
 } from 'react-router';
 
 import type { Route } from './+types/root';
-import './app.css';
+import './styles';
+import { Page } from '@navikt/ds-react';
+import { AppBar } from '~/components/layout/AppBar';
+import Footer from '~/components/layout/Footer';
+
+export function meta({}: Route.MetaArgs) {
+    return [
+        { title: 'FINT Flyt' },
+        { name: 'description', content: 'Velkommen til FINT Flyt 2' },
+        {
+            charset: 'utf-8',
+        },
+    ];
+}
 
 export const links: Route.LinksFunction = () => [
+    {
+        rel: 'icon',
+        href: '/novariFavicon.svg',
+        type: 'image/svg+xml',
+    },
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     {
         rel: 'preconnect',
@@ -32,10 +50,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Meta />
                 <Links />
             </head>
-            <body>
-                {children}
-                <ScrollRestoration />
-                <Scripts />
+            <body data-theme="novari">
+                <Page footer={<Footer />}>
+                    <AppBar />
+                    {children}
+                    <ScrollRestoration />
+                    <Scripts />
+                </Page>
             </body>
         </html>
     );
