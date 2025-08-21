@@ -1,5 +1,6 @@
 @import '../../node_modules/tailwindcss';
 @import '@navikt/ds-css';
+@import '@xyflow/react/dist/style.css';
 
 [data-theme="novari"]{
     /* Color Palette */

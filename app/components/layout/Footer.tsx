@@ -6,7 +6,6 @@ export default function Footer() {
         <Box
             style={{
                 padding: '2rem',
-                marginTop: '2rem',
                 backgroundColor: 'var(--red-primary)',
             }}>
             <HStack gap={'10'} align={'center'}>

@@ -16,9 +16,15 @@ export const AppBar = () => {
             </InternalHeader.Title>
             <InternalHeader.Button
                 onClick={() => {
-                    history('/test');
+                    history('/flow');
                 }}>
-                test
+                Flow
+            </InternalHeader.Button>
+            <InternalHeader.Button
+                onClick={() => {
+                    history('/flow/test');
+                }}>
+                Elk test page
             </InternalHeader.Button>
         </InternalHeader>
     );
