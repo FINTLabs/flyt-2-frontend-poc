@@ -1,4 +1,5 @@
 import { Box, HStack, Link } from '@navikt/ds-react';
+// TODO: Fix import path for NovariIKS if necessary
 import { NovariIKS } from '../../../public/NovariIKS';
 
 export default function Footer() {

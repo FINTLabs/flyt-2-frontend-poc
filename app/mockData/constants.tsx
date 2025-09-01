@@ -1,0 +1,1 @@
+export const initBgColor = '#c9f1dd';
