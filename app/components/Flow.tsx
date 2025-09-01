@@ -1,8 +1,6 @@
 import React, {
-    useState,
     useEffect,
-    useCallback,
-    type ChangeEvent,
+    useCallback,    
 } from 'react';
 import {
     ReactFlow,
@@ -15,21 +13,19 @@ import {
     type Edge,
     type OnConnect,
     BackgroundVariant,
-    Background, useUpdateNodeInternals,
+    Background,
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
-import { initBgColor } from '~/mockData/constants';
-import { getInitialDemoNodes } from '~/mockData/nodes';
-import { initDemoEdges } from '~/mockData/edges';
 import {
     getMinimapNodeColor,
     getMinimapNodeStrokeColor,
-    onChangeNodeColor,
 } from '~/utils/nodeHandlers';
 import { IntegrationNode } from '~/components/customNodes/IntegrationNode';
 import { OperationNode } from '~/components/customNodes/OperationNode';
 import { VariabelNode } from '~/components/customNodes/VariabelNode';
+import { useFlow } from '~/context/flowContext';
+import { useParams } from 'react-router';
 
 const nodeTypes = {
     flowInput: IntegrationNode,
@@ -39,27 +35,15 @@ const nodeTypes = {
     flowOutput: IntegrationNode
 };
 
-const DemoFlow = () => {
-    const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
-    const [bgColor, setBgColor] = useState(initBgColor);
-
-    const updateNodeInternals = useUpdateNodeInternals();
-
+const Flow = () => {
+    const { initNodes, initEdges } = useFlow();
+    const [nodes, setNodes, onNodesChange] = useNodesState<Node>(initNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initEdges);
 
     useEffect(() => {
-        const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-            const { newColor, newNodes } = onChangeNodeColor(event, nodes);
-            setBgColor(newColor);
-            setNodes(newNodes);
-        };
-
-        const nodes = getInitialDemoNodes(onChange);
-
-        setNodes(nodes);
-        setEdges(initDemoEdges);
-        updateNodeInternals(nodes.map((node) => node.id));
-    }, []);
+        setNodes(initNodes);
+        setEdges(initEdges);
+    }, [initNodes, initEdges]);
 
 
     const onConnect: OnConnect = useCallback(
@@ -89,4 +73,4 @@ const DemoFlow = () => {
     );
 };
 
-export default DemoFlow;
+export default Flow;

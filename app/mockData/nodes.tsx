@@ -2,9 +2,8 @@ import { Position } from '@xyflow/react';
 import type { ChangeEvent } from 'react';
 import { DataType } from '~/types/datatypes';
 
-export const getInitialColorDemoNodes = (
-    initBgColor: string,
-    onChangeNodeColor: (event: ChangeEvent<HTMLInputElement>) => void
+export const getInitialDemoNodes = (
+    onChangeNodeColor?: (event: ChangeEvent<HTMLInputElement>) => void
 ) => {
     return [
         {

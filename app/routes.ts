@@ -6,7 +6,8 @@ export default [
     ...prefix('flow', [
         index('routes/flow/index.tsx'),
         layout('routes/flow/layout.tsx', [
-            route('eksempel', 'routes/flow/simpleDemo.tsx'),
+            route('eksempel', 'routes/flow/demoflowPage.tsx'),
+            route(':flowId', 'routes/flow/flowPage.tsx'),
         ])
     ])
 ] satisfies RouteConfig;

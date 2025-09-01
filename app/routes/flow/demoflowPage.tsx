@@ -4,7 +4,7 @@ import DemoFlow from '~/components/DemoFlow';
 
 
 
-const SimpleDemo = () => {
+const FlowPageWrapper = () => {
     return (
         <div style={{ margin: 'auto', width: '90vw', height: '92vh' }}>
             <DemoFlow />
@@ -12,4 +12,4 @@ const SimpleDemo = () => {
     );
 };
 
-export default SimpleDemo;
+export default FlowPageWrapper;

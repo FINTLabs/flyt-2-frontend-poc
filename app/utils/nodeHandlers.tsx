@@ -20,7 +20,7 @@ export const onChangeNodeColor = (
     return { newColor: event.target.value, newNodes };
 };
 
-export const getMinimapNodeStrokeColor = (node: Node, bgColor: string): string => {
+export const getMinimapNodeStrokeColor = (node: Node): string => {
     if (node && node.type) {
         if (node.type === 'flowInput' || node.type === 'flowOutput') return '#718f9f';
         if (node.type === 'variableInput') return '#006373';
