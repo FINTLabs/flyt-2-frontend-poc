@@ -1,40 +1,43 @@
-import { PageLayout } from '~/components/layout/PageLayout';
-import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, type NodeChange, type EdgeChange } from '@xyflow/react';
-import { useState, useCallback } from 'react';
+import React from 'react';
+import { BodyShort, Heading, Page, VStack, LinkCard, Tag, Box, HGrid } from '@navikt/ds-react';
+import { BandageIcon } from '@navikt/aksel-icons';
 
-const initialNodes = [
-    { id: 'n1', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
-    { id: 'n2', position: { x: 0, y: 100 }, data: { label: 'Node 2' } },
-  ];
-  const initialEdges = [{ id: 'n1-n2', source: 'n1', target: 'n2' }];
-   
-  export default function FlowIndex() {
-    const [nodes, setNodes] = useState(initialNodes);
-    const [edges, setEdges] = useState(initialEdges);
-   
-    const onNodesChange = useCallback(
-      (changes: NodeChange<{ id: string; position: { x: number; y: number; }; data: { label: string; }; }>[]) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
-      [],
-    );
-    const onEdgesChange = useCallback(
-      (changes: EdgeChange<{ id: string; source: string; target: string; }>[]) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
-      [],
-    );
-    const onConnect = useCallback(
-      (params: any) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
-      [],
-    );
-   
+export default function FlowTest() {
     return (
-      <div style={{ width: '100vw', height: '50vh' }}>
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          fitView
-        />
-      </div>
+        <Page.Block gutters>
+            <VStack paddingBlock="8" gap="4">
+                <Heading size="large" level="1">
+                    Flow Test
+                </Heading>
+                <BodyShort>Siden er under konstruksjon. Det er foreløpig begrenset med handlinger.</BodyShort>
+
+                <HGrid gap="space-24" columns={3} paddingBlock={"space-16"}>
+
+                <LinkCard size="small">
+                    <Box
+                        asChild
+                        borderRadius="12"
+                        padding="space-8"
+                        style={{ backgroundColor: "var(--ax-bg-moderateA)" }}
+                    >
+                        <LinkCard.Icon>
+                            <BandageIcon fontSize="2rem" />
+                        </LinkCard.Icon>
+                    </Box>
+                    <LinkCard.Title>
+                        <LinkCard.Anchor href="/flow/eksempel">Se en enkel flyt</LinkCard.Anchor>
+                    </LinkCard.Title>
+                    <LinkCard.Description>
+                        Denne siden viser en enkel flyt med noen få noder og kanter. Du kan utforske hvordan noder og kanter fungerer.
+                    </LinkCard.Description>
+                    <LinkCard.Footer>
+                        <Tag size="small" variant="neutral">
+                            Demo
+                        </Tag>
+                    </LinkCard.Footer>
+                </LinkCard>
+                </HGrid>
+            </VStack>
+        </Page.Block>
     );
-  }
+}

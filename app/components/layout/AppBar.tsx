@@ -22,9 +22,9 @@ export const AppBar = () => {
             </InternalHeader.Button>
             <InternalHeader.Button
                 onClick={() => {
-                    history('/flow/test');
+                    history('/dictionary');
                 }}>
-                Elk test page
+                Ordliste
             </InternalHeader.Button>
         </InternalHeader>
     );

@@ -1,0 +1,72 @@
+.react-flow__node {
+    box-shadow: var(--xy-node-boxshadow-default);
+    border-radius: var(--xy-node-border-radius-default);
+    background-color: var(--xy-node-background-color-default);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 5px;
+    flex-direction: column;
+    border: var(--theme-node-border-default);
+    color: var(--xy-node-color, var(--xy-node-color-default));
+}
+
+.react-flow__node.selectable:focus {
+    box-shadow: 0px 0px 0px 4px var(--xy-theme-color-focus);
+    border-color: #d9d9d9;
+}
+
+.react-flow__node.selectable:focus:active {
+    box-shadow: var(--xy-node-boxshadow-default);
+}
+
+.react-flow__node.selectable:hover,
+.react-flow__node.draggable:hover {
+    border-color: var(--xy-theme-hover);
+}
+
+.react-flow__node.selectable.selected {
+    border-color: var(--xy-theme-selected);
+    box-shadow: var(--xy-node-boxshadow-default);
+}
+
+.react-flow__node-group {
+    background-color: rgba(207, 182, 255, 0.4);
+    border-color: #9e86ed;
+}
+.react-flow__node-resizer {
+    border-radius: 0;
+    border: none;
+}
+
+
+
+
+/* === CUSTOM NODES === */
+.react-flow__node-flowInput {
+    background-color: var(--theme-node-blue);
+}
+
+.react-flow__node-flowOutput {
+    background-color: var(--theme-node-blue);
+}
+
+.react-flow__node-operation {
+    background-color: var(--theme-node-gray);
+}
+
+.react-flow__node-variableInput {
+    background-color: var(--theme-node-green);
+    padding: 2px 5px;
+    .navds-form-field--small .navds-text-field__input {
+        min-height: 0.5rem;
+    }
+    .navds-text-field__input:focus-visible {
+        box-shadow: 0 0 0 1px var(--theme-node-input-selected);
+    }
+}
+
+.react-flow__node-externalFunction {
+    background-color: var(--theme-node-beige);
+}
