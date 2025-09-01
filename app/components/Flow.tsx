@@ -25,7 +25,6 @@ import { IntegrationNode } from '~/components/customNodes/IntegrationNode';
 import { OperationNode } from '~/components/customNodes/OperationNode';
 import { VariabelNode } from '~/components/customNodes/VariabelNode';
 import { useFlow } from '~/context/flowContext';
-import { useParams } from 'react-router';
 
 const nodeTypes = {
     flowInput: IntegrationNode,

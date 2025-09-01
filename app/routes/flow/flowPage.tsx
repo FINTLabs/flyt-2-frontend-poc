@@ -3,8 +3,7 @@ import '@xyflow/react/dist/style.css';
 import Flow from '~/components/Flow';
 import { FlowProvider } from '~/context/flowContext';
 import { useParams } from 'react-router';
-
-
+import { Sidebar } from '~/components/Sidebar';
 
 const FlowPageWrapper = () => {
     const { flowId } = useParams<{ flowId: string }>();
@@ -13,11 +12,14 @@ const FlowPageWrapper = () => {
     }
     
     return (
-        <FlowProvider flowId={flowId}>
-            <div style={{ margin: 'auto', width: '90vw', height: '92vh' }}>
-                <Flow />
-            </div>
-        </FlowProvider>
+        <div className="flow-page">
+            <FlowProvider flowId={flowId}>
+                <Sidebar />
+                <div className="reactflow-wrapper">
+                    <Flow />
+                </div>
+            </FlowProvider>
+        </div>
     );
 };
 

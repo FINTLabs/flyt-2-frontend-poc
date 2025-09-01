@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import type { ChangeEvent, ReactNode } from 'react';
-import { type Node, type Edge, useUpdateNodeInternals} from '@xyflow/react';
-import { onChangeNodeColor } from '~/utils/nodeHandlers';
+import type { ReactNode } from 'react';
+import { type Node, type Edge, useUpdateNodeInternals } from '@xyflow/react';
 import { getInitialDemoNodes } from '~/mockData/nodes';
 import { initDemoEdges } from '~/mockData/edges';
 
@@ -31,8 +30,7 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({
         setInitialEdges(initDemoEdges);
         updateNodeInternals(nodes.map((node) => node.id));
     }
-
-}, []);
+  }, [flowId]);
 
 
   const contextValue: FlowContextType = {
@@ -54,3 +52,4 @@ export const useFlow = (): FlowContextType => {
   }
   return context;
 };
+
