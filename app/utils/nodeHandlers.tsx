@@ -161,4 +161,4 @@ export const getNodeMinHeight = ({
 };
 
 export const createAlmostRandomId = (baseId: string): string =>
-    `node-id-${Math.random().toString(16).slice(2)}`;
+    `node-id-${baseId}-${Math.random().toString(16).slice(2)}`;

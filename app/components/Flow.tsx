@@ -49,7 +49,6 @@ const Flow = () => {
     );
 
     const onDragOver = useCallback((event: React.DragEvent) => {
-        console.log('Flow onDragOver', newNodeId);
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
     }, []);

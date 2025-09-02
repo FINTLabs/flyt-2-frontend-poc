@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import {
     type NodeProps,
     type Node,
@@ -17,36 +17,70 @@ type JoinTextOperationNodeType = Node<BaseNodeData, 'operationJoinText'>;
 
 export const JoinTextOperationNode = memo(
     ({
-         id,
-         data,
-         isConnectable,
-         positionAbsoluteX,
-         positionAbsoluteY,
-     }: NodeProps<JoinTextOperationNodeType>) => {
+        id,
+        data,
+        isConnectable,
+        positionAbsoluteX,
+        positionAbsoluteY,
+    }: NodeProps<JoinTextOperationNodeType>) => {
         const minHeight = getNodeMinHeight({
             sources: data.sourceHandles?.length,
             targets: data.targetHandles?.length,
         });
-        const { updateNodeData } = useReactFlow();
+        const { updateNodeData } = useReactFlow(); // Removed to prevent infinite loop
 
-        const [output, setOutput] = useState<Record<number, string>>({});
+        const [joinedText, setJoinedText] = useState<string>('');
+        const [outputText, setOutputText] = useState<{ id: string; text: string }[]>([]);
 
         const connections = useNodeConnections({
             handleType: 'target',
         });
-        console.log('JoinTextOperationNode - connections:', connections);
 
-        const nodesData = useNodesData<Node<BaseNodeData>>(connections[1]?.source);
-        console.log('JoinTextOperationNode - connected node data:', nodesData);
+        // Get all connected source node IDs
+        const connectionsNodeIds = useMemo(
+            () =>
+                connections
+                    .sort((a, b) => (a?.targetHandle || '').localeCompare(b?.targetHandle || ''))
+                    .map((connection) => connection.source)
+                    .filter(Boolean),
+            [connections]
+        );
 
-        const textNode = nodesData?.type === 'variableInput' ? nodesData : null;
+        // Get data from all connected nodes
+        const connectedNodesData = useNodesData<Node<BaseNodeData>>(connectionsNodeIds);
 
         useEffect(() => {
-            if (textNode?.data.text) {
-                console.log('JoinTextOperationNode - updating text to uppercase:', textNode.data.text);
-                updateNodeData(id, { text: textNode?.data.text });
+            if (connectedNodesData && connectionsNodeIds.length > 0) {
+                const newOutputText = connections
+                    .sort((a, b) => (a?.targetHandle || '').localeCompare(b?.targetHandle || ''))
+                    .map((edge) => {
+                        const nodeData = connectedNodesData.find((node) => node.id === edge.source);
+                        if (!nodeData) return null;
+                        if (nodeData.type === 'variableInput') {
+                            return { id: nodeData.id, text: nodeData.data.text || '' };
+                        }
+                        const handleLabel = nodeData.data.sourceHandles?.find(
+                            (handle) => handle.id === edge?.sourceHandle
+                        )?.label;
+                        return { id: nodeData.id, text: handleLabel || '?' };
+                    })
+                    .filter(Boolean) as { id: string; text: string }[];
+                setOutputText(newOutputText);
+            } else {
+                setJoinedText('');
+                setOutputText([]);
             }
-        }, [textNode]);
+        }, [connectedNodesData, connectionsNodeIds]);
+
+        useEffect(() => {
+            setJoinedText(outputText.map((text) => text.text).join(''));
+        }, [outputText]);
+
+        useEffect(() => {
+            updateNodeData(id, {
+                sourceHandles: [{ ...data?.sourceHandles?.[0], label: joinedText }],
+            });
+        }, [joinedText]);
 
         return (
             <BaseNodeWrapper
@@ -62,7 +96,6 @@ export const JoinTextOperationNode = memo(
                 />
                 <VStack align={'center'} justify={'center'} gap="1" style={{ minHeight }}>
                     {data.iconType && getOperationIcon(data.iconType)}
-                    <div>{data.text}</div>
                 </VStack>
                 <MultipleHandlesWithLabel
                     handles={data.sourceHandles}
