@@ -40,23 +40,20 @@
     border: none;
 }
 
-
-
-
 /* === CUSTOM NODES === */
-.react-flow__node-flowInput {
+.react-flow__node-flowInput, .menu-node-flowInput {
     background-color: var(--theme-node-blue);
 }
 
-.react-flow__node-flowOutput {
+.react-flow__node-flowOutput, .menu-node-flowOutput {
     background-color: var(--theme-node-blue);
 }
 
-.react-flow__node-operation {
+.react-flow__node-operation, .menu-node-operation {
     background-color: var(--theme-node-gray);
 }
 
-.react-flow__node-variableInput {
+.react-flow__node-variableInput, .menu-node-variableInput {
     background-color: var(--theme-node-green);
     padding: 2px 5px;
     .navds-form-field--small .navds-text-field__input {
@@ -67,6 +64,6 @@
     }
 }
 
-.react-flow__node-externalFunction {
+.react-flow__node-externalFunction, .menu-node-externalFunction {
     background-color: var(--theme-node-beige);
 }

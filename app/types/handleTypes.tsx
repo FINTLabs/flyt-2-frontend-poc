@@ -2,7 +2,7 @@ import type { DataTypeValue } from "./datatypes";
 
 export type HandleData = {
     id: string;
-    label: string;
+    label?: string;
     type: DataTypeValue;
     typeName?: string;
     required: boolean;

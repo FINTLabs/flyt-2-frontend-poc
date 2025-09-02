@@ -17,7 +17,7 @@ export const PositionDisplay: React.FC<PositionDisplayProps> = ({
     : { position: 'absolute' as const, bottom: -40, left: 0 };
 
   return (
-    <HStack style={style} wrap={false}>
+    <HStack style={style}>
       <Detail>x: {x}</Detail>
       <Detail>y: {y}</Detail>
     </HStack>

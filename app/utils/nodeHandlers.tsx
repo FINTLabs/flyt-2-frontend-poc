@@ -42,47 +42,56 @@ export const getTypeSymbol = (
 ): React.JSX.Element | string | undefined => {
     if (!type) return typeText ?? undefined;
     if (type === 'object' || type === 'collectionObject') {
-        return <p style={{ textWrap: 'nowrap', lineHeight: '0.9rem', margin: '0 2px', fontSize: '0.7rem' }}>{`{${typeText}}`}</p>;
+        return (
+            <p
+                style={{
+                    textWrap: 'nowrap',
+                    lineHeight: '0.9rem',
+                    margin: '0 2px',
+                    fontSize: '0.7rem',
+                }}>{`{${typeText}}`}</p>
+        );
     }
     if (type === 'text' || type === 'input') return <DataTypeText />;
-    if (type === 'reference') return <LinkIcon fontSize="0.95rem" />
+    if (type === 'reference') return <LinkIcon fontSize="0.95rem" />;
     return typeText;
 };
 
 // TODO: find width of text with brackets
-export const getTypeSymbolWidth = (
-    type?: DataTypeValue,
-    typeText?: string
-): number => {
+export const getTypeSymbolWidth = (type?: DataTypeValue, typeText?: string): number => {
     if (!type) {
-        return typeText ? measureTextWidth(typeText) : 0
+        return typeText ? measureTextWidth(typeText) : 0;
     }
-    
+
     if (type === 'object' || type === 'collectionObject') {
         const text = `{${typeText}}`;
-        return measureTextWidth(text, '0.7rem')
+        return measureTextWidth(text, '0.7rem');
     }
-    
+
     if (type === 'text' || type === 'input' || type === 'reference') {
-        return 15 // Fixed width for icon
+        return 15; // Fixed width for icon
     }
-    
-    return  typeText ? measureTextWidth(typeText) : 0
+
+    return typeText ? measureTextWidth(typeText) : 0;
 };
 
 // Utility function to measure text width accurately
-export const measureTextWidth = (text: string, fontSize: string = '0.875rem', fontFamily: string = '"Source Sans 3", "Source Sans Pro", Arial, sans-serif'): number => {
+export const measureTextWidth = (
+    text: string,
+    fontSize: string = '0.875rem',
+    fontFamily: string = '"Source Sans 3", "Source Sans Pro", Arial, sans-serif'
+): number => {
     // Create a temporary canvas element for measurement
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    
+
     if (context) {
         // Set the font to match your actual CSS
         context.font = `${fontSize} ${fontFamily}`;
         const metrics = context.measureText(text);
         return Math.ceil(metrics.width);
     }
-    
+
     // Fallback to approximate calculation if canvas is not available
     return text.length * 8 + 8;
 };
@@ -150,3 +159,6 @@ export const getNodeMinHeight = ({
     const maxHandles = getMaxHandles({ targets, sources });
     return calculateNodeMinHeight(maxHandles, handleInterval, baseHeight);
 };
+
+export const createAlmostRandomId = (baseId: string): string =>
+    `node-id-${Math.random().toString(16).slice(2)}`;

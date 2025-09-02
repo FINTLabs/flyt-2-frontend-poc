@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Detail, HStack } from '@navikt/ds-react';
-import { NodeLabel } from '../NodeLabel';
+import { NodeLabel } from './NodeLabel';
+import { PositionDisplay } from './PositionDisplay';
 
 interface BaseNodeWrapperProps {
   children: React.ReactNode;
@@ -27,12 +28,8 @@ export const BaseNodeWrapper: React.FC<BaseNodeWrapperProps> = ({
        <NodeLabel label={label} />
       )}
       
-      {showPosition && (
-        <HStack style={{ position: 'absolute', bottom: -40, left: 0 }} wrap={false}>
-          <Detail>
-            x:{positionAbsoluteX} y:{positionAbsoluteY}
-          </Detail>
-        </HStack>
+      {false && (
+        <PositionDisplay x={positionAbsoluteX || 0} y={positionAbsoluteY || 0} position="bottom" />
       )}
       
       {children}

@@ -9,14 +9,19 @@ import type { HandleData } from '~/types/handleTypes';
 type OperationNodeData = {
     label: string;
     iconType?: string;
-      sourceHandles?: HandleData[];
-      targetHandles?: HandleData[];
-  };
+    sourceHandles?: HandleData[];
+    targetHandles?: HandleData[];
+};
 
 type OperationNodeType = Node<OperationNodeData, 'operation'>;
 
 export const OperationNode = memo(
-    ({ data, isConnectable, positionAbsoluteX, positionAbsoluteY }: NodeProps<OperationNodeType>) => {
+    ({
+        data,
+        isConnectable,
+        positionAbsoluteX,
+        positionAbsoluteY,
+    }: NodeProps<OperationNodeType>) => {
         const minHeight = getNodeMinHeight({
             sources: data.sourceHandles?.length,
             targets: data.targetHandles?.length,
@@ -28,8 +33,7 @@ export const OperationNode = memo(
                 positionAbsoluteX={positionAbsoluteX}
                 positionAbsoluteY={positionAbsoluteY}
                 label={data.label}
-                minHeight={minHeight}
-            >
+                minHeight={minHeight}>
                 <MultipleHandlesWithLabel
                     handles={data.targetHandles}
                     type={'target'}
