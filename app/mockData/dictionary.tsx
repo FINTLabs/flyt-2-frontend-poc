@@ -96,5 +96,17 @@ export const dictionaryData: DictionaryTerm[] = [
             'Arkivsak - en instans av en sak',
             'eGrunnerverv sak - en instans av en eGrunnerverv sak'
         ]
+    },
+    {
+        term: 'Primitiver',
+        id: 'primitives',
+        definition: 'Enkle datatyper som representerer grunnleggende verdier. Primitiver inkluderer tekst, tall, boolske verdier og datoer.',
+        category: 'Datatype',
+        examples: [
+            'Text - en sekvens av tegn',
+            'Number - et tall',
+            'Boolean - en sannhetsverdi (true/false)',
+            'Date - en dato'
+        ]
     }
 ];
