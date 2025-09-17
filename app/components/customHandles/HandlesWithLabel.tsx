@@ -2,7 +2,13 @@ import { Handle, Position } from '@xyflow/react';
 import React from 'react';
 import { Box, Detail, HStack } from '@navikt/ds-react';
 import type { HandleData } from '~/types/handleTypes';
-import { calculateHandlePosition, getTypeSymbol, getTypeSymbolWidth, measureTextWidth } from '~/utils/nodeHandlers';
+import {
+    calculateHandlePosition,
+    getTypeSymbol,
+    getTypeSymbolWidth,
+    measureTextWidth,
+} from '~/utils/nodeHandlers';
+import { HANDLE_HEIGHT } from '~/mockData/constants';
 
 export type MultipleHandlesWithLabelProps = {
     handles?: HandleData[];
@@ -10,12 +16,16 @@ export type MultipleHandlesWithLabelProps = {
     isConnectable: boolean;
     x?: number;
     y?: number;
+    nodeHeight?: number;
+    hideLabels?: boolean;
 };
 
-export const MultipleHandlesWithLabel = ({
+export const HandlesWithLabel = ({
     handles,
     type,
     isConnectable,
+    nodeHeight,
+    hideLabels = false,
 }: MultipleHandlesWithLabelProps) => {
     if (!handles?.length) return null;
 
@@ -24,11 +34,33 @@ export const MultipleHandlesWithLabel = ({
             {handles.map((handle, index) => {
                 const typeTagWidth = getTypeSymbolWidth(handle.type, handle.typeName);
                 const labelWidth = handle.label ? Math.max(10, measureTextWidth(handle.label)) : 0;
-                const totalWidth = Math.max(16, typeTagWidth + (handle.label ? labelWidth + 16 : 8));
+                const totalWidth = Math.max(
+                    16,
+                    typeTagWidth + (handle.label ? labelWidth + 16 : 8)
+                );
 
-                const transform = (type === 'target')
-                    ? (handles.length > 1 ? 'translateX(-100%)' : 'translate(-100%, -50%)')
-                    : (handles.length > 1 ? 'translateX(100%)' : 'translate(100%, -50%)');
+                const transform =
+                    type === 'target'
+                        ? handles.length > 1
+                            ? 'translateX(-100%)'
+                            : 'translate(-100%, -50%)'
+                        : handles.length > 1
+                          ? 'translateX(100%)'
+                          : 'translate(100%, -50%)';
+
+                const handlePosition = calculateHandlePosition(index, handles.length);
+
+                if (hideLabels) {
+                    return (
+                        <Handle
+                            key={handle.id}
+                            id={handle.id}
+                            type={type}
+                            position={type === 'target' ? Position.Left : Position.Right}
+                            isConnectable={isConnectable}
+                        />
+                    );
+                }
 
                 return (
                     <Handle
@@ -38,9 +70,9 @@ export const MultipleHandlesWithLabel = ({
                         position={type === 'target' ? Position.Left : Position.Right}
                         isConnectable={isConnectable}
                         style={{
-                            top: calculateHandlePosition(index, handles.length),
+                            top: handlePosition,
                             width: totalWidth,
-                            height: 23,
+                            height: HANDLE_HEIGHT,
                             padding: '2px',
                             zIndex: 2,
                             backgroundColor: 'var(--a-bg-default)',
@@ -53,7 +85,11 @@ export const MultipleHandlesWithLabel = ({
                             textAlign: 'left',
                             alignContent: 'center',
                         }}>
-                        <HStack gap="1" align="center" wrap={false} paddingInline={`0 ${handle.label ? '1' : '0'}`}>
+                        <HStack
+                            gap="1"
+                            align="center"
+                            wrap={false}
+                            paddingInline={`0 ${handle.label ? '1' : '0'}`}>
                             <Box
                                 borderWidth="1"
                                 borderRadius="2"
@@ -61,11 +97,14 @@ export const MultipleHandlesWithLabel = ({
                                 background="surface-subtle"
                                 style={{
                                     borderStyle: handle.required ? 'solid' : 'dashed',
-                                }}
-                            >
+                                }}>
                                 {getTypeSymbol(handle.type, handle.typeName)}
                             </Box>
-                            {handle.label && <Detail style={{ textWrap: 'nowrap', lineHeight: '1rem' }}>{handle.label}</Detail>}
+                            {handle.label && (
+                                <Detail style={{ textWrap: 'nowrap', lineHeight: '1rem' }}>
+                                    {handle.label}
+                                </Detail>
+                            )}
                         </HStack>
                     </Handle>
                 );
@@ -73,4 +112,3 @@ export const MultipleHandlesWithLabel = ({
         </>
     );
 };
-

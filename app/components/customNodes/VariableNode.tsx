@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { type NodeProps, type Node, useReactFlow } from '@xyflow/react';
 import { HStack, TextField } from '@navikt/ds-react';
-import { MultipleHandlesWithLabel } from '~/components/customHandles/MultipleHandlesWithLabel';
-import { getNodeMinHeight } from '~/utils/nodeHandlers';
+import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+import { getNodeMinHeightCss } from '~/utils/nodeHandlers';
 import { TypeTag } from '~/components/macros/TypeTag';
 import { BaseNodeWrapper } from './nodeLayout/BaseNodeWrapper';
 import type { HandleData } from '~/types/handleTypes';
@@ -25,7 +25,7 @@ export const VariableNode = memo(
     }: NodeProps<VariableNodeType>) => {
         const { updateNodeData } = useReactFlow();
 
-        const minHeight = getNodeMinHeight({
+        const minHeight = getNodeMinHeightCss({
             sources: data.sourceHandles?.length,
             handleInterval: 0,
         });
@@ -42,7 +42,7 @@ export const VariableNode = memo(
                         onChange={(evt) => updateNodeData(id, { text: evt.target.value })}
                     />
                 </HStack>
-                <MultipleHandlesWithLabel
+                <HandlesWithLabel
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}

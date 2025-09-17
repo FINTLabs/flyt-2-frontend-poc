@@ -13,6 +13,16 @@ export const instanceEGrunnervervSak: Node<BaseNodeData> = {
         label: 'eGrunnerverv sak',
         typeName: 'eGrv Sak',
         type: DataType.Object,
+        iconType: 'dataInstanceIn',
+        sourceHandles: [
+            {
+                id: 'a',
+                label: 'eGrunnerverv sak',
+                type: DataType.Object,
+                typeName: 'eGrv Sak',
+                required: true,
+            },
+        ],
     },
     sourcePosition: Position.Right,
     position: defaultPosition,
@@ -23,7 +33,7 @@ export const operationOpenEGrvSak: Node<BaseNodeData> = {
     type: 'operation',
     data: {
         label: 'Hent ut data',
-        iconType: 'handleObject',
+        iconType: 'openData',
         targetHandles: [
             {
                 id: 'a',
@@ -54,12 +64,36 @@ export const operationOpenEGrvSak: Node<BaseNodeData> = {
     position: defaultPosition,
 };
 
+export const operationOpenObject: Node<BaseNodeData> = {
+    id: 'operationOpenObject',
+    type: 'openObject',
+    data: {
+        label: 'Åpne objekt',
+        iconType: 'openData2',
+        targetHandles: [{ id: 'a', type: DataType.Object, required: true, typeName: '?' }],
+        sourceHandles: [],
+    },
+    position: defaultPosition,
+};
+
+export const operationCreateObject: Node<BaseNodeData> = {
+    id: 'operationCreateObject',
+    type: 'createObject',
+    data: {
+        label: 'Opprett objekt',
+        iconType: 'packData2',
+        targetHandles: [],
+        sourceHandles: [{ id: 'a', type: DataType.Object, required: true, typeName: '?' }],
+    },
+    position: defaultPosition,
+};
+
 export const operationExternalGetSaksansvarlig: Node<BaseNodeData> = {
     id: 'operationExternalGetSaksansvarlig',
     type: 'externalFunction',
     data: {
         label: 'Finn saksansvalig ref. med e-post',
-        iconType: 'conversion',
+        iconType: 'lookup',
         targetHandles: [{ id: 'a', type: DataType.Text, label: 'E-post', required: true }],
         sourceHandles: [
             {
@@ -83,18 +117,18 @@ export const variableInputNode: Node<BaseNodeData> = {
         sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
     },
     position: defaultPosition,
-}
+};
 
 export const operationJoinText: Node<BaseNodeData> = {
     id: 'operationJoinText',
     type: 'operationJoinText',
     data: {
         label: 'Slå sammen tekst',
-        iconType: 'conversion',
+        iconType: 'textEdit',
         targetHandles: [
             { id: 'a', type: DataType.Text, required: true },
             { id: 'b', type: DataType.Text, required: true },
-            { id: 'c', type: DataType.Text, required: true },
+            { id: 'c', type: DataType.Text, required: false },
         ],
         sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
     },
@@ -105,8 +139,8 @@ export const operationCreateObjectAkrivsak: Node<BaseNodeData> = {
     id: 'operationCreateObjectAkrivsak',
     type: 'operation',
     data: {
-        label: 'Opprett object',
-        iconType: 'handleObject',
+        label: 'Opprett arkivsak',
+        iconType: 'packData',
         targetHandles: [
             { id: 'a', type: DataType.Text, label: 'Tittel', required: true },
             { id: 'b', type: DataType.Text, label: 'Offentlig tittel', required: false },
@@ -145,7 +179,10 @@ export const instanceOutputArkivsak: Node<BaseNodeData> = {
     type: 'flowOutput',
     data: {
         label: 'Arkivsak',
-        type: DataType.Text,
+        type: DataType.Object,
+        typeName: 'Arkiv Sak',
+        iconType: 'dataInstanceOut',
+        targetHandles: [{ id: 'a', type: DataType.Object, typeName: 'Arkiv Sak', required: true }]
     },
     position: defaultPosition,
 };
@@ -188,9 +225,9 @@ export const getInitialDemoNodes = (
             id: 'n5-kommuneInput',
             data: {
                 ...variableInputNode.data,
-                label: 'kommune -',
+                text: ' kommune - ',
             },
-            position: { x: 825, y: -450 },
+            position: { x: 808, y: -457.8 },
         },
         {
             ...operationCreateObjectAkrivsak,
@@ -202,27 +239,27 @@ export const getInitialDemoNodes = (
             id: 'n7-gbnrInput',
             data: {
                 ...variableInputNode.data,
-                label: '- gbnr',
+                text: ' - gbnr ',
             },
-            position: { x: 825, y: -390 },
+            position: { x: 808, y: -398 },
         },
         {
             ...variableInputNode,
             id: 'n8-skraastrekInput',
             data: {
                 ...variableInputNode.data,
-                label: '/',
+                text: '/',
             },
-            position: { x: 825, y: -330 },
+            position: { x: 808, y: -338 },
         },
         {
             ...variableInputNode,
             id: 'n9-grunnervervInput',
             data: {
                 ...variableInputNode.data,
-                label: '- Grunnerverv',
+                text: '- Grunnerverv',
             },
-            position: { x: 825, y: -270 },
+            position: { x: 808, y: -277.8 },
         },
         {
             ...instanceOutputArkivsak,
@@ -240,4 +277,6 @@ export const allFunctionalNodes = [
     operationCreateObjectAkrivsak,
     instanceOutputArkivsak,
     variableInputNode,
+    operationCreateObject,
+    operationOpenObject,
 ];

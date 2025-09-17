@@ -1,42 +1,37 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import {
-    type NodeProps,
     type Node,
-    useReactFlow,
+    type NodeProps,
+    NodeToolbar,
+    Position,
     useNodeConnections,
     useNodesData,
+    useReactFlow,
 } from '@xyflow/react';
-import { VStack } from '@navikt/ds-react';
-import { MultipleHandlesWithLabel } from '~/components/customHandles/MultipleHandlesWithLabel';
-import { getOperationIcon, getNodeMinHeight } from '~/utils/nodeHandlers';
-import type { HandleData } from '~/types/handleTypes';
-import type { BaseNodeData, CustomNode } from '~/types/nodeTypes';
+import { BodyShort, Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
+import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+import { getNodeMinHeight, getNodeIcon } from '~/utils/nodeHandlers';
+import type { BaseNodeData } from '~/types/nodeTypes';
 import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
+import { MinusIcon, PlusIcon } from '@navikt/aksel-icons';
+import { DataType } from '~/types/datatypes';
 
 type JoinTextOperationNodeType = Node<BaseNodeData, 'operationJoinText'>;
 
 export const JoinTextOperationNode = memo(
-    ({
-        id,
-        data,
-        isConnectable,
-        positionAbsoluteX,
-        positionAbsoluteY,
-    }: NodeProps<JoinTextOperationNodeType>) => {
+    ({ id, data, isConnectable }: NodeProps<JoinTextOperationNodeType>) => {
         const minHeight = getNodeMinHeight({
             sources: data.sourceHandles?.length,
             targets: data.targetHandles?.length,
         });
-        const { updateNodeData } = useReactFlow(); // Removed to prevent infinite loop
+        const reactFlow = useReactFlow();
 
-        const [joinedText, setJoinedText] = useState<string>('');
-        const [outputText, setOutputText] = useState<{ id: string; text: string }[]>([]);
+        const [outputText, setOutputText] = useState<{ inputType: string; text: string }[]>([]);
 
         const connections = useNodeConnections({
             handleType: 'target',
         });
 
-        // Get all connected source node IDs
         const connectionsNodeIds = useMemo(
             () =>
                 connections
@@ -45,10 +40,27 @@ export const JoinTextOperationNode = memo(
                     .filter(Boolean),
             [connections]
         );
-
-        // Get data from all connected nodes
         const connectedNodesData = useNodesData<Node<BaseNodeData>>(connectionsNodeIds);
 
+        const handleAddHandle = useCallback(() => {
+            console.log('Add handle');
+            console.log('data.targetHandles', data.targetHandles);
+
+            const newHandle = {
+                id: `handle-${data.targetHandles?.length || 0}`,
+                type: DataType.Text,
+            };
+            console.log('New handle', newHandle);
+            reactFlow.updateNodeData(id, {
+                targetHandles: [...(data.targetHandles || []), newHandle],
+            });
+        }, [data.targetHandles]);
+
+        const handleRemoveHandle = useCallback(() => {
+            console.log('Remove handle');
+        }, [data.targetHandles]);
+
+        // TODO: add joinedText to a tooltiop in stead
         useEffect(() => {
             if (connectedNodesData && connectionsNodeIds.length > 0) {
                 const newOutputText = connections
@@ -57,50 +69,77 @@ export const JoinTextOperationNode = memo(
                         const nodeData = connectedNodesData.find((node) => node.id === edge.source);
                         if (!nodeData) return null;
                         if (nodeData.type === 'variableInput') {
-                            return { id: nodeData.id, text: nodeData.data.text || '' };
+                            return { inputType: nodeData.type, text: nodeData.data.text || '' };
                         }
                         const handleLabel = nodeData.data.sourceHandles?.find(
                             (handle) => handle.id === edge?.sourceHandle
                         )?.label;
-                        return { id: nodeData.id, text: handleLabel || '?' };
+                        return { inputType: nodeData.type, text: handleLabel || '?' };
                     })
-                    .filter(Boolean) as { id: string; text: string }[];
+                    .filter(Boolean) as { inputType: string; text: string }[];
                 setOutputText(newOutputText);
             } else {
-                setJoinedText('');
                 setOutputText([]);
             }
         }, [connectedNodesData, connectionsNodeIds]);
 
-        useEffect(() => {
-            setJoinedText(outputText.map((text) => text.text).join(''));
-        }, [outputText]);
-
-        useEffect(() => {
-            updateNodeData(id, {
-                sourceHandles: [{ ...data?.sourceHandles?.[0], label: joinedText }],
-            });
-        }, [joinedText]);
-
         return (
-            <BaseNodeWrapper
-                showPosition={true}
-                positionAbsoluteX={positionAbsoluteX}
-                positionAbsoluteY={positionAbsoluteY}
-                label={data.label}
-                minHeight={minHeight}>
-                <MultipleHandlesWithLabel
+            <BaseNodeWrapper label={data.label} minHeight={minHeight.cssString}>
+                <NodeToolbar position={Position.Bottom} align={'start'}>
+                    <HStack gap="2">
+                        <Button
+                            icon={<PlusIcon title="Legg til input" />}
+                            variant="secondary-neutral"
+                            size="small"
+                            onClick={handleAddHandle}
+                        />
+                        <Button
+                            icon={<MinusIcon title="Fjern siste input" />}
+                            variant="secondary-neutral"
+                            size="small"
+                            onClick={handleRemoveHandle}
+                        />
+                    </HStack>
+                </NodeToolbar>
+                <NodeToolbar position={Position.Right} align={'start'}>
+                    <Box
+                        background={'bg-default'}
+                        padding={'1'}
+                        borderRadius={'small'}
+                        borderWidth={'1'}
+                        borderColor={'border-subtle'}>
+                        <Detail size={'small'} >
+                            {outputText.map((text, index) =>
+                                text.inputType === 'variableInput' ? (
+                                    <span key={index}>{text.text}</span>
+                                ) : (
+                                    <span key={index}>
+                                        <b>{`<${text.text}>`}</b>
+                                    </span>
+                                )
+                            )}
+                        </Detail>
+                    </Box>
+                </NodeToolbar>
+                <HandlesWithLabel
                     handles={data.targetHandles}
                     type={'target'}
                     isConnectable={isConnectable}
+                    nodeHeight={minHeight.number}
                 />
-                <VStack align={'center'} justify={'center'} gap="1" style={{ minHeight }}>
-                    {data.iconType && getOperationIcon(data.iconType)}
+                <VStack
+                    align={'center'}
+                    justify={'center'}
+                    gap="1"
+                    padding={"1"}
+                    style={{ minHeight: minHeight.cssString }}>
+                    {data.iconType && getNodeIcon(data.iconType)}
                 </VStack>
-                <MultipleHandlesWithLabel
+                <HandlesWithLabel
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
+                    nodeHeight={minHeight.number}
                 />
             </BaseNodeWrapper>
         );

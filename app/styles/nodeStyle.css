@@ -26,11 +26,6 @@
     border-color: var(--xy-theme-hover);
 }
 
-.react-flow__node.selectable.selected {
-    border-color: var(--xy-theme-selected);
-    box-shadow: var(--xy-node-boxshadow-default);
-}
-
 .react-flow__node-group {
     background-color: rgba(207, 182, 255, 0.4);
     border-color: #9e86ed;
@@ -41,19 +36,22 @@
 }
 
 /* === CUSTOM NODES === */
-.react-flow__node-flowInput, .menu-node-flowInput {
+.react-flow__node-flowInput,
+.menu-node-flowInput {
     background-color: var(--theme-node-blue);
 }
 
-.react-flow__node-flowOutput, .menu-node-flowOutput {
+.react-flow__node-flowOutput,
+.menu-node-flowOutput {
     background-color: var(--theme-node-blue);
 }
 
-.react-flow__node-operation, .menu-node-operation {
+.react-flow__node-operation,
+.menu-node-operation {
     background-color: var(--theme-node-gray);
 }
 
-.react-flow__node-variableInput, .menu-node-variableInput {
+.react-flow__node-variableInput {
     background-color: var(--theme-node-green);
     padding: 2px 5px;
     .navds-form-field--small .navds-text-field__input {
@@ -64,6 +62,11 @@
     }
 }
 
-.react-flow__node-externalFunction, .menu-node-externalFunction {
+.menu-node-variableInput {
+    background-color: var(--theme-node-green);
+}
+
+.react-flow__node-externalFunction,
+.menu-node-externalFunction {
     background-color: var(--theme-node-beige);
 }

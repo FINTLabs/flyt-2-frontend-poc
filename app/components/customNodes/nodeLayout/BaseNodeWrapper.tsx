@@ -5,9 +5,6 @@ import { PositionDisplay } from './PositionDisplay';
 
 interface BaseNodeWrapperProps {
   children: React.ReactNode;
-  showPosition?: boolean;
-  positionAbsoluteX?: number;
-  positionAbsoluteY?: number;
   label?: string;
   minHeight?: string;
   margin?: string;
@@ -15,9 +12,6 @@ interface BaseNodeWrapperProps {
 
 export const BaseNodeWrapper: React.FC<BaseNodeWrapperProps> = ({
   children,
-  showPosition = false,
-  positionAbsoluteX,
-  positionAbsoluteY,
   label,
   minHeight,
   margin = '2'
@@ -27,11 +21,6 @@ export const BaseNodeWrapper: React.FC<BaseNodeWrapperProps> = ({
       {label && (
        <NodeLabel label={label} />
       )}
-      
-      {false && (
-        <PositionDisplay x={positionAbsoluteX || 0} y={positionAbsoluteY || 0} position="bottom" />
-      )}
-      
       {children}
     </Box>
   );
