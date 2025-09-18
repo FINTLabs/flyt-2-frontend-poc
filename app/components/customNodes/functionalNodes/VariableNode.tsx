@@ -4,7 +4,7 @@ import { HStack, TextField } from '@navikt/ds-react';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 import { getNodeMinHeightCss } from '~/utils/nodeHandlers';
 import { TypeTag } from '~/components/macros/TypeTag';
-import { BaseNodeWrapper } from './nodeLayout/BaseNodeWrapper';
+import { BaseNodeWrapper } from '../nodeLayout/BaseNodeWrapper';
 import type { HandleData } from '~/types/handleTypes';
 
 type VariableInputData = {

@@ -4,11 +4,11 @@ import { Box, Detail, HStack } from '@navikt/ds-react';
 import type { HandleData } from '~/types/handleTypes';
 import {
     calculateHandlePosition,
-    getTypeSymbol,
     getTypeSymbolWidth,
     measureTextWidth,
 } from '~/utils/nodeHandlers';
 import { HANDLE_HEIGHT } from '~/mockData/constants';
+import { TypeTag } from '~/components/macros/TypeTag';
 
 export type MultipleHandlesWithLabelProps = {
     handles?: HandleData[];
@@ -90,16 +90,12 @@ export const HandlesWithLabel = ({
                             align="center"
                             wrap={false}
                             paddingInline={`0 ${handle.label ? '1' : '0'}`}>
-                            <Box
-                                borderWidth="1"
-                                borderRadius="2"
-                                borderColor="border-default"
-                                background="surface-subtle"
-                                style={{
-                                    borderStyle: handle.required ? 'solid' : 'dashed',
-                                }}>
-                                {getTypeSymbol(handle.type, handle.typeName)}
-                            </Box>
+                            <TypeTag
+                                type={handle.type}
+                                typeName={handle.typeName}
+                                required={handle.required}
+                                size="small"
+                            />
                             {handle.label && (
                                 <Detail style={{ textWrap: 'nowrap', lineHeight: '1rem' }}>
                                     {handle.label}

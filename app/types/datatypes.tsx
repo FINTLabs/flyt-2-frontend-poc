@@ -7,6 +7,8 @@ export enum DataType {
     Number = 'number',
     CollectionObject = 'collectionObject',
     Reference = 'reference',
+    File = 'file',
+    Undefined = 'undefined',
 }
 
 // Type definition for DataType values

@@ -1,9 +1,7 @@
 import type { Node } from '@xyflow/react';
 import React, { type ChangeEvent } from 'react';
 import NodeOperationConversionIcon from '~/components/icons/NodeOperationConversionIcon';
-import DataTypeText from '~/components/icons/DataTypeText';
 import {
-    LinkIcon,
     FolderFileFillIcon,
     FileExportFillIcon,
     FileImportFillIcon,
@@ -14,6 +12,7 @@ import {
     EnvelopeClosedIcon,
     InboxUpFillIcon,
     InboxDownFillIcon,
+    ArrowsSquarepathIcon,
 } from '@navikt/aksel-icons';
 import type { DataTypeValue } from '~/types/datatypes';
 import { HANDLE_HEIGHT, HANDLE_INTERVAL, NODE_BASE_HEIGHT } from '~/mockData/constants';
@@ -48,40 +47,25 @@ export const getMinimapNodeColor = (node: Node): string => {
     return 'var(--theme-node-gray)';
 };
 
-export const getTypeSymbol = (
-    type?: DataTypeValue,
-    typeText?: string
-): React.JSX.Element | string | undefined => {
-    if (!type) return typeText ?? undefined;
-    if (type === 'object' || type === 'collectionObject') {
-        return (
-            <p
-                style={{
-                    textWrap: 'nowrap',
-                    lineHeight: '0.9rem',
-                    margin: '0 2px',
-                    fontSize: '0.7rem',
-                }}>{`{${typeText}}`}</p>
-        );
-    }
-    if (type === 'text' || type === 'input') return <DataTypeText />;
-    if (type === 'reference') return <LinkIcon fontSize="0.95rem" />;
-    return typeText;
-};
-
 // TODO: find width of text with brackets
 export const getTypeSymbolWidth = (type?: DataTypeValue, typeText?: string): number => {
     if (!type) {
         return typeText ? measureTextWidth(typeText) : 0;
     }
 
-    if (type === 'object' || type === 'collectionObject') {
+    if (type === 'object') {
         const text = `{${typeText}}`;
         return measureTextWidth(text, '0.7rem');
     }
 
-    if (type === 'text' || type === 'input' || type === 'reference') {
-        return 15; // Fixed width for icon
+    if (type === 'collectionObject') {
+        const text = `{${typeText}}`;
+        const textWidth = measureTextWidth(text, '0.7rem');
+        return textWidth + 15;
+    }
+
+    if (type === 'text' || type === 'input' || type === 'reference' || type === 'undefined' || type === 'file') {
+        return 15;
     }
 
     return typeText ? measureTextWidth(typeText) : 0;
@@ -91,7 +75,8 @@ export const measureTextWidth = (
     text: string,
     fontSize: string = '0.875rem',
     fontFamily: string = '"Source Sans 3", "Source Sans Pro", Arial, sans-serif'
-): number => {const canvas = document.createElement('canvas');
+): number => {
+    const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     if (context) {
         context.font = `${fontSize} ${fontFamily}`;
@@ -125,6 +110,8 @@ export const getNodeIcon = (iconType: string | undefined, isSmall?: true) => {
             return <InboxDownFillIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 35} />;
         case 'dataInstanceOut':
             return <InboxUpFillIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 35} />;
+        case 'listOperation':
+            return <ArrowsSquarepathIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 45} />;
         default:
             return <SquareFillIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 35} />;
     }

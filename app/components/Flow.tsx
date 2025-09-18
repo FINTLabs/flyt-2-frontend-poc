@@ -13,20 +13,22 @@ import {
     Background,
     useReactFlow,
     type Connection,
-    Panel,
+    Panel, useUpdateNodeInternals,
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
 import { getMinimapNodeColor, getMinimapNodeStrokeColor } from '~/utils/nodeHandlers';
 import { IntegrationNode } from '~/components/customNodes/IntegrationNode';
 import { OperationNode } from '~/components/customNodes/OperationNode';
-import { VariableNode } from '~/components/customNodes/VariableNode';
+import { VariableNode } from '~/components/customNodes/functionalNodes/VariableNode';
 import { useFlow } from '~/context/flowContext';
 import { JoinTextOperationNode } from '~/components/customNodes/functionalNodes/JoinTextOperationNode';
 import { Button, HStack } from '@navikt/ds-react';
 import { CreateNewFlowModal } from '~/components/modals/createNewFlowModal';
 import { useParams } from 'react-router';
 import { OperationOpenObjectNode } from '~/components/customNodes/functionalNodes/OperationOpenObjectNode';
+import { InnerFlowListOperation } from '~/components/customNodes/functionalNodes/OperationListInnerFlowNode';
+import { InnerFlowDataNode } from '~/components/customNodes/functionalNodes/InnerFlowDataNode';
 
 const nodeTypes = {
     flowInput: IntegrationNode,
@@ -36,7 +38,10 @@ const nodeTypes = {
     flowOutput: IntegrationNode,
     operationJoinText: JoinTextOperationNode,
     openObject: OperationOpenObjectNode,
-    createObject: OperationOpenObjectNode
+    createObject: OperationOpenObjectNode,
+    listOperation: InnerFlowListOperation,
+    innerFlowInput: InnerFlowDataNode,
+    innerFlowOutput: InnerFlowDataNode,
 };
 
 const Flow = () => {
@@ -56,6 +61,8 @@ const Flow = () => {
     const [hasChanged, setHasChanged] = useState(false);
     const [showNewFlowModal, setShowNewFlowModal] = useState(false);
     const { mode } = useParams();
+    const updateNodeInternals = useUpdateNodeInternals();
+    const { getIntersectingNodes } = useReactFlow();
 
     useEffect(() => {
         setNodes(initNodes);
@@ -69,8 +76,22 @@ const Flow = () => {
         [setEdges]
     );
 
+    const onNodeDrag = useCallback((_: React.MouseEvent, node: Node) => {
+        const intersections = getIntersectingNodes(node).map((n) => n.id);
+
+        // TODO: if parentnode is of type listoperation, then add that as parent
+        // console.log('Intersections:', intersections);
+/*        setNodes((ns) =>
+            ns.map((n) => ({
+                ...n,
+                className: intersections.includes(n.id) ? 'highlight' : '',
+            })),
+        );*/
+    }, []);
+
     const onDragOver = useCallback((event: React.DragEvent) => {
         event.preventDefault();
+        console.log('Flow onDragOver');
         event.dataTransfer.dropEffect = 'move';
     }, []);
 
@@ -78,10 +99,9 @@ const Flow = () => {
         (event: React.DragEvent) => {
             event.preventDefault();
             if (!newNodeId) return;
-
-            const nodeData = getCustomNodeDataById(newNodeId);
             const position = screenToFlowPosition({ x: event.clientX, y: event.clientY });
-            setNodes((nds) => [...nds, { ...nodeData, position }]);
+            const newNode = getCustomNodeDataById(newNodeId);
+            setNodes((nds) => [...nds, {...newNode, position}]);
             setHasChanged(true);
         },
         [screenToFlowPosition, newNodeId]
@@ -142,6 +162,7 @@ const Flow = () => {
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             onDrop={onDrop}
+            onNodeDrag={onNodeDrag}
             onDragStart={onDragStart}
             isValidConnection={isValidDatatypeConnection}
             onDragOver={onDragOver}
