@@ -89,7 +89,7 @@ export const initDemoEdges: Edge[] = [
         type: 'step',
     },
     {
-        id: 'e-n3a-n6a',
+        id: 'e-n3a-n6b',
         source: 'n3-mergeTextOperation',
         sourceHandle: 'a',
         target: 'n6-createObjectOperation',
@@ -101,6 +101,14 @@ export const initDemoEdges: Edge[] = [
         source: 'n4-saksansvarligOperation',
         sourceHandle: 'a',
         target: 'n6-createObjectOperation',
+        targetHandle: 'h',
+        type: 'step',
+    },
+    {
+        id: 'e-n9a-n3h',
+        source: 'n9-grunnervervInput',
+        sourceHandle: 'a',
+        target: 'n3-mergeTextOperation',
         targetHandle: 'h',
         type: 'step',
     }

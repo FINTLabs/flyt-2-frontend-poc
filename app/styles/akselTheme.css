@@ -62,12 +62,15 @@
     --a-surface-alt-3-moderate: #6b133d;
 
     /* Component level overrides */
-    --ac-table-row-selected: var(--a-surface-alt-3-subtle);
     --ac-internalheader-bg: var(--a-bg-subtle);
     --ac-internalheader-divider: none;
     --ac-internalheader-text: var(--a-text-default);
     --ac-internalheader-hover-bg: var(--beige-dark);
     --ac-internalheader-hover-text: var(--beige-dark);
+
+    --ac-table-row-selected: var(--beige-primary);
+    --ac-table-row-selected-hover: var(--beige-primary);
+    --ac-table-sort-button-sorted-bg: var(--a-bg-default);
 }
 
 @theme {
@@ -100,4 +103,15 @@ body {
 h1, h2, h3, h4, h5, h6 {
     @apply font-sans text-gray-900 dark:text-gray-100;
     color: var(--red-primary);
+}
+
+.navds-table__row--selected,
+.navds-table__row--selected:first-of-type{
+    box-shadow: none;
+}
+
+.navds-table__row--selected :is(.navds-table__header-cell, .navds-table__data-cell),
+.navds-table__row--selected:first-of-type,
+.navds-table__row:has(+ .navds-table__row--selected) :is(.navds-table__header-cell, .navds-table__data-cell){
+    border-color: inherit;
 }

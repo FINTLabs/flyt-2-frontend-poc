@@ -1,0 +1,14 @@
+
+.react-flow__handle.connectionindicator:focus,
+.react-flow__handle.connectingfrom,
+.react-flow__handle.connectingto {
+    box-shadow: 0 0 0 1px black;
+}
+
+.react-flow__handle.connectingto {
+    box-shadow: 0 0 0 1px #ff6060;
+}
+
+.react-flow__handle.valid {
+    box-shadow: 0 0 0 1px #55dd99;
+}

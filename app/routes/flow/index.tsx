@@ -1,42 +1,128 @@
-import React from 'react';
-import { BodyShort, Heading, Page, VStack, LinkCard, Tag, Box, HGrid } from '@navikt/ds-react';
-import { BandageIcon } from '@navikt/aksel-icons';
+import React, { useEffect } from 'react';
+import {
+    BodyShort,
+    Heading,
+    Page,
+    VStack,
+    Tag,
+    Table,
+    Button,
+    HStack,
+    ActionMenu,
+} from '@navikt/ds-react';
+import {
+    ArrowRightIcon,
+    CogRotationIcon, ExpandIcon,
+    MenuElipsisVerticalCircleIcon,
+    MenuElipsisVerticalIcon,
+    PencilIcon,
+    PlusIcon, TasklistIcon,
+    TrashIcon,
+} from '@navikt/aksel-icons';
+import { Link } from 'react-router';
+import { useFlow } from '~/context/flowContext';
 
-export default function FlowTest() {
+export default function FlowIndex() {
+    const { allFlows, getAllFlows, deleteFLow } = useFlow();
+
+    useEffect(() => {
+        getAllFlows();
+    }, []);
+
+    console.log(allFlows);
     return (
         <Page.Block gutters>
             <VStack paddingBlock="8" gap="4">
                 <Heading size="large" level="1">
                     Flow Test
                 </Heading>
-                <BodyShort>Siden er under konstruksjon. Det er foreløpig begrenset med handlinger.</BodyShort>
+                <HStack justify="space-between" style={{ width: '100%' }}>
+                    <BodyShort>
+                        Siden er under konstruksjon. Det er foreløpig begrenset med handlinger.
+                    </BodyShort>
+                    <Button
+                        as={Link}
+                        to={'/flow/edit/new'}
+                        size="small"
+                        iconPosition="right"
+                        icon={<PlusIcon title="Opprett ny" fontSize="2rem" />}>
+                        Opprett ny flyt
+                    </Button>
+                </HStack>
 
-                <HGrid gap="space-24" columns={3} paddingBlock={"space-16"}>
-
-                <LinkCard size="small">
-                    <Box
-                        asChild
-                        borderRadius="12"
-                        padding="space-8"
-                        style={{ backgroundColor: "var(--ax-bg-moderateA)" }}
-                    >
-                        <LinkCard.Icon>
-                            <BandageIcon fontSize="2rem" />
-                        </LinkCard.Icon>
-                    </Box>
-                    <LinkCard.Title>
-                        <LinkCard.Anchor href="/flow/eksempel">Se en enkel flyt</LinkCard.Anchor>
-                    </LinkCard.Title>
-                    <LinkCard.Description>
-                        Denne siden viser en enkel flyt med noen få noder og kanter. Du kan utforske hvordan noder og kanter fungerer.
-                    </LinkCard.Description>
-                    <LinkCard.Footer>
-                        <Tag size="small" variant="neutral">
-                            Demo
-                        </Tag>
-                    </LinkCard.Footer>
-                </LinkCard>
-                </HGrid>
+                <Table size={'small'}>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell>Navn</Table.HeaderCell>
+                            <Table.HeaderCell>Opprettet</Table.HeaderCell>
+                            <Table.HeaderCell>Status</Table.HeaderCell>
+                            <Table.HeaderCell scope="col" align="right"></Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {allFlows &&
+                            allFlows.map((flow) => (
+                                <Table.Row key={flow.id}>
+                                    <Table.DataCell>{flow.name}</Table.DataCell>
+                                    <Table.DataCell>
+                                        {new Date(flow.createdAt).toLocaleDateString()}
+                                    </Table.DataCell>
+                                    <Table.DataCell>
+                                        <Tag
+                                            variant={
+                                                flow.state === 'active' ? 'success' : 'neutral'
+                                            }
+                                            size="small">
+                                            {flow.state === 'active' ? 'Aktiv' : 'Inaktiv'}
+                                        </Tag>
+                                    </Table.DataCell>
+                                    <Table.DataCell align="right">
+                                        <ActionMenu>
+                                            <ActionMenu.Trigger>
+                                                <Button
+                                                    icon={<MenuElipsisVerticalIcon title="Meny" />}
+                                                    size="small"
+                                                    variant="tertiary"
+                                                />
+                                            </ActionMenu.Trigger>
+                                            <ActionMenu.Content>
+                                                <ActionMenu.Group label={`Flyt: ${flow.name}`}>
+                                                    <ActionMenu.Item
+                                                        icon={<ExpandIcon />}
+                                                        as={Link}
+                                                        to={`/flow/view/${flow.id}`}>
+                                                        Åpne flyt
+                                                    </ActionMenu.Item>
+                                                    <ActionMenu.Item
+                                                        disabled={flow.id === 'demo'}
+                                                        icon={<PencilIcon />}
+                                                        as={Link}
+                                                        to={`/flow/edit/${flow.id}`}>
+                                                        Rediger flyt
+                                                    </ActionMenu.Item>
+                                                    <ActionMenu.Item
+                                                        icon={<TasklistIcon />}
+                                                        onSelect={() => {}}>
+                                                        Se kjørelogg
+                                                    </ActionMenu.Item>
+                                                </ActionMenu.Group>
+                                                <ActionMenu.Divider />
+                                                <ActionMenu.Item
+                                                    variant="danger"
+                                                    icon={<TrashIcon />}
+                                                    disabled={flow.state === 'active'}
+                                                    onSelect={() => {
+                                                        deleteFLow(flow.id);
+                                                    }}>
+                                                    Slett flyt
+                                                </ActionMenu.Item>
+                                            </ActionMenu.Content>
+                                        </ActionMenu>
+                                    </Table.DataCell>
+                                </Table.Row>
+                            ))}
+                    </Table.Body>
+                </Table>
             </VStack>
         </Page.Block>
     );

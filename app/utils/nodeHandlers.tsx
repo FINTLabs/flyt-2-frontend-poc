@@ -1,10 +1,22 @@
 import type { Node } from '@xyflow/react';
 import React, { type ChangeEvent } from 'react';
-import NodeOperationObjectIcon from '~/components/icons/NodeOperationObjectIcon';
 import NodeOperationConversionIcon from '~/components/icons/NodeOperationConversionIcon';
 import DataTypeText from '~/components/icons/DataTypeText';
-import { LinkIcon } from '@navikt/aksel-icons';
+import {
+    LinkIcon,
+    FolderFileFillIcon,
+    FileExportFillIcon,
+    FileImportFillIcon,
+    CogIcon,
+    PencilWritingFillIcon,
+    SquareFillIcon,
+    EnvelopeOpenIcon,
+    EnvelopeClosedIcon,
+    InboxUpFillIcon,
+    InboxDownFillIcon,
+} from '@navikt/aksel-icons';
 import type { DataTypeValue } from '~/types/datatypes';
+import { HANDLE_HEIGHT, HANDLE_INTERVAL, NODE_BASE_HEIGHT } from '~/mockData/constants';
 
 export const onChangeNodeColor = (
     event: ChangeEvent<HTMLInputElement>,
@@ -20,7 +32,7 @@ export const onChangeNodeColor = (
     return { newColor: event.target.value, newNodes };
 };
 
-export const getMinimapNodeStrokeColor = (node: Node, bgColor: string): string => {
+export const getMinimapNodeStrokeColor = (node: Node): string => {
     if (node && node.type) {
         if (node.type === 'flowInput' || node.type === 'flowOutput') return '#718f9f';
         if (node.type === 'variableInput') return '#006373';
@@ -42,111 +54,135 @@ export const getTypeSymbol = (
 ): React.JSX.Element | string | undefined => {
     if (!type) return typeText ?? undefined;
     if (type === 'object' || type === 'collectionObject') {
-        return <p style={{ textWrap: 'nowrap', lineHeight: '0.9rem', margin: '0 2px', fontSize: '0.7rem' }}>{`{${typeText}}`}</p>;
+        return (
+            <p
+                style={{
+                    textWrap: 'nowrap',
+                    lineHeight: '0.9rem',
+                    margin: '0 2px',
+                    fontSize: '0.7rem',
+                }}>{`{${typeText}}`}</p>
+        );
     }
     if (type === 'text' || type === 'input') return <DataTypeText />;
-    if (type === 'reference') return <LinkIcon fontSize="0.95rem" />
+    if (type === 'reference') return <LinkIcon fontSize="0.95rem" />;
     return typeText;
 };
 
 // TODO: find width of text with brackets
-export const getTypeSymbolWidth = (
-    type?: DataTypeValue,
-    typeText?: string
-): number => {
+export const getTypeSymbolWidth = (type?: DataTypeValue, typeText?: string): number => {
     if (!type) {
-        return typeText ? measureTextWidth(typeText) : 0
+        return typeText ? measureTextWidth(typeText) : 0;
     }
-    
+
     if (type === 'object' || type === 'collectionObject') {
         const text = `{${typeText}}`;
-        return measureTextWidth(text, '0.7rem')
+        return measureTextWidth(text, '0.7rem');
     }
-    
+
     if (type === 'text' || type === 'input' || type === 'reference') {
-        return 15 // Fixed width for icon
+        return 15; // Fixed width for icon
     }
-    
-    return  typeText ? measureTextWidth(typeText) : 0
+
+    return typeText ? measureTextWidth(typeText) : 0;
 };
 
-// Utility function to measure text width accurately
-export const measureTextWidth = (text: string, fontSize: string = '0.875rem', fontFamily: string = '"Source Sans 3", "Source Sans Pro", Arial, sans-serif'): number => {
-    // Create a temporary canvas element for measurement
-    const canvas = document.createElement('canvas');
+export const measureTextWidth = (
+    text: string,
+    fontSize: string = '0.875rem',
+    fontFamily: string = '"Source Sans 3", "Source Sans Pro", Arial, sans-serif'
+): number => {const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    
     if (context) {
-        // Set the font to match your actual CSS
         context.font = `${fontSize} ${fontFamily}`;
         const metrics = context.measureText(text);
-        return Math.ceil(metrics.width);
+        return metrics.width + 4;
     }
-    
-    // Fallback to approximate calculation if canvas is not available
     return text.length * 8 + 8;
 };
 
-export const getOperationIcon = (iconType: string) => {
+export const getNodeIcon = (iconType: string | undefined, isSmall?: true) => {
     switch (iconType) {
         case 'handleObject':
-            return <NodeOperationObjectIcon height={55} width={55} />;
+            return <CogIcon height={isSmall ? 15 : 55} width={isSmall ? 15 : 55} />;
         case 'conversion':
-            return <NodeOperationConversionIcon height={45} width={45} />;
+            return (
+                <NodeOperationConversionIcon height={isSmall ? 15 : 45} width={isSmall ? 15 : 45} />
+            );
+        case 'lookup':
+            return <FolderFileFillIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 35} />;
+        case 'openData':
+            return <FileExportFillIcon height={isSmall ? 15 : 45} width={isSmall ? 15 : 45} />;
+        case 'openData2':
+            return <EnvelopeOpenIcon height={isSmall ? 15 : 45} width={isSmall ? 15 : 45} />;
+        case 'packData':
+            return <FileImportFillIcon height={isSmall ? 15 : 45} width={isSmall ? 15 : 45} />;
+        case 'packData2':
+            return <EnvelopeClosedIcon height={isSmall ? 15 : 45} width={isSmall ? 15 : 45} />;
+        case 'textEdit':
+            return <PencilWritingFillIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 35} />;
+        case 'dataInstanceIn':
+            return <InboxDownFillIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 35} />;
+        case 'dataInstanceOut':
+            return <InboxUpFillIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 35} />;
         default:
-            return 'Find icon for ' + iconType;
+            return <SquareFillIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 35} />;
     }
 };
 
 export const calculateHandlePosition = (
     index: number,
     totalHandles: number,
-    interval: number = 30
+    interval: number = HANDLE_INTERVAL
 ): string => {
     if (totalHandles === 1) {
-        return '50%'; // Center single handle
+        return '50%';
     }
-
-    const totalHeight = (totalHandles - 1) * interval;
-
-    const nodeHeight = 60 + totalHeight;
-    const centerPosition = nodeHeight / 2;
-
-    const startPosition = centerPosition - totalHeight / 2;
-    return `${startPosition + index * interval}px`;
-};
-
-export const getMaxHandles = ({
-    targets,
-    sources,
-}: {
-    targets?: number | undefined;
-    sources?: number | undefined;
-}) => {
-    const leftHandles = targets || 0;
-    const rightHandles = sources || 0;
-    return Math.max(leftHandles, rightHandles);
-};
-
-export const calculateNodeMinHeight = (
-    maxHandles: number,
-    handleInterval: number = 27,
-    baseHeight: number = 60
-): string => {
-    return maxHandles > 1 ? `${(maxHandles - 1) * handleInterval + baseHeight}px` : 'auto';
+    const isEven = totalHandles % 2 === 0;
+    const middleIndex = isEven ? totalHandles / 2 - 1 : Math.floor(totalHandles / 2);
+    const offsetFromMiddle = index - middleIndex;
+    return `calc(50% + ${(offsetFromMiddle - (isEven ? 0.5 : 0)) * interval - HANDLE_HEIGHT / 2}px)`;
 };
 
 export const getNodeMinHeight = ({
     targets,
     sources,
-    handleInterval = 27,
-    baseHeight = 60,
+    handleInterval = HANDLE_INTERVAL,
+    baseHeight = NODE_BASE_HEIGHT,
+}: {
+    targets?: number | undefined;
+    sources?: number | undefined;
+    handleInterval?: number;
+    baseHeight?: number;
+}): { number: number; cssString: string } => {
+    const leftHandles = targets || 0;
+    const rightHandles = sources || 0;
+    const maxHandles = Math.max(leftHandles, rightHandles);
+
+    const height = (maxHandles - 1) * handleInterval + baseHeight;
+
+    return {
+        number: height,
+        cssString: height > 1 ? `${height}px` : 'auto',
+    };
+};
+
+/**
+ * @deprecated Use getNodeMinHeight instead
+ */
+export const getNodeMinHeightCss = ({
+    targets,
+    sources,
+    handleInterval = HANDLE_INTERVAL,
+    baseHeight = NODE_BASE_HEIGHT,
 }: {
     targets?: number | undefined;
     sources?: number | undefined;
     handleInterval?: number;
     baseHeight?: number;
 }): string => {
-    const maxHandles = getMaxHandles({ targets, sources });
-    return calculateNodeMinHeight(maxHandles, handleInterval, baseHeight);
+    const leftHandles = targets || 0;
+    const rightHandles = sources || 0;
+    const maxHandles = Math.max(leftHandles, rightHandles);
+    return maxHandles > 1 ? `${(maxHandles - 1) * handleInterval + baseHeight}px` : 'auto';
 };

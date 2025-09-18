@@ -4,9 +4,9 @@ export default [
     index('routes/home.tsx'),
     route('dictionary', 'routes/dictionary.tsx'),
     ...prefix('flow', [
-        index('routes/flow/index.tsx'),
         layout('routes/flow/layout.tsx', [
-            route('eksempel', 'routes/flow/simpleDemo.tsx'),
-        ])
-    ])
+            index('routes/flow/index.tsx'),
+            route(':mode/:flowId', 'routes/flow/flowPage.tsx'),
+        ]),
+    ]),
 ] satisfies RouteConfig;

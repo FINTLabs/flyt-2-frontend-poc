@@ -1,164 +1,282 @@
 import { Position } from '@xyflow/react';
 import type { ChangeEvent } from 'react';
 import { DataType } from '~/types/datatypes';
+import type { BaseNodeData } from '~/types/nodeTypes';
+import { type Node } from '@xyflow/react';
 
-export const getInitialColorDemoNodes = (
-    initBgColor: string,
-    onChangeNodeColor: (event: ChangeEvent<HTMLInputElement>) => void
+export const defaultPosition = { x: 0, y: 0 };
+
+export const instanceEGrunnervervSak: Node<BaseNodeData> = {
+    id: 'instanceEGrunnervervSak',
+    type: 'flowInput',
+    data: {
+        label: 'eGrunnerverv sak',
+        typeName: 'eGrv Sak',
+        type: DataType.Object,
+        iconType: 'dataInstanceIn',
+        sourceHandles: [
+            {
+                id: 'a',
+                label: 'eGrunnerverv sak',
+                type: DataType.Object,
+                typeName: 'eGrv Sak',
+                required: true,
+            },
+        ],
+    },
+    sourcePosition: Position.Right,
+    position: defaultPosition,
+};
+
+export const operationOpenEGrvSak: Node<BaseNodeData> = {
+    id: 'operationOpenEGrvSak',
+    type: 'operation',
+    data: {
+        label: 'Hent ut data',
+        iconType: 'openData',
+        targetHandles: [
+            {
+                id: 'a',
+                label: 'eGrunnerverv sak',
+                type: DataType.Object,
+                typeName: 'eGrv Sak',
+                required: true,
+            },
+        ],
+        sourceHandles: [
+            { id: 'a', label: 'Kommunenavn', type: DataType.Text, required: true },
+            { id: 'b', label: 'Prosjektnavn', type: DataType.Text, required: true },
+            { id: 'c', label: 'Gårdsnummer', type: DataType.Text, required: true },
+            { id: 'd', label: 'Bruksnummer', type: DataType.Text, required: true },
+            { id: 'e', label: 'Seksjonsnummer', type: DataType.Text, required: true },
+            { id: 'f', label: 'Tittel', type: DataType.Text, required: true },
+            { id: 'g', label: 'Adresse', type: DataType.Text, required: true },
+            { id: 'h', label: 'Saksansvarlig e-post', type: DataType.Text, required: true },
+            {
+                id: 'i',
+                label: 'Sakspartner',
+                type: DataType.CollectionObject,
+                typeName: 'eGrv Sakspart',
+                required: true,
+            },
+        ],
+    },
+    position: defaultPosition,
+};
+
+export const operationOpenObject: Node<BaseNodeData> = {
+    id: 'operationOpenObject',
+    type: 'openObject',
+    data: {
+        label: 'Åpne objekt',
+        iconType: 'openData2',
+        targetHandles: [{ id: 'a', type: DataType.Object, required: true, typeName: '?' }],
+        sourceHandles: [],
+    },
+    position: defaultPosition,
+};
+
+export const operationCreateObject: Node<BaseNodeData> = {
+    id: 'operationCreateObject',
+    type: 'createObject',
+    data: {
+        label: 'Opprett objekt',
+        iconType: 'packData2',
+        targetHandles: [],
+        sourceHandles: [{ id: 'a', type: DataType.Object, required: true, typeName: '?' }],
+    },
+    position: defaultPosition,
+};
+
+export const operationExternalGetSaksansvarlig: Node<BaseNodeData> = {
+    id: 'operationExternalGetSaksansvarlig',
+    type: 'externalFunction',
+    data: {
+        label: 'Finn saksansvalig ref. med e-post',
+        iconType: 'lookup',
+        targetHandles: [{ id: 'a', type: DataType.Text, label: 'E-post', required: true }],
+        sourceHandles: [
+            {
+                id: 'a',
+                label: 'Saksannsvarlig ref.',
+                type: DataType.Reference,
+                required: true,
+            },
+        ],
+    },
+    position: defaultPosition,
+};
+
+export const variableInputNode: Node<BaseNodeData> = {
+    id: 'variableInputNode',
+    type: 'variableInput',
+    data: {
+        label: 'Variabel input',
+        text: '',
+        type: DataType.Text,
+        sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
+    },
+    position: defaultPosition,
+};
+
+export const operationJoinText: Node<BaseNodeData> = {
+    id: 'operationJoinText',
+    type: 'operationJoinText',
+    data: {
+        label: 'Slå sammen tekst',
+        iconType: 'textEdit',
+        targetHandles: [
+            { id: 'a', type: DataType.Text, required: true },
+            { id: 'b', type: DataType.Text, required: true },
+            { id: 'c', type: DataType.Text, required: false },
+        ],
+        sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
+    },
+    position: defaultPosition,
+};
+
+export const operationCreateObjectAkrivsak: Node<BaseNodeData> = {
+    id: 'operationCreateObjectAkrivsak',
+    type: 'operation',
+    data: {
+        label: 'Opprett arkivsak',
+        iconType: 'packData',
+        targetHandles: [
+            { id: 'a', type: DataType.Text, label: 'Tittel', required: true },
+            { id: 'b', type: DataType.Text, label: 'Offentlig tittel', required: false },
+            { id: 'c', type: DataType.Reference, label: 'Saksmappetype', required: false },
+            {
+                id: 'd',
+                type: DataType.Reference,
+                label: 'Administrativ enhet',
+                required: false,
+            },
+            { id: 'e', type: DataType.Reference, label: 'Saksansvarlig', required: false },
+            {
+                id: 'f',
+                type: DataType.Object,
+                typeName: 'Arkiv Skjerming',
+                label: 'Skjerming',
+                required: true,
+            },
+            { id: 'g', type: DataType.Reference, label: 'Arkivdel', required: false },
+            { id: 'h', type: DataType.Reference, label: 'Saksstatus', required: false },
+            {
+                id: 'i',
+                type: DataType.CollectionObject,
+                typeName: 'Arkiv Part',
+                label: 'Parter',
+                required: false,
+            },
+        ],
+        sourceHandles: [{ id: 'a', type: DataType.Object, typeName: 'Akriv Sak', required: true }],
+    },
+    position: defaultPosition,
+};
+
+export const instanceOutputArkivsak: Node<BaseNodeData> = {
+    id: 'instanceOutputArkivsak',
+    type: 'flowOutput',
+    data: {
+        label: 'Arkivsak',
+        type: DataType.Object,
+        typeName: 'Arkiv Sak',
+        iconType: 'dataInstanceOut',
+        targetHandles: [{ id: 'a', type: DataType.Object, typeName: 'Arkiv Sak', required: true }]
+    },
+    position: defaultPosition,
+};
+
+export const getInitialDemoNodes = (
+    onChangeNodeColor?: (event: ChangeEvent<HTMLInputElement>) => void
 ) => {
     return [
+        { ...instanceEGrunnervervSak, id: 'n1-startNode', position: { x: 0, y: 0 } },
         {
-            id: 'n1-startNode',
-            type: 'flowInput',
-            data: {
-                label: 'eGrunnerverv sak',
-                typeName: 'eGrv Sak',
-                type: DataType.Object,
-            },
-            position: { x: 0, y: 0 },
-            sourcePosition: Position.Right,
-
-        },
-        {
+            ...operationOpenEGrvSak,
             id: 'n2-openOperation',
-            type: 'operation',
-            data: {
-                label: 'Hent ut data',
-                iconType: 'handleObject',
-                targetHandles: [
-                    { id: "a", label: 'eGrunnerverv sak', type: DataType.Object, typeName: 'eGrv Sak', required: true },
-                ],
-                sourceHandles: [
-                    { id: "a", label: 'Kommunenavn', type: DataType.Text, required: true },
-                    { id: "b", label: 'Prosjektnavn', type: DataType.Text, required: true },
-                    { id: "c", label: 'Gårdsnummer', type: DataType.Text, required: true },
-                    { id: "d", label: 'Bruksnummer', type: DataType.Text, required: true },
-                    { id: "e", label: 'Seksjonsnummer', type: DataType.Text, required: true },
-                    { id: "f", label: 'Tittel', type: DataType.Text, required: true },
-                    { id: "g", label: 'Adresse', type: DataType.Text, required: true },
-                    { id: "h", label: 'Saksansvarlig e-post', type: DataType.Text, required: true },
-                    { id: "i", label: 'Sakspartner', type: DataType.CollectionObject, typeName: 'eGrv Sakspart', required: true },
-                ],
-            },
             position: { x: 520, y: -145 },
         },
         {
+            ...operationJoinText,
             id: 'n3-mergeTextOperation',
-            type: 'operation',
             data: {
-                label: 'Slå sammen tekst',
-                iconType: 'conversion',
+                ...operationJoinText.data,
                 targetHandles: [
-                    { id: "a", type: DataType.Text, required: true },
-                    { id: "b", type: DataType.Text, required: true },
-                    { id: "c", type: DataType.Text, required: true },
-                    { id: "d", type: DataType.Text, required: true },
-                    { id: "e", type: DataType.Text, required: true },
-                    { id: "f", type: DataType.Text, required: true },
-                    { id: "g", type: DataType.Text, required: true },
-                    { id: "h", type: DataType.Text, required: true }
-                ],
-                sourceHandles: [
-                    { id: "a", type: DataType.Text, required: true },
+                    { id: 'a', type: DataType.Text, required: true },
+                    { id: 'b', type: DataType.Text, required: true },
+                    { id: 'c', type: DataType.Text, required: true },
+                    { id: 'd', type: DataType.Text, required: true },
+                    { id: 'e', type: DataType.Text, required: true },
+                    { id: 'f', type: DataType.Text, required: true },
+                    { id: 'g', type: DataType.Text, required: true },
+                    { id: 'h', type: DataType.Text, required: true },
                 ],
             },
             position: { x: 1110, y: -510 },
         },
         {
+            ...operationExternalGetSaksansvarlig,
             id: 'n4-saksansvarligOperation',
-            type: 'externalFunction',
-            data: {
-                label: 'Finn saksansvalig ref. med e-post',
-                iconType: 'conversion',
-                targetHandles: [
-                    { id: "a", type: DataType.Text, label: 'E-post', required: true },
-                ],
-                sourceHandles: [
-                    { id: "a", label: 'Saksannsvarlig ref.', type: DataType.Reference, required: true },
-                ],
-            },
             position: { x: 1110, y: 210 },
-            targetPosition: Position.Left,
         },
         {
+            ...variableInputNode,
             id: 'n5-kommuneInput',
-            type: 'variableInput',
             data: {
-                label: 'kommune -',
-                type: DataType.Text,
-                sourceHandles: [
-                    { id: "a", type: DataType.Text, required: true },
-                ],
+                ...variableInputNode.data,
+                text: ' kommune - ',
             },
-            position: { x: 825, y: -450 },
+            position: { x: 808, y: -457.8 },
         },
         {
+            ...operationCreateObjectAkrivsak,
             id: 'n6-createObjectOperation',
-            type: 'operation',
-            data: {
-                label: 'Opprett object',
-                iconType: 'handleObject',
-                targetHandles: [
-                    { id: "a", type: DataType.Text, label: 'Tittel', required: true },
-                    { id: "b", type: DataType.Text, label: 'Offentlig tittel', required: false },
-                    { id: "c", type: DataType.Reference, label: 'Saksmappetype', required: false },
-                    { id: "d", type: DataType.Reference, label: 'Administrativ enhet' ,required: false},
-                    { id: "e", type: DataType.Reference, label: 'Saksansvarlig',required: false  },
-                    { id: "f", type: DataType.Object, typeName: 'Arkiv Skjerming', label: 'Skjerming', required: true },
-                    { id: "g", type: DataType.Reference, label: 'Arkivdel', required: false },
-                    { id: "h", type: DataType.Reference, label: 'Saksstatus', required: false },
-                    { id: "i", type: DataType.CollectionObject, typeName: 'Arkiv Part', label: 'Parter', required: false },
-                ],
-                sourceHandles: [
-                    { id: "a", type: DataType.Object, typeName: 'Akriv Sak', required: true },
-                ],
-            },
             position: { x: 1560, y: -165 },
         },
         {
+            ...variableInputNode,
             id: 'n7-gbnrInput',
-            type: 'variableInput',
             data: {
-                label: '- gbnr',
-                type: DataType.Text,
-                sourceHandles: [
-                    { id: "a", type: DataType.Text, required: true },
-                ],
+                ...variableInputNode.data,
+                text: ' - gbnr ',
             },
-            position: { x: 825, y: -390 },
+            position: { x: 808, y: -398 },
         },
         {
+            ...variableInputNode,
             id: 'n8-skraastrekInput',
-            type: 'variableInput',
             data: {
-                label: '/',
-                type: DataType.Text,
-                sourceHandles: [
-                    { id: "a", type: DataType.Text, required: true },
-                ],
+                ...variableInputNode.data,
+                text: '/',
             },
-            position: { x: 825, y: -330 },
+            position: { x: 808, y: -338 },
         },
         {
+            ...variableInputNode,
             id: 'n9-grunnervervInput',
-            type: 'variableInput',
             data: {
-                label: '- Grunnerverv',
-                type: DataType.Text,
-                sourceHandles: [
-                    { id: "a", type: DataType.Text, required: true },
-                ],
+                ...variableInputNode.data,
+                text: '- Grunnerverv',
             },
-            position: { x: 825, y: -270 },
+            position: { x: 808, y: -277.8 },
         },
         {
+            ...instanceOutputArkivsak,
             id: 'n10-arkivOutput',
-            type: 'flowOutput',
-            data: {
-                label: 'Arkivsak',
-                type: DataType.Text,
-            },
             position: { x: 1900, y: -30 },
         },
     ];
 };
+
+export const allFunctionalNodes = [
+    instanceEGrunnervervSak,
+    operationOpenEGrvSak,
+    operationJoinText,
+    operationExternalGetSaksansvarlig,
+    operationCreateObjectAkrivsak,
+    instanceOutputArkivsak,
+    variableInputNode,
+    operationCreateObject,
+    operationOpenObject,
+];
