@@ -1,9 +1,8 @@
 import type { HandleData } from '~/types/handleTypes';
-import { type Node, type NodeProps, useReactFlow } from '@xyflow/react';
+import { type Node, type NodeProps } from '@xyflow/react';
 import React, { memo } from 'react';
-import { getNodeMinHeight } from '~/utils/nodeHandlers';
 import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
-import { HStack, Select, TextField } from '@navikt/ds-react';
+import { HStack, Select } from '@navikt/ds-react';
 import { TypeTag } from '~/components/macros/TypeTag';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 import type { DataTypeValue } from '~/types/datatypes';
@@ -22,10 +21,8 @@ type DataSourceData = {
 type DataSourceType = Node<DataSourceData, 'dataSource'>;
 
 export const DataSourceNode = memo(({ id, data, isConnectable }: NodeProps<DataSourceType>) => {
-    const { updateNodeData } = useReactFlow();
-
     return (
-        <BaseNodeWrapper label={'Fra datakilde'} subLabel={data.label} >
+        <BaseNodeWrapper label={data.label} italic={true}>
             <HStack align={'center'} justify={'center'} gap="1">
                 <TypeTag type={data.type} typeName={data.typeName} size="small" />
 

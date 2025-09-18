@@ -12,8 +12,9 @@ import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 import { getNodeIcon, getNodeMinHeight } from '~/utils/nodeHandlers';
 import type { HandleData } from '~/types/handleTypes';
 import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
-import { mockFetchDataContent } from '~/mockData/dataObjects';
+import { mockFetchDataContentHandles } from '~/mockData/dataObjects';
 import { DataType } from '~/types/datatypes';
+import { useFlow } from '~/context/flowContext';
 
 type OperationObjectNodeData = {
     label: string;
@@ -30,9 +31,10 @@ export const OperationOpenObjectNode = memo(
             sources: data.sourceHandles?.length,
             targets: data.targetHandles?.length,
         });
+        const { flowProgress, currentFlow } = useFlow();
 
         const isOpenObject = useMemo(() => type === 'openObject', [type]);
-        
+
         const { updateNodeData, updateEdge, getNode } = useReactFlow();
         const updateNodeInternals = useUpdateNodeInternals();
         const connections = useNodeConnections({
@@ -76,7 +78,7 @@ export const OperationOpenObjectNode = memo(
                             : (outgoingObjectHandle.typeName ?? objectDefinitionNode.typeName),
                         required: true,
                     };
-                    const objectDefinitionHandles = mockFetchDataContent(
+                    const objectDefinitionHandles = mockFetchDataContentHandles(
                         objectHandle.typeName || 'Object',
                         objectHandle.label
                     );
@@ -84,12 +86,12 @@ export const OperationOpenObjectNode = memo(
                     updateNodeData(id, {
                         targetHandles: isOpenObject ? [objectHandle] : objectDefinitionHandles,
                         sourceHandles: isOpenObject ? objectDefinitionHandles : [objectHandle],
-                    })
+                    });
 
-                    const handleID = isOpenObject ? { targetHandle: 'a'} : { sourceHandle: 'a'};
+                    const handleID = isOpenObject ? { targetHandle: 'a' } : { sourceHandle: 'a' };
                     updateEdge(edge.edgeId, {
                         ...edge,
-                        ...handleID
+                        ...handleID,
                     });
                     updateNodeInternals(id);
                 }
@@ -97,18 +99,23 @@ export const OperationOpenObjectNode = memo(
         }, [edge]);
 
         return (
-            <BaseNodeWrapper label={data.label} minHeight={minHeight.cssString}>
+            <BaseNodeWrapper
+                label={data.label}
+                minHeight={minHeight.cssString}
+                currentStep={currentFlow?.id === 'demo' ? 1 : undefined}
+            >
                 <HandlesWithLabel
                     handles={data.targetHandles}
                     type={'target'}
-                    isConnectable={isOpenObject ? connections.length < 1: isConnectable}
+                    isConnectable={isOpenObject ? connections.length < 1 : isConnectable}
                 />
                 <VStack
                     align={'center'}
                     justify={'center'}
                     gap="1"
                     style={{ minHeight: minHeight.cssString }}
-                    padding={'1'}>
+                    padding={'1'}
+                >
                     {data.iconType && getNodeIcon(data.iconType)}
                 </VStack>
                 <HandlesWithLabel

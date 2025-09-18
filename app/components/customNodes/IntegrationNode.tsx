@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Handle, type NodeProps, Position, type Node } from '@xyflow/react';
+import { type NodeProps, type Node } from '@xyflow/react';
 import { BodyShort, HStack } from '@navikt/ds-react';
 import { TypeTag } from '~/components/macros/TypeTag';
 import { BaseNodeWrapper } from './nodeLayout/BaseNodeWrapper';

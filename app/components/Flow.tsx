@@ -18,38 +18,19 @@ import {
     type XYPosition,
     type OnDelete,
     type OnNodeDrag,
+    type NodeChange,
+    type EdgeChange,
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
 import { getMinimapNodeColor, getMinimapNodeStrokeColor } from '~/utils/nodeHandlers';
-import { IntegrationNode } from '~/components/customNodes/IntegrationNode';
-import { OperationNode } from '~/components/customNodes/OperationNode';
-import { InputVariableNode } from '~/components/customNodes/functionalNodes/InputVariableNode';
 import { useFlow } from '~/context/flowContext';
-import { JoinTextOperationNode } from '~/components/customNodes/functionalNodes/JoinTextOperationNode';
 import { Button, HStack } from '@navikt/ds-react';
-import { CreateNewFlowModal } from '~/components/modals/createNewFlowModal';
-import { useParams } from 'react-router';
-import { OperationOpenObjectNode } from '~/components/customNodes/functionalNodes/OperationOpenObjectNode';
-import { InnerFlowListOperation } from '~/components/customNodes/functionalNodes/OperationListInnerFlowNode';
-import { InnerFlowDataNode } from '~/components/customNodes/functionalNodes/InnerFlowDataNode';
-import { DataSourceNode } from '~/components/customNodes/functionalNodes/DataSourceNode';
-import { NODE_BASE_HEIGHT } from '~/mockData/constants';
-
-const nodeTypes = {
-    flowInput: IntegrationNode,
-    operation: OperationNode,
-    variableInput: InputVariableNode,
-    externalFunction: OperationNode,
-    flowOutput: IntegrationNode,
-    operationJoinText: JoinTextOperationNode,
-    openObject: OperationOpenObjectNode,
-    createObject: OperationOpenObjectNode,
-    listOperation: InnerFlowListOperation,
-    innerFlowInput: InnerFlowDataNode,
-    innerFlowOutput: InnerFlowDataNode,
-    dataSource: DataSourceNode,
-};
+import { useNavigate, useParams } from 'react-router';
+import { IGNORED_CHANGES, NODE_BASE_HEIGHT } from '~/mockData/constants';
+import { allIntegrationsNodes } from '~/mockData/nodes';
+import { nodeTypes } from '~/components/customNodes/nodetypes';
+import type { CustomNode } from '~/types/nodeTypes';
 
 const Flow = () => {
     const {
@@ -60,16 +41,16 @@ const Flow = () => {
         setNewNodeId,
         getCustomNodeDataById,
         saveFlow,
-        saveNewFlow,
     } = useFlow();
-    const [nodes, setNodes, onNodesChange] = useNodesState<Node>(initNodes);
+    let navigate = useNavigate();
+
+    const [nodes, setNodes, onNodesChange] = useNodesState<CustomNode>(initNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initEdges);
     const { screenToFlowPosition, getNode } = useReactFlow();
     const [hasChanged, setHasChanged] = useState(false);
-    const [showNewFlowModal, setShowNewFlowModal] = useState(false);
     const { mode } = useParams();
     const updateNodeInternals = useUpdateNodeInternals();
-    const { getIntersectingNodes, isNodeIntersecting } = useReactFlow();
+    const { getIntersectingNodes } = useReactFlow();
 
     useEffect(() => {
         setNodes(initNodes);
@@ -77,7 +58,7 @@ const Flow = () => {
     }, [initNodes, initEdges]);
 
     const handleNodePosition = useCallback(
-        (node: Node, position?: XYPosition): Node => {
+        (node: CustomNode, position?: XYPosition): CustomNode => {
             const intersections = getIntersectingNodes(
                 position ? { ...position, width: NODE_BASE_HEIGHT, height: NODE_BASE_HEIGHT } : node
             );
@@ -96,6 +77,7 @@ const Flow = () => {
 
     const onConnect: OnConnect = useCallback(
         (connection) => {
+            setHasChanged(true);
             setEdges((eds) => addEdge(connection, eds));
         },
         [setEdges]
@@ -112,7 +94,6 @@ const Flow = () => {
 
     const onDragOver = useCallback((event: React.DragEvent) => {
         event.preventDefault();
-        console.log('Flow onDragOver');
         event.dataTransfer.dropEffect = 'move';
     }, []);
 
@@ -145,21 +126,12 @@ const Flow = () => {
 
     const handleSave = useCallback(() => {
         if (!currentFlow || currentFlow.id === 'new') {
-            setShowNewFlowModal(true);
+            navigate(`/flows/new`, { replace: true });
         } else {
             saveFlow(currentFlow.id, nodes, edges);
             setHasChanged(false);
         }
     }, [nodes, edges]);
-
-    const handleSaveNewFlow = useCallback(
-        (name: string) => {
-            saveNewFlow(name, nodes, edges);
-            setShowNewFlowModal(false);
-            setHasChanged(false);
-        },
-        [nodes, edges]
-    );
 
     //TODO: handle type object by checking typeName
     const isValidDatatypeConnection = useCallback((edge: Edge | Connection): boolean => {
@@ -185,12 +157,26 @@ const Flow = () => {
         return false;
     }, []);
 
+    const handleNodesChange = useCallback((changes: NodeChange<CustomNode>[]) => {
+        const filteredChanges = changes.filter(
+            (change) =>
+                change.type !== 'remove' || !allIntegrationsNodes.some((n) => n.id === change.id)
+        );
+        setHasChanged(filteredChanges.some((change) => !IGNORED_CHANGES.includes(change.type)));
+        onNodesChange(filteredChanges);
+    }, []);
+
+    const handleEdgesChange = useCallback((changes: EdgeChange[]) => {
+        setHasChanged(changes.some((change) => !IGNORED_CHANGES.includes(change.type)));
+        onEdgesChange(changes);
+    }, []);
+
     return (
         <ReactFlow
             nodes={nodes}
             edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
+            onNodesChange={handleNodesChange}
+            onEdgesChange={handleEdgesChange}
             onConnect={onConnect}
             onDrop={onDrop}
             onDelete={onDelete}
@@ -202,7 +188,8 @@ const Flow = () => {
             fitView
             defaultEdgeOptions={{ type: 'step' }}
             selectNodesOnDrag={false}
-            attributionPosition="bottom-left">
+            attributionPosition="bottom-left"
+        >
             <Background variant={BackgroundVariant.Dots} />
             <MiniMap
                 nodeStrokeColor={(n: Node): string => getMinimapNodeStrokeColor(n)}
@@ -219,11 +206,6 @@ const Flow = () => {
                         </Button>
                     </HStack>
                 )}
-                <CreateNewFlowModal
-                    open={showNewFlowModal}
-                    onCancel={() => setShowNewFlowModal(false)}
-                    onSave={handleSaveNewFlow}
-                />
             </Panel>
             <Controls />
         </ReactFlow>

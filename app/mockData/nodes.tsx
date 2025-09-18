@@ -1,10 +1,11 @@
-import { Position } from '@xyflow/react';
 import type { ChangeEvent } from 'react';
 import { DataType } from '~/types/datatypes';
 import type { BaseNodeData, InputNodeData, SelectNodeData } from '~/types/nodeTypes';
 import { type Node } from '@xyflow/react';
+import { allFintNodes } from '~/mockData/fintNodes';
 
 export const defaultPosition = { x: 0, y: 0 };
+export const defaultOutputPosition = { x: 800, y: 0 };
 
 // INSTANCE NODES
 export const egrunnervervSakInstance: Node<BaseNodeData> = {
@@ -49,6 +50,27 @@ export const acosInstance: Node<BaseNodeData> = {
     position: defaultPosition,
 };
 
+export const acosInstanceVIK304: Node<BaseNodeData> = {
+    id: 'acosInstanceVIK304',
+    type: 'flowInput',
+    data: {
+        label: 'ACOS VIK304',
+        typeName: 'ACOS VIK304',
+        type: DataType.Object,
+        iconType: 'dataInstanceIn',
+        sourceHandles: [
+            {
+                id: 'a',
+                label: 'ACOS VIK304',
+                type: DataType.Object,
+                typeName: 'ACOS VIK304',
+                required: true,
+            },
+        ],
+    },
+    position: defaultPosition,
+};
+
 export const arkivInstanceOutput: Node<BaseNodeData> = {
     id: 'instanceOutputArkivsak',
     type: 'flowOutput',
@@ -59,7 +81,7 @@ export const arkivInstanceOutput: Node<BaseNodeData> = {
         iconType: 'dataInstanceOut',
         targetHandles: [{ id: 'a', type: DataType.Object, typeName: 'Arkiv Sak', required: true }],
     },
-    position: defaultPosition,
+    position: defaultOutputPosition,
 };
 
 export const innerFlowInput: Node<BaseNodeData> = {
@@ -102,7 +124,7 @@ export const dataSourceNode: Node<SelectNodeData> = {
     id: 'dataSource',
     type: 'dataSource',
     data: {
-        label: 'Datakilde',
+        label: 'Fylkesråd: Dokumentstatus',
         value: '',
         options: [],
         type: DataType.Reference,
@@ -151,6 +173,18 @@ export const operationJoinText: Node<BaseNodeData> = {
     position: defaultPosition,
 };
 
+export const operationEditText: Node<BaseNodeData> = {
+    id: 'operationEditText',
+    type: 'operationEditText',
+    data: {
+        label: 'Endre tekst',
+        iconType: 'textEdit',
+        targetHandles: [{ id: 'a', type: DataType.Text, required: true }],
+        sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
+    },
+    position: defaultPosition,
+};
+
 export const innerFlowListOperation: Node<BaseNodeData> = {
     id: 'operationListInnerFlow',
     type: 'listOperation',
@@ -160,7 +194,9 @@ export const innerFlowListOperation: Node<BaseNodeData> = {
         targetHandles: [
             { id: 'a', type: DataType.CollectionObject, required: true, typeName: '?' },
         ],
-        sourceHandles: [{ id: 'a', type: DataType.CollectionUndefined, required: true, typeName: '?' }],
+        sourceHandles: [
+            { id: 'a', type: DataType.CollectionUndefined, required: true, typeName: '?' },
+        ],
     },
     position: defaultPosition,
 };
@@ -256,7 +292,55 @@ export const operationCreateObjectAkrivsak: Node<BaseNodeData> = {
                 required: false,
             },
         ],
-        sourceHandles: [{ id: 'a', type: DataType.Object, typeName: 'Akriv Sak', required: true }],
+        sourceHandles: [{ id: 'a', type: DataType.Object, typeName: 'Arkiv Sak', required: true }],
+    },
+    position: defaultPosition,
+};
+
+export const acosDocToDocDesc: Node<BaseNodeData> = {
+    id: 'operationACOSDocToDocDesc',
+    type: 'operation',
+    data: {
+        label: 'ACOS dokument til dokumentbeskrivelser',
+        iconType: 'conversion',
+        targetHandles: [
+            { id: 'a', type: DataType.Text, label: 'Tittel', required: false },
+            {
+                id: 'b',
+                type: DataType.CollectionObject,
+                typeName: 'AcosDocument',
+                label: 'ACOS Dokumenter',
+                required: false,
+            },
+        ],
+        sourceHandles: [
+            {
+                id: 'a',
+                label: 'Dokumentbeskrivelse',
+                typeName: 'Document',
+                type: DataType.CollectionObject,
+                required: true,
+            },
+        ],
+    },
+    position: defaultPosition,
+};
+
+export const acosUploadFile: Node<BaseNodeData> = {
+    id: 'operationExternalUpdloadFile',
+    type: 'externalFunction',
+    data: {
+        label: 'Fylkesård: Last opp fil',
+        iconType: 'lookup',
+        targetHandles: [{ id: 'a', type: DataType.File, label: 'Filinnhold', required: true }],
+        sourceHandles: [
+            {
+                id: 'a',
+                label: 'Dokumentfil',
+                type: DataType.Reference,
+                required: true,
+            },
+        ],
     },
     position: defaultPosition,
 };
@@ -343,6 +427,14 @@ export const getInitialDemoNodes = (
     ];
 };
 
+export const allIntegrationsInputNodes = [
+    egrunnervervSakInstance,
+    acosInstance,
+    acosInstanceVIK304,
+];
+
+export const allIntegrationsNodes = [...allIntegrationsInputNodes, arkivInstanceOutput];
+
 export const allFunctionalNodes = [
     egrunnervervSakInstance,
     acosInstance,
@@ -353,9 +445,13 @@ export const allFunctionalNodes = [
     arkivInstanceOutput,
     variableInputNode,
     operationCreateObject,
+    acosDocToDocDesc,
     operationOpenObject,
     innerFlowListOperation,
+    operationEditText,
     innerFlowInput,
     innerFlowOutput,
-    dataSourceNode
+    dataSourceNode,
+    acosUploadFile,
+    ...allFintNodes,
 ];
