@@ -14,7 +14,7 @@ import {
     InboxDownFillIcon,
     ArrowsSquarepathIcon,
 } from '@navikt/aksel-icons';
-import type { DataTypeValue } from '~/types/datatypes';
+import { DataType, type DataTypeValue } from '~/types/datatypes';
 import { HANDLE_HEIGHT, HANDLE_INTERVAL, NODE_BASE_HEIGHT } from '~/mockData/constants';
 
 export const onChangeNodeColor = (
@@ -47,7 +47,6 @@ export const getMinimapNodeColor = (node: Node): string => {
     return 'var(--theme-node-gray)';
 };
 
-// TODO: find width of text with brackets
 export const getTypeSymbolWidth = (type?: DataTypeValue, typeText?: string): number => {
     if (!type) {
         return typeText ? measureTextWidth(typeText) : 0;
@@ -58,13 +57,23 @@ export const getTypeSymbolWidth = (type?: DataTypeValue, typeText?: string): num
         return measureTextWidth(text, '0.7rem');
     }
 
-    if (type === 'collectionObject') {
-        const text = `{${typeText}}`;
-        const textWidth = measureTextWidth(text, '0.7rem');
-        return textWidth + 15;
+    if (isCollectionType(type)) {
+        if (type === DataType.CollectionObject) {
+            const text = `{${typeText}}`;
+            const textWidth = measureTextWidth(text, '0.7rem');
+            return textWidth + 15;
+        } else {
+            return 30;
+        }
     }
 
-    if (type === 'text' || type === 'input' || type === 'reference' || type === 'undefined' || type === 'file') {
+    if (
+        type === 'text' ||
+        type === 'input' ||
+        type === 'reference' ||
+        type === 'undefined' ||
+        type === 'file'
+    ) {
         return 15;
     }
 
@@ -172,4 +181,37 @@ export const getNodeMinHeightCss = ({
     const rightHandles = sources || 0;
     const maxHandles = Math.max(leftHandles, rightHandles);
     return maxHandles > 1 ? `${(maxHandles - 1) * handleInterval + baseHeight}px` : 'auto';
+};
+
+export const getCollectionTypeFromType = (
+    type: DataTypeValue | string | undefined
+): DataTypeValue => {
+    if (!type) return DataType.Undefined;
+    if (type === DataType.Object) return DataType.CollectionObject;
+    if (type === DataType.Undefined) return DataType.CollectionUndefined;
+    if (type === DataType.Text) return DataType.CollectionText;
+    if (type === DataType.Number) return DataType.CollectionNumber;
+    if (type === DataType.Boolean) return DataType.CollectionBoolean;
+    if (type === DataType.File) return DataType.CollectionFile;
+    if (type === DataType.Reference) return DataType.CollectionReference;
+
+    return DataType.Undefined;
+};
+
+export const getTypeFromCollection = (type: DataTypeValue | string | undefined): DataTypeValue => {
+    if (!type) return DataType.CollectionUndefined;
+    if (type === DataType.CollectionObject) return DataType.Object;
+    if (type === DataType.CollectionUndefined) return DataType.Undefined;
+    if (type === DataType.CollectionText) return DataType.Text;
+    if (type === DataType.CollectionNumber) return DataType.Number;
+    if (type === DataType.CollectionBoolean) return DataType.Boolean;
+    if (type === DataType.CollectionFile) return DataType.File;
+    if (type === DataType.CollectionReference) return DataType.Reference;
+
+    return DataType.CollectionUndefined;
+};
+
+export const isCollectionType = (type: DataTypeValue | string | undefined): boolean => {
+    if (!type) return false;
+    return type.startsWith('collection');
 };

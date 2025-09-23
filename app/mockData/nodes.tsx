@@ -1,7 +1,7 @@
 import { Position } from '@xyflow/react';
 import type { ChangeEvent } from 'react';
 import { DataType } from '~/types/datatypes';
-import type { BaseNodeData } from '~/types/nodeTypes';
+import type { BaseNodeData, InputNodeData, SelectNodeData } from '~/types/nodeTypes';
 import { type Node } from '@xyflow/react';
 
 export const defaultPosition = { x: 0, y: 0 };
@@ -86,7 +86,7 @@ export const innerFlowOutput: Node<BaseNodeData> = {
 };
 
 // GENERIC NODES
-export const variableInputNode: Node<BaseNodeData> = {
+export const variableInputNode: Node<InputNodeData> = {
     id: 'variableInputNode',
     type: 'variableInput',
     data: {
@@ -94,6 +94,19 @@ export const variableInputNode: Node<BaseNodeData> = {
         text: '',
         type: DataType.Text,
         sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
+    },
+    position: defaultPosition,
+};
+
+export const dataSourceNode: Node<SelectNodeData> = {
+    id: 'dataSource',
+    type: 'dataSource',
+    data: {
+        label: 'Datakilde',
+        value: '',
+        options: [],
+        type: DataType.Reference,
+        sourceHandles: [{ id: 'a', type: DataType.Reference, required: true }],
     },
     position: defaultPosition,
 };
@@ -147,7 +160,7 @@ export const innerFlowListOperation: Node<BaseNodeData> = {
         targetHandles: [
             { id: 'a', type: DataType.CollectionObject, required: true, typeName: '?' },
         ],
-        sourceHandles: [{ id: 'a', type: DataType.Undefined, required: true, typeName: '?' }],
+        sourceHandles: [{ id: 'a', type: DataType.CollectionUndefined, required: true, typeName: '?' }],
     },
     position: defaultPosition,
 };
@@ -343,5 +356,6 @@ export const allFunctionalNodes = [
     operationOpenObject,
     innerFlowListOperation,
     innerFlowInput,
-    innerFlowOutput
+    innerFlowOutput,
+    dataSourceNode
 ];

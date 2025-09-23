@@ -17,7 +17,7 @@ type VariableInputData = {
 
 type VariableNodeType = Node<VariableInputData, 'variableInput'>;
 
-export const VariableNode = memo(
+export const InputVariableNode = memo(
     ({
         id,
         data,

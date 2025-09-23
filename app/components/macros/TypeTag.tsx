@@ -1,8 +1,9 @@
-import { BodyShort, Box, Detail, HStack, Tag } from '@navikt/ds-react';
+import { Box, HStack, Tag } from '@navikt/ds-react';
 import type { DataTypeValue } from '~/types/datatypes';
 import React from 'react';
 import DataTypeText from '~/components/icons/DataTypeText';
 import { BulletListIcon, FileIcon, LinkIcon, QuestionmarkIcon } from '@navikt/aksel-icons';
+import { getTypeFromCollection, isCollectionType } from '~/utils/nodeHandlers';
 
 type TypeProps = {
     type: DataTypeValue | string;
@@ -56,17 +57,18 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
                 }}>{`{${typeName}}`}</p>
         );
     }
-    if (type === 'collectionObject') {
+    if (isCollectionType(type)) {
+        const innertype = getTypeFromCollection(type);
         return (
             <HStack wrap={false} gap={'space-1'} align="center">
                 <BulletListIcon fontSize="0.9rem" />
-                <TypeTag type="object" typeName={typeName} size={size} inner={true} />
+                <TypeTag type={innertype} typeName={typeName} size={size} inner={true} />
             </HStack>
         );
     }
     if (type === 'text' || type === 'input') return <DataTypeText />;
     if (type === 'reference') return <LinkIcon fontSize="0.95rem" />;
-    if (type === 'undefined') return <QuestionmarkIcon fontSize="0.9rem" />
-    if (type === 'file') return <FileIcon fontSize="0.9rem" />
+    if (type === 'undefined') return <QuestionmarkIcon fontSize="0.9rem" />;
+    if (type === 'file') return <FileIcon fontSize="0.9rem" />;
     return typeName;
 };

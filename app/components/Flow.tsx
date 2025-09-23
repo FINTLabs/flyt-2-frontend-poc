@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, type DragEventHandler } from 'react';
 import {
     ReactFlow,
     useNodesState,
@@ -13,14 +13,18 @@ import {
     Background,
     useReactFlow,
     type Connection,
-    Panel, useUpdateNodeInternals,
+    Panel,
+    useUpdateNodeInternals,
+    type XYPosition,
+    type OnDelete,
+    type OnNodeDrag,
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
 import { getMinimapNodeColor, getMinimapNodeStrokeColor } from '~/utils/nodeHandlers';
 import { IntegrationNode } from '~/components/customNodes/IntegrationNode';
 import { OperationNode } from '~/components/customNodes/OperationNode';
-import { VariableNode } from '~/components/customNodes/functionalNodes/VariableNode';
+import { InputVariableNode } from '~/components/customNodes/functionalNodes/InputVariableNode';
 import { useFlow } from '~/context/flowContext';
 import { JoinTextOperationNode } from '~/components/customNodes/functionalNodes/JoinTextOperationNode';
 import { Button, HStack } from '@navikt/ds-react';
@@ -29,11 +33,13 @@ import { useParams } from 'react-router';
 import { OperationOpenObjectNode } from '~/components/customNodes/functionalNodes/OperationOpenObjectNode';
 import { InnerFlowListOperation } from '~/components/customNodes/functionalNodes/OperationListInnerFlowNode';
 import { InnerFlowDataNode } from '~/components/customNodes/functionalNodes/InnerFlowDataNode';
+import { DataSourceNode } from '~/components/customNodes/functionalNodes/DataSourceNode';
+import { NODE_BASE_HEIGHT } from '~/mockData/constants';
 
 const nodeTypes = {
     flowInput: IntegrationNode,
     operation: OperationNode,
-    variableInput: VariableNode,
+    variableInput: InputVariableNode,
     externalFunction: OperationNode,
     flowOutput: IntegrationNode,
     operationJoinText: JoinTextOperationNode,
@@ -42,6 +48,7 @@ const nodeTypes = {
     listOperation: InnerFlowListOperation,
     innerFlowInput: InnerFlowDataNode,
     innerFlowOutput: InnerFlowDataNode,
+    dataSource: DataSourceNode,
 };
 
 const Flow = () => {
@@ -62,12 +69,30 @@ const Flow = () => {
     const [showNewFlowModal, setShowNewFlowModal] = useState(false);
     const { mode } = useParams();
     const updateNodeInternals = useUpdateNodeInternals();
-    const { getIntersectingNodes } = useReactFlow();
+    const { getIntersectingNodes, isNodeIntersecting } = useReactFlow();
 
     useEffect(() => {
         setNodes(initNodes);
         setEdges(initEdges);
     }, [initNodes, initEdges]);
+
+    const handleNodePosition = useCallback(
+        (node: Node, position?: XYPosition): Node => {
+            const intersections = getIntersectingNodes(
+                position ? { ...position, width: NODE_BASE_HEIGHT, height: NODE_BASE_HEIGHT } : node
+            );
+
+            if (intersections.some((n) => n.type === 'listOperation')) {
+                const parentNode = intersections.find((n) => n.type === 'listOperation');
+                return { ...node, parentId: parentNode?.id };
+            } else if (position) {
+                return { ...node, position };
+            } else {
+                return node;
+            }
+        },
+        [getIntersectingNodes]
+    );
 
     const onConnect: OnConnect = useCallback(
         (connection) => {
@@ -76,17 +101,13 @@ const Flow = () => {
         [setEdges]
     );
 
-    const onNodeDrag = useCallback((_: React.MouseEvent, node: Node) => {
-        const intersections = getIntersectingNodes(node).map((n) => n.id);
+    const onDelete: OnDelete = useCallback(() => {
+        setHasChanged(true);
+    }, []);
 
-        // TODO: if parentnode is of type listoperation, then add that as parent
-        // console.log('Intersections:', intersections);
-/*        setNodes((ns) =>
-            ns.map((n) => ({
-                ...n,
-                className: intersections.includes(n.id) ? 'highlight' : '',
-            })),
-        );*/
+    const onNodeDrag: OnNodeDrag = useCallback((_: React.MouseEvent, node: Node) => {
+        // TODO: handle the possibility of dragging an existing node into a parentNode
+        setHasChanged(true);
     }, []);
 
     const onDragOver = useCallback((event: React.DragEvent) => {
@@ -99,15 +120,23 @@ const Flow = () => {
         (event: React.DragEvent) => {
             event.preventDefault();
             if (!newNodeId) return;
+            console.log('event', event);
             const position = screenToFlowPosition({ x: event.clientX, y: event.clientY });
-            const newNode = getCustomNodeDataById(newNodeId);
-            setNodes((nds) => [...nds, {...newNode, position}]);
+            let newNode = getCustomNodeDataById(newNodeId);
+            const positionedNode = handleNodePosition(newNode, position);
+
+            console.log('New node:', positionedNode);
+            setNodes((nds) => [...nds, positionedNode]);
+            updateNodeInternals(positionedNode.id);
             setHasChanged(true);
         },
         [screenToFlowPosition, newNodeId]
     );
 
-    const onDragStart = (event: React.DragEvent<HTMLDivElement>, nodeId: string) => {
+    const onDragStart: DragEventHandler<HTMLDivElement> = (
+        event: React.DragEvent<HTMLDivElement>,
+        nodeId: string
+    ) => {
         console.log('Flow onDragStart', nodeId);
         setNewNodeId(nodeId);
         event.dataTransfer.setData('text/plain', nodeId);
@@ -135,7 +164,9 @@ const Flow = () => {
     //TODO: handle type object by checking typeName
     const isValidDatatypeConnection = useCallback((edge: Edge | Connection): boolean => {
         const sourceNodeData = getNode(edge.source)?.data;
-        const targetNodeData = getNode(edge.target)?.data;
+        const targetNode = getNode(edge.target);
+        if (targetNode && targetNode.type === 'innerFlowOutput') return true;
+        const targetNodeData = targetNode?.data;
         if (!sourceNodeData || !targetNodeData) return false;
 
         const sourceHandleType = sourceNodeData.sourceHandles
@@ -162,6 +193,7 @@ const Flow = () => {
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             onDrop={onDrop}
+            onDelete={onDelete}
             onNodeDrag={onNodeDrag}
             onDragStart={onDragStart}
             isValidConnection={isValidDatatypeConnection}

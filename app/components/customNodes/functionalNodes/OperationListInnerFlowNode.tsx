@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {
     type NodeProps,
     type Node,
@@ -7,17 +7,14 @@ import {
     useUpdateNodeInternals,
     type NodeConnection,
     NodeResizeControl,
-    useNodes,
 } from '@xyflow/react';
 import { VStack } from '@navikt/ds-react';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 import { getNodeIcon, getNodeMinHeight } from '~/utils/nodeHandlers';
 import type { HandleData } from '~/types/handleTypes';
 import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
-import { mockFetchDataContent } from '~/mockData/dataObjects';
 import { DataType } from '~/types/datatypes';
 import { useFlow } from '~/context/flowContext';
-import { ExpandIcon } from '@navikt/aksel-icons';
 import { innerFlowInput, innerFlowOutput } from '~/mockData/nodes';
 import { createAlmostRandomId } from '~/utils/generalUtils';
 
@@ -60,27 +57,33 @@ export const InnerFlowListOperation = memo(
             targets: data.targetHandles?.length,
         });
 
-        const { updateNode, updateEdge, getNode, addNodes } = useReactFlow();
+        const { updateNode, updateEdge, getNode, addNodes, getNodes } = useReactFlow();
         const updateNodeInternals = useUpdateNodeInternals();
-        const connections = useNodeConnections({
+        const targetConnections = useNodeConnections({
             handleType: 'target',
         });
 
-        const [edge, setEdge] = useState<NodeConnection | undefined>(undefined);
+        // TODO: Listen to changes to source in case that is connected before output node
+        const sourceConnections = useNodeConnections({
+            handleType: 'source',
+        });
+
+        const [targetEdge, setTargetEdge] = useState<NodeConnection | undefined>(undefined);
 
         useEffect(() => {
-            if (connections.length > 0) {
-                setEdge(connections[0]);
+            if (targetConnections.length > 0) {
+                setTargetEdge(targetConnections[0]);
             }
-        }, [connections]);
+        }, [targetConnections]);
 
         useEffect(() => {
-            if (edge) {
-                const objectDefinitionNode = getNode(edge.source)?.data;
+            if (targetEdge && data.targetHandles?.[0]?.type === DataType.CollectionObject) {
+                console.log('FOUND EDGE', targetEdge, data);
+                const objectDefinitionNode = getNode(targetEdge.source)?.data;
                 if (objectDefinitionNode) {
                     const incomingObjectHandle = objectDefinitionNode.sourceHandles
                         ? Object.values(objectDefinitionNode.sourceHandles).find(
-                              (h) => h.id === edge.sourceHandle
+                              (h) => h.id === targetEdge.sourceHandle
                           )
                         : undefined;
 
@@ -99,7 +102,10 @@ export const InnerFlowListOperation = memo(
                     updateNode(id, {
                         data: {
                             ...data,
-                            targetHandles: [objectHandle],
+                            targetHandles: [{
+                                ...objectHandle,
+                                type: DataType.CollectionObject,
+                            }],
                         },
                         style: { height: 150, width: 270 },
                     });
@@ -125,28 +131,22 @@ export const InnerFlowListOperation = memo(
                             id: createAlmostRandomId('node-id', 'innerFlowOutput'),
                         },
                     ]);
-
-                    /*
-                    *     style: {
-        height: 150,
-        width: 270,
-    },*/
-                    const handleID = { targetHandle: 'a' };
-                    updateEdge(edge.edgeId, {
-                        ...edge,
-                        ...handleID,
-                    });
-                    updateNodeInternals(id);
                 }
+                const handleID = { targetHandle: 'a' };
+                updateEdge(targetEdge.edgeId, {
+                    ...targetEdge,
+                    ...handleID,
+                });
+                updateNodeInternals(id);
             }
-        }, [edge]);
+        }, [targetEdge]);
 
         return (
             <BaseNodeWrapper label={data.label} minHeight={minHeight.cssString}>
                 <HandlesWithLabel
                     handles={data.targetHandles}
                     type={'target'}
-                    isConnectable={connections.length < 1}
+                    isConnectable={targetConnections.length < 1}
                 />
                 <VStack
                     align={'center'}
@@ -154,9 +154,9 @@ export const InnerFlowListOperation = memo(
                     gap="1"
                     style={{ minHeight: minHeight.cssString }}
                     padding={'1'}>
-                    {connections.length === 0 && data.iconType && getNodeIcon(data.iconType)}
+                    {targetConnections.length === 0 && data.iconType && getNodeIcon(data.iconType)}
                 </VStack>
-                {connections.length > 0 && (
+                {targetConnections.length > 0 && (
                     <NodeResizeControl minWidth={100} minHeight={50}>
                         <ResizeIcon />
                     </NodeResizeControl>

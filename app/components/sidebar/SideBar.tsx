@@ -3,12 +3,17 @@ import { Accordion, BodyLong, BodyShort, Heading, Label, Tag, VStack } from '@na
 import { BaseNode } from '~/components/sidebar/BaseNode';
 import {
     egrunnervervSakInstance,
-    arkivInstanceOutput, operationCreateObject,
+    arkivInstanceOutput,
+    operationCreateObject,
     operationCreateObjectAkrivsak,
     operationExternalGetSaksansvarlig,
     operationJoinText,
-    operationOpenEGrvSak, operationOpenObject,
-    variableInputNode, acosInstance, innerFlowListOperation,
+    operationOpenEGrvSak,
+    operationOpenObject,
+    variableInputNode,
+    acosInstance,
+    innerFlowListOperation,
+    dataSourceNode,
 } from '~/mockData/nodes';
 import { useParams } from 'react-router';
 
@@ -99,11 +104,21 @@ export const Sidebar = () => {
                         </Accordion.Content>
                     </Accordion.Item>
                     <Accordion.Item>
+                        <Accordion.Header>Datakilder</Accordion.Header>
+                        <Accordion.Content>
+                            <VStack gap={'2'}>
+                                <BaseNode label={'Fylkesråd: Dokumentstatus'} node={dataSourceNode} />
+                                <BaseNode label={'Fylkesråd: Dokumenttype'} node={dataSourceNode} />
+                                <BaseNode label={'Fylkesråd: Tilknyttet reg. som'} node={dataSourceNode} />
+                            </VStack>
+                        </Accordion.Content>
+                    </Accordion.Item>
+                    <Accordion.Item>
                         <Accordion.Header>Databehandling</Accordion.Header>
                         <Accordion.Content>
                             <VStack gap={'2'}>
-                                <BaseNode label={"Hent ut data"} node={operationOpenObject} />
-                                <BaseNode label={"Samle data"} node={operationCreateObject} />
+                                <BaseNode label={'Hent ut data'} node={operationOpenObject} />
+                                <BaseNode label={'Samle data'} node={operationCreateObject} />
                                 <BaseNode label={'Slå sammen tekst'} node={operationJoinText} />
                                 <BaseNode label={'Fritekst'} node={variableInputNode} />
                                 <BaseNode label={'Listehåndtering'} node={innerFlowListOperation} />
