@@ -7,6 +7,7 @@ export const mockFetchDataContent = (
 ): HandleData[] | undefined => {
     switch (dataType.toLowerCase()) {
         case 'egrv sak':
+            // EgrunnervervSakInstance
             return [
                 { id: 'a', label: 'Kommunenavn', type: DataType.Text, required: true },
                 { id: 'b', label: 'Prosjektnavn', type: DataType.Text, required: true },
@@ -54,6 +55,7 @@ export const mockFetchDataContent = (
                 },
             ];
         case 'egrv sakspart':
+            // EgrunnervervSakInstance
             return [
                 { id: 'a', label: 'Navn', type: DataType.Text, required: true },
                 { id: 'b', label: 'Organisasjonsnummer', type: DataType.Text, required: true },
@@ -61,7 +63,52 @@ export const mockFetchDataContent = (
                 { id: 'd', label: 'Telefon', type: DataType.Text, required: true },
                 { id: 'e', label: 'Postadresse', type: DataType.Text, required: true },
                 { id: 'f', label: 'Postnummer', type: DataType.Text, required: true },
-                { id: 'g', label: 'Poststed', type: DataType.Text, required: true }
+                { id: 'g', label: 'Poststed', type: DataType.Text, required: true },
+            ];
+        case 'acos':
+            // AcosInstance
+            return [
+                {
+                    id: 'a',
+                    type: DataType.Object,
+                    typeName: 'AcosInstanceMetadata',
+                    label: 'metadata',
+                    required: true,
+                },
+                { id: 'b', type: DataType.Text, label: 'formPdfBase64', required: true },
+                {
+                    id: 'c',
+                    type: DataType.CollectionObject,
+                    typeName: 'AcosInstanceElement',
+                    label: 'elements',
+                    required: true,
+                },
+                {
+                    id: 'd',
+                    type: DataType.CollectionObject,
+                    typeName: 'AcosDocument',
+                    label: 'documents',
+                    required: true,
+                },
+            ];
+        case 'acosinstancemetadata':
+            return [
+                { id: 'a', type: DataType.Text, label: 'formId', required: true },
+                { id: 'b', type: DataType.Text, label: 'instanceId', required: true },
+                { id: 'c', type: DataType.Text, label: 'instanceUri', required: false },
+            ];
+        case 'acosinstanceelement':
+            return [
+                { id: 'a', type: DataType.Text, label: 'id', required: true },
+                { id: 'b', type: DataType.Text, label: 'value', required: false },
+                { id: 'c', type: DataType.Number, label: 'hashCode', required: false },
+            ];
+        case 'acosdocument':
+            return [
+                { id: 'a', type: DataType.Text, label: 'name', required: true },
+                { id: 'b', type: DataType.Text, label: 'encoding', required: true },
+                { id: 'c', type: DataType.File, label: 'filinnhold', required: false },
+                { id: 'd', type: DataType.Reference, label: 'mediatype', required: true },
             ];
         case 'object':
         default:

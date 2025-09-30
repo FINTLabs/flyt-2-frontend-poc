@@ -1,14 +1,14 @@
 import { Handle, Position } from '@xyflow/react';
-import React from 'react';
-import { Box, Detail, HStack } from '@navikt/ds-react';
+import React, { useMemo } from 'react';
+import { Detail, HStack } from '@navikt/ds-react';
 import type { HandleData } from '~/types/handleTypes';
 import {
     calculateHandlePosition,
-    getTypeSymbol,
     getTypeSymbolWidth,
     measureTextWidth,
 } from '~/utils/nodeHandlers';
 import { HANDLE_HEIGHT } from '~/mockData/constants';
+import { TypeTag } from '~/components/macros/TypeTag';
 
 export type MultipleHandlesWithLabelProps = {
     handles?: HandleData[];
@@ -16,7 +16,6 @@ export type MultipleHandlesWithLabelProps = {
     isConnectable: boolean;
     x?: number;
     y?: number;
-    nodeHeight?: number;
     hideLabels?: boolean;
 };
 
@@ -24,7 +23,6 @@ export const HandlesWithLabel = ({
     handles,
     type,
     isConnectable,
-    nodeHeight,
     hideLabels = false,
 }: MultipleHandlesWithLabelProps) => {
     if (!handles?.length) return null;
@@ -32,13 +30,6 @@ export const HandlesWithLabel = ({
     return (
         <>
             {handles.map((handle, index) => {
-                const typeTagWidth = getTypeSymbolWidth(handle.type, handle.typeName);
-                const labelWidth = handle.label ? Math.max(10, measureTextWidth(handle.label)) : 0;
-                const totalWidth = Math.max(
-                    16,
-                    typeTagWidth + (handle.label ? labelWidth + 16 : 8)
-                );
-
                 const transform =
                     type === 'target'
                         ? handles.length > 1
@@ -63,52 +54,81 @@ export const HandlesWithLabel = ({
                 }
 
                 return (
-                    <Handle
+                    <HandleWithLabel
                         key={handle.id}
-                        id={handle.id}
+                        handle={handle}
                         type={type}
-                        position={type === 'target' ? Position.Left : Position.Right}
                         isConnectable={isConnectable}
-                        style={{
-                            top: handlePosition,
-                            width: totalWidth,
-                            height: HANDLE_HEIGHT,
-                            padding: '2px',
-                            zIndex: 2,
-                            backgroundColor: 'var(--a-bg-default)',
-                            borderWidth: '1px',
-                            borderRadius: '4px',
-                            borderColor: 'var(--a-border-subtle)',
-                            right: type === 'source' ? '-5px' : undefined,
-                            left: type === 'target' ? '-5px' : undefined,
-                            transform: transform,
-                            textAlign: 'left',
-                            alignContent: 'center',
-                        }}>
-                        <HStack
-                            gap="1"
-                            align="center"
-                            wrap={false}
-                            paddingInline={`0 ${handle.label ? '1' : '0'}`}>
-                            <Box
-                                borderWidth="1"
-                                borderRadius="2"
-                                borderColor="border-default"
-                                background="surface-subtle"
-                                style={{
-                                    borderStyle: handle.required ? 'solid' : 'dashed',
-                                }}>
-                                {getTypeSymbol(handle.type, handle.typeName)}
-                            </Box>
-                            {handle.label && (
-                                <Detail style={{ textWrap: 'nowrap', lineHeight: '1rem' }}>
-                                    {handle.label}
-                                </Detail>
-                            )}
-                        </HStack>
-                    </Handle>
+                        transform={transform}
+                        handlePosition={handlePosition}
+                    />
                 );
             })}
         </>
+    );
+};
+
+export type HandleWithLabelProps = {
+    handle: HandleData;
+    type: 'target' | 'source';
+    isConnectable: boolean;
+    transform: string;
+    handlePosition: string;
+};
+
+const HandleWithLabel = ({
+    handle,
+    type,
+    isConnectable,
+    transform,
+    handlePosition,
+}: HandleWithLabelProps) => {
+    const memorizedHandleWidth = useMemo(() => {
+        const typeTagWidth = getTypeSymbolWidth(handle.type, handle.typeName);
+        const labelWidth = handle.label ? Math.max(10, measureTextWidth(handle.label)) : 0;
+        return Math.max(16, typeTagWidth + (handle.label ? labelWidth + 16 : 8));
+    }, [handle.label, handle.typeName, handle.type]);
+
+    return (
+        <Handle
+            key={handle.id}
+            id={handle.id}
+            type={type}
+            position={type === 'target' ? Position.Left : Position.Right}
+            isConnectable={isConnectable}
+            style={{
+                top: handlePosition,
+                width: memorizedHandleWidth,
+                height: HANDLE_HEIGHT,
+                padding: '2px',
+                zIndex: 2,
+                backgroundColor: 'var(--a-bg-default)',
+                borderWidth: '1px',
+                borderRadius: '4px',
+                borderColor: 'var(--a-border-subtle)',
+                right: type === 'source' ? '-5px' : undefined,
+                left: type === 'target' ? '-5px' : undefined,
+                transform: transform,
+                textAlign: 'left',
+                alignContent: 'center',
+            }}>
+            <HStack
+                gap="1"
+                align="center"
+                wrap={false}
+                paddingInline={`0 ${handle.label ? '1' : '0'}`}>
+                <TypeTag
+                    type={handle.type}
+                    typeName={handle.typeName}
+                    required={handle.required}
+                    size="small"
+                />
+                {handle.label && (
+                    <Detail style={{ textWrap: 'nowrap', lineHeight: '1rem' }}>
+                        {handle.label}
+                    </Detail>
+                )}
+            </HStack>
+        </Handle>
     );
 };

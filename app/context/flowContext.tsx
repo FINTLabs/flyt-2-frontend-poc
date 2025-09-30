@@ -1,7 +1,13 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import { type Node, type Edge, useUpdateNodeInternals } from '@xyflow/react';
-import { allFunctionalNodes, defaultPosition, getInitialDemoNodes } from '~/mockData/nodes';
+import { type Node, type Edge, useUpdateNodeInternals, type XYPosition } from '@xyflow/react';
+import {
+    allFunctionalNodes,
+    defaultPosition,
+    getInitialDemoNodes,
+    innerFlowInput,
+    innerFlowOutput,
+} from '~/mockData/nodes';
 import { initDemoEdges } from '~/mockData/edges';
 import type { BaseNodeData } from '~/types/nodeTypes';
 import { createAlmostRandomId } from '~/utils/generalUtils';
@@ -51,7 +57,6 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
 
     useEffect(() => {
         if (allFlows.length === 0) {
-            console.log('No flows found in state, checking localStorage...');
             const flows = getAllFlows();
             if (!flows || flows.length === 0) {
                 const demoFlow = getDemoFLow();
@@ -63,7 +68,6 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
 
     useEffect(() => {
         if (paramsFlowId) {
-            console.log('FlowId from params:', paramsFlowId);
             if (paramsFlowId === 'demo') {
                 const nodes = getInitialDemoNodes();
                 const demoFlow = getDemoFLow();
@@ -77,10 +81,12 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
                     setCurrentFlow(flow);
                     setInitialNodes(flow.nodes);
                     setInitialEdges(flow.edges);
+                    updateNodeInternals(flow.nodes.map((node) => node.id));
                 } else {
                     setCurrentFlow(undefined);
                     setInitialNodes([]);
                     setInitialEdges([]);
+                    updateNodeInternals([]);
                 }
             }
         }
@@ -111,7 +117,8 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
 
     const getFlowById = useCallback(
         (id: string): LocalStorageFlow | undefined => {
-            return allFlows.find((flow) => flow.id === id);
+            const flows = allFlows.length ? allFlows : getAllFlows() || [];
+            return flows.find((flow) => flow.id === id);
         },
         [allFlows]
     );
@@ -120,7 +127,31 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         let newNode = allFunctionalNodes.find((node) => node.id === id);
 
         if (newNode) {
-            console.log('Found newNode', newNode);
+            /*            if (id === 'operationListInnerFlow') {
+                const parentId = createAlmostRandomId('node-id', id);
+                return [
+                    {
+                        ...newNode,
+                        position: position || defaultPosition,
+                        id: parentId,
+                    },
+                    {
+                        ...innerFlowInput,
+                        parentId,
+                        extent: 'parent',
+                        position: { x: 10, y: 55 },
+                        id: createAlmostRandomId('node-id', 'innerFlowInput'),
+                    },
+                    {
+                        ...innerFlowOutput,
+                        parentId,
+                        extent: 'parent',
+                        position: { x: 170, y: 55 },
+                        id: createAlmostRandomId('node-id', 'innerFlowOutput'),
+                    },
+                ];
+            }*/
+
             return {
                 ...newNode,
                 id: createAlmostRandomId('node-id', id),
@@ -137,8 +168,6 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
 
     const saveFlow = useCallback(
         (flowId: string, nodes: Node[], edges: Edge[]) => {
-            console.log('Saving flow...', { nodes, edges });
-            console.log('Save flow id:', flowId);
             setAllFlows((prevFlows) => {
                 const updatedFlows = prevFlows.map((flow) => {
                     if (flow.id === flowId) {
@@ -160,7 +189,6 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
 
     const deleteFLow = useCallback((flowId: string) => {
         if (flowId === 'demo') {
-            console.warn('Cannot delete demo flow');
             return;
         }
         setAllFlows((prevFlows) => {

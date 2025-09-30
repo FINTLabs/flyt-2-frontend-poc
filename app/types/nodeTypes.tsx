@@ -14,12 +14,20 @@ export type CustomNodeTypeValue = `${CustomNodeType}`;
 
 export type BaseNodeData = {
     label: string;
-    text?: string;
     typeName?: string;
     type?: DataType;
     iconType?: string;
     targetHandles?: HandleData[];
     sourceHandles?: HandleData[];
+};
+
+export type InputNodeData = BaseNodeData & {
+    text: string;
+};
+
+export type SelectNodeData = BaseNodeData & {
+    options: string[];
+    value: string;
 };
 
 export type CustomNode = Node<BaseNodeData>;

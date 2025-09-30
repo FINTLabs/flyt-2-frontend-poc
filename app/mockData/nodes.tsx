@@ -1,12 +1,13 @@
 import { Position } from '@xyflow/react';
 import type { ChangeEvent } from 'react';
 import { DataType } from '~/types/datatypes';
-import type { BaseNodeData } from '~/types/nodeTypes';
+import type { BaseNodeData, InputNodeData, SelectNodeData } from '~/types/nodeTypes';
 import { type Node } from '@xyflow/react';
 
 export const defaultPosition = { x: 0, y: 0 };
 
-export const instanceEGrunnervervSak: Node<BaseNodeData> = {
+// INSTANCE NODES
+export const egrunnervervSakInstance: Node<BaseNodeData> = {
     id: 'instanceEGrunnervervSak',
     type: 'flowInput',
     data: {
@@ -24,9 +25,147 @@ export const instanceEGrunnervervSak: Node<BaseNodeData> = {
             },
         ],
     },
-    sourcePosition: Position.Right,
     position: defaultPosition,
 };
+
+export const acosInstance: Node<BaseNodeData> = {
+    id: 'acosInstance',
+    type: 'flowInput',
+    data: {
+        label: 'ACOS dokument',
+        typeName: 'ACOS',
+        type: DataType.Object,
+        iconType: 'dataInstanceIn',
+        sourceHandles: [
+            {
+                id: 'a',
+                label: 'ACOS instans',
+                type: DataType.Object,
+                typeName: 'ACOS',
+                required: true,
+            },
+        ],
+    },
+    position: defaultPosition,
+};
+
+export const arkivInstanceOutput: Node<BaseNodeData> = {
+    id: 'instanceOutputArkivsak',
+    type: 'flowOutput',
+    data: {
+        label: 'Arkivsak',
+        type: DataType.Object,
+        typeName: 'Arkiv Sak',
+        iconType: 'dataInstanceOut',
+        targetHandles: [{ id: 'a', type: DataType.Object, typeName: 'Arkiv Sak', required: true }],
+    },
+    position: defaultPosition,
+};
+
+export const innerFlowInput: Node<BaseNodeData> = {
+    id: 'innerFlowInput',
+    type: 'innerFlowInput',
+    data: {
+        label: 'Input',
+        typeName: '?',
+        type: DataType.Object,
+    },
+    position: defaultPosition,
+};
+
+export const innerFlowOutput: Node<BaseNodeData> = {
+    id: 'innerFlowOutput',
+    type: 'innerFlowOutput',
+    data: {
+        label: 'Output',
+        typeName: '?',
+        type: DataType.Undefined,
+        targetHandles: [{ id: 'a', type: DataType.Undefined, required: true, typeName: '?' }],
+    },
+    position: defaultPosition,
+};
+
+// GENERIC NODES
+export const variableInputNode: Node<InputNodeData> = {
+    id: 'variableInputNode',
+    type: 'variableInput',
+    data: {
+        label: 'Variabel input',
+        text: '',
+        type: DataType.Text,
+        sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
+    },
+    position: defaultPosition,
+};
+
+export const dataSourceNode: Node<SelectNodeData> = {
+    id: 'dataSource',
+    type: 'dataSource',
+    data: {
+        label: 'Datakilde',
+        value: '',
+        options: [],
+        type: DataType.Reference,
+        sourceHandles: [{ id: 'a', type: DataType.Reference, required: true }],
+    },
+    position: defaultPosition,
+};
+
+export const operationOpenObject: Node<BaseNodeData> = {
+    id: 'operationOpenObject',
+    type: 'openObject',
+    data: {
+        label: 'Åpne objekt',
+        iconType: 'openData2',
+        targetHandles: [{ id: 'a', type: DataType.Object, required: true, typeName: '?' }],
+        sourceHandles: [],
+    },
+    position: defaultPosition,
+};
+
+export const operationCreateObject: Node<BaseNodeData> = {
+    id: 'operationCreateObject',
+    type: 'createObject',
+    data: {
+        label: 'Opprett objekt',
+        iconType: 'packData2',
+        targetHandles: [],
+        sourceHandles: [{ id: 'a', type: DataType.Object, required: true, typeName: '?' }],
+    },
+    position: defaultPosition,
+};
+
+export const operationJoinText: Node<BaseNodeData> = {
+    id: 'operationJoinText',
+    type: 'operationJoinText',
+    data: {
+        label: 'Slå sammen tekst',
+        iconType: 'textEdit',
+        targetHandles: [
+            { id: 'a', type: DataType.Text, required: true },
+            { id: 'b', type: DataType.Text, required: true },
+            { id: 'c', type: DataType.Text, required: false },
+        ],
+        sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
+    },
+    position: defaultPosition,
+};
+
+export const innerFlowListOperation: Node<BaseNodeData> = {
+    id: 'operationListInnerFlow',
+    type: 'listOperation',
+    data: {
+        label: 'For hvert element i listen',
+        iconType: 'listOperation',
+        targetHandles: [
+            { id: 'a', type: DataType.CollectionObject, required: true, typeName: '?' },
+        ],
+        sourceHandles: [{ id: 'a', type: DataType.CollectionUndefined, required: true, typeName: '?' }],
+    },
+    position: defaultPosition,
+};
+
+// DEMO NODES
 
 export const operationOpenEGrvSak: Node<BaseNodeData> = {
     id: 'operationOpenEGrvSak',
@@ -64,30 +203,6 @@ export const operationOpenEGrvSak: Node<BaseNodeData> = {
     position: defaultPosition,
 };
 
-export const operationOpenObject: Node<BaseNodeData> = {
-    id: 'operationOpenObject',
-    type: 'openObject',
-    data: {
-        label: 'Åpne objekt',
-        iconType: 'openData2',
-        targetHandles: [{ id: 'a', type: DataType.Object, required: true, typeName: '?' }],
-        sourceHandles: [],
-    },
-    position: defaultPosition,
-};
-
-export const operationCreateObject: Node<BaseNodeData> = {
-    id: 'operationCreateObject',
-    type: 'createObject',
-    data: {
-        label: 'Opprett objekt',
-        iconType: 'packData2',
-        targetHandles: [],
-        sourceHandles: [{ id: 'a', type: DataType.Object, required: true, typeName: '?' }],
-    },
-    position: defaultPosition,
-};
-
 export const operationExternalGetSaksansvarlig: Node<BaseNodeData> = {
     id: 'operationExternalGetSaksansvarlig',
     type: 'externalFunction',
@@ -103,34 +218,6 @@ export const operationExternalGetSaksansvarlig: Node<BaseNodeData> = {
                 required: true,
             },
         ],
-    },
-    position: defaultPosition,
-};
-
-export const variableInputNode: Node<BaseNodeData> = {
-    id: 'variableInputNode',
-    type: 'variableInput',
-    data: {
-        label: 'Variabel input',
-        text: '',
-        type: DataType.Text,
-        sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
-    },
-    position: defaultPosition,
-};
-
-export const operationJoinText: Node<BaseNodeData> = {
-    id: 'operationJoinText',
-    type: 'operationJoinText',
-    data: {
-        label: 'Slå sammen tekst',
-        iconType: 'textEdit',
-        targetHandles: [
-            { id: 'a', type: DataType.Text, required: true },
-            { id: 'b', type: DataType.Text, required: true },
-            { id: 'c', type: DataType.Text, required: false },
-        ],
-        sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
     },
     position: defaultPosition,
 };
@@ -174,24 +261,11 @@ export const operationCreateObjectAkrivsak: Node<BaseNodeData> = {
     position: defaultPosition,
 };
 
-export const instanceOutputArkivsak: Node<BaseNodeData> = {
-    id: 'instanceOutputArkivsak',
-    type: 'flowOutput',
-    data: {
-        label: 'Arkivsak',
-        type: DataType.Object,
-        typeName: 'Arkiv Sak',
-        iconType: 'dataInstanceOut',
-        targetHandles: [{ id: 'a', type: DataType.Object, typeName: 'Arkiv Sak', required: true }]
-    },
-    position: defaultPosition,
-};
-
 export const getInitialDemoNodes = (
     onChangeNodeColor?: (event: ChangeEvent<HTMLInputElement>) => void
 ) => {
     return [
-        { ...instanceEGrunnervervSak, id: 'n1-startNode', position: { x: 0, y: 0 } },
+        { ...egrunnervervSakInstance, id: 'n1-startNode', position: { x: 0, y: 0 } },
         {
             ...operationOpenEGrvSak,
             id: 'n2-openOperation',
@@ -262,7 +336,7 @@ export const getInitialDemoNodes = (
             position: { x: 808, y: -277.8 },
         },
         {
-            ...instanceOutputArkivsak,
+            ...arkivInstanceOutput,
             id: 'n10-arkivOutput',
             position: { x: 1900, y: -30 },
         },
@@ -270,13 +344,18 @@ export const getInitialDemoNodes = (
 };
 
 export const allFunctionalNodes = [
-    instanceEGrunnervervSak,
+    egrunnervervSakInstance,
+    acosInstance,
     operationOpenEGrvSak,
     operationJoinText,
     operationExternalGetSaksansvarlig,
     operationCreateObjectAkrivsak,
-    instanceOutputArkivsak,
+    arkivInstanceOutput,
     variableInputNode,
     operationCreateObject,
     operationOpenObject,
+    innerFlowListOperation,
+    innerFlowInput,
+    innerFlowOutput,
+    dataSourceNode
 ];

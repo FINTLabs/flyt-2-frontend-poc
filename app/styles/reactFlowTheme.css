@@ -20,8 +20,12 @@ body {
 
     /* Colors */
     --theme-node-blue: #c1e9ff;
+    --theme-node-lightblue: #ecf8ff;
+    --theme-node-red: #ffa89b;
+    --theme-node-lightred: #ffe4df;
+
     --theme-node-gray: var(--a-surface-subtle);
-    --theme-node-green: var(--a-data-surface-5-subtle);
+    --theme-node-green: #aee8bc;
     --theme-node-beige: #ffe6c1;
     --theme-node-input-selected: var(--a-data-surface-5);
     --theme-node-border: #c5c5c5;

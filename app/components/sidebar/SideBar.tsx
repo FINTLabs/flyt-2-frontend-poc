@@ -2,13 +2,18 @@ import { useFlow } from '~/context/flowContext';
 import { Accordion, BodyLong, BodyShort, Heading, Label, Tag, VStack } from '@navikt/ds-react';
 import { BaseNode } from '~/components/sidebar/BaseNode';
 import {
-    instanceEGrunnervervSak,
-    instanceOutputArkivsak, operationCreateObject,
+    egrunnervervSakInstance,
+    arkivInstanceOutput,
+    operationCreateObject,
     operationCreateObjectAkrivsak,
     operationExternalGetSaksansvarlig,
     operationJoinText,
-    operationOpenEGrvSak, operationOpenObject,
+    operationOpenEGrvSak,
+    operationOpenObject,
     variableInputNode,
+    acosInstance,
+    innerFlowListOperation,
+    dataSourceNode,
 } from '~/mockData/nodes';
 import { useParams } from 'react-router';
 
@@ -55,10 +60,23 @@ export const Sidebar = () => {
             {mode === 'edit' && (
                 <Accordion size="small" indent={false}>
                     <Accordion.Item>
+                        <Accordion.Header>Instanser</Accordion.Header>
+                        <Accordion.Content>
+                            <VStack gap={'2'}>
+                                <BaseNode
+                                    label={'eGrunnerverv sak'}
+                                    node={egrunnervervSakInstance}
+                                />
+                                <BaseNode label={'Acos dokumnet'} node={acosInstance} />
+                                <BaseNode label={'Arkivsak'} node={arkivInstanceOutput} />
+                            </VStack>
+                        </Accordion.Content>
+                    </Accordion.Item>
+                    <Accordion.Item>
                         <Accordion.Header>Arkiv</Accordion.Header>
                         <Accordion.Content>
                             <VStack gap={'2'}>
-                                <BaseNode label={'Send til arkiv'} node={instanceOutputArkivsak} />
+                                <BaseNode label={'Send til arkiv'} node={arkivInstanceOutput} />
                                 <BaseNode
                                     label={'Opprett akrivsak'}
                                     node={operationCreateObjectAkrivsak}
@@ -72,7 +90,7 @@ export const Sidebar = () => {
                             <VStack gap={'2'}>
                                 <BaseNode
                                     label={'Innkommne saker'}
-                                    node={instanceEGrunnervervSak}
+                                    node={egrunnervervSakInstance}
                                 />
                                 <BaseNode
                                     label={'Hent ut eGrunnervervdata'}
@@ -86,13 +104,24 @@ export const Sidebar = () => {
                         </Accordion.Content>
                     </Accordion.Item>
                     <Accordion.Item>
-                        <Accordion.Header>Primitiver</Accordion.Header>
+                        <Accordion.Header>Datakilder</Accordion.Header>
                         <Accordion.Content>
                             <VStack gap={'2'}>
+                                <BaseNode label={'Fylkesråd: Dokumentstatus'} node={dataSourceNode} />
+                                <BaseNode label={'Fylkesråd: Dokumenttype'} node={dataSourceNode} />
+                                <BaseNode label={'Fylkesråd: Tilknyttet reg. som'} node={dataSourceNode} />
+                            </VStack>
+                        </Accordion.Content>
+                    </Accordion.Item>
+                    <Accordion.Item>
+                        <Accordion.Header>Databehandling</Accordion.Header>
+                        <Accordion.Content>
+                            <VStack gap={'2'}>
+                                <BaseNode label={'Hent ut data'} node={operationOpenObject} />
+                                <BaseNode label={'Samle data'} node={operationCreateObject} />
                                 <BaseNode label={'Slå sammen tekst'} node={operationJoinText} />
                                 <BaseNode label={'Fritekst'} node={variableInputNode} />
-                                <BaseNode label={"Hent ut data"} node={operationOpenObject} />
-                                <BaseNode label={"Samle data"} node={operationCreateObject} />
+                                <BaseNode label={'Listehåndtering'} node={innerFlowListOperation} />
                             </VStack>
                         </Accordion.Content>
                     </Accordion.Item>

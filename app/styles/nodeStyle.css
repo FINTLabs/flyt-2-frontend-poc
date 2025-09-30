@@ -41,9 +41,19 @@
     background-color: var(--theme-node-blue);
 }
 
+.react-flow__node-innerFlowInput,
+.menu-node-innerFlowInput {
+    background-color: var(--theme-node-lightblue);
+}
+
 .react-flow__node-flowOutput,
 .menu-node-flowOutput {
-    background-color: var(--theme-node-blue);
+    background-color: var(--theme-node-red);
+}
+
+.react-flow__node-innerFlowOutput,
+.menu-node-innerFlowOutput {
+    background-color: var(--theme-node-lightred);
 }
 
 .react-flow__node-operation,
@@ -51,22 +61,31 @@
     background-color: var(--theme-node-gray);
 }
 
-.react-flow__node-variableInput {
+.react-flow__node-variableInput,
+.react-flow__node-dataSource {
     background-color: var(--theme-node-green);
     padding: 2px 5px;
-    .navds-form-field--small .navds-text-field__input {
+    .navds-form-field--small .navds-text-field__input,
+    .navds-form-field--small .navds-select__input {
         min-height: 0.5rem;
     }
-    .navds-text-field__input:focus-visible {
+    .navds-text-field__input:focus-visible,
+    select:focus-visible {
         box-shadow: 0 0 0 1px var(--theme-node-input-selected);
     }
 }
 
-.menu-node-variableInput {
+.menu-node-variableInput,
+.menu-node-dataSource {
     background-color: var(--theme-node-green);
 }
 
 .react-flow__node-externalFunction,
 .menu-node-externalFunction {
     background-color: var(--theme-node-beige);
+}
+
+.react-flow__node.highlight {
+    background-color: #918fbe;
+    color: white;
 }
