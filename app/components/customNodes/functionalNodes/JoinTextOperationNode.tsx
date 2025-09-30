@@ -11,7 +11,7 @@ import {
 import { BodyShort, Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 import { getNodeMinHeight, getNodeIcon } from '~/utils/nodeHandlers';
-import type { BaseNodeData } from '~/types/nodeTypes';
+import type { BaseNodeData, CustomNode } from '~/types/nodeTypes';
 import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
 import { MinusIcon, PlusIcon } from '@navikt/aksel-icons';
 import { DataType } from '~/types/datatypes';
@@ -40,7 +40,7 @@ export const JoinTextOperationNode = memo(
                     .filter(Boolean),
             [connections]
         );
-        const connectedNodesData = useNodesData<Node<BaseNodeData>>(connectionsNodeIds);
+        const connectedNodesData = useNodesData<CustomNode>(connectionsNodeIds);
 
         const handleAddHandle = useCallback(() => {
             console.log('Add handle');
@@ -125,7 +125,6 @@ export const JoinTextOperationNode = memo(
                     handles={data.targetHandles}
                     type={'target'}
                     isConnectable={isConnectable}
-                    nodeHeight={minHeight.number}
                 />
                 <VStack
                     align={'center'}
@@ -139,7 +138,6 @@ export const JoinTextOperationNode = memo(
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
-                    nodeHeight={minHeight.number}
                 />
             </BaseNodeWrapper>
         );

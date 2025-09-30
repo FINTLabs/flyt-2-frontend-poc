@@ -25,7 +25,7 @@ export const DataSourceNode = memo(({ id, data, isConnectable }: NodeProps<DataS
     const { updateNodeData } = useReactFlow();
 
     return (
-        <BaseNodeWrapper label={'Fra datakilde'} subLabel={data.label} >
+        <BaseNodeWrapper label={data.label} italic={true}>
             <HStack align={'center'} justify={'center'} gap="1">
                 <TypeTag type={data.type} typeName={data.typeName} size="small" />
 

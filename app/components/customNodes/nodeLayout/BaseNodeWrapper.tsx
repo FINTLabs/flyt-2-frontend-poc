@@ -5,7 +5,7 @@ import { NodeLabel } from './NodeLabel';
 interface BaseNodeWrapperProps {
     children: React.ReactNode;
     label?: string;
-    subLabel?: string;
+    italic?: boolean;
     minHeight?: string;
     margin?: string;
 }
@@ -13,13 +13,13 @@ interface BaseNodeWrapperProps {
 export const BaseNodeWrapper: React.FC<BaseNodeWrapperProps> = ({
     children,
     label,
-    subLabel,
+    italic,
     minHeight,
     margin = '2',
 }) => {
     return (
         <Box style={{ minHeight, margin }}>
-            {label && <NodeLabel label={label} subLabel={subLabel}/>}
+            {label && <NodeLabel label={label} italic={italic} />}
             {children}
         </Box>
     );

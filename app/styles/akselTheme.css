@@ -115,3 +115,14 @@ h1, h2, h3, h4, h5, h6 {
 .navds-table__row:has(+ .navds-table__row--selected) :is(.navds-table__header-cell, .navds-table__data-cell){
     border-color: inherit;
 }
+
+.sidebar_form {
+
+    input:focus-visible {
+        box-shadow: 0 0 0 1px var(--a-border-focus);
+    }
+
+    .navds-form-field {
+        gap: var(--a-space-1)
+    }
+}

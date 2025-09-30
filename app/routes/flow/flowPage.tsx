@@ -1,8 +1,6 @@
 import React, { useRef } from 'react';
 import '@xyflow/react/dist/style.css';
 import Flow from '~/components/Flow';
-import { FlowProvider } from '~/context/flowContext';
-import { useParams } from 'react-router';
 import { Sidebar } from '~/components/sidebar/SideBar';
 
 const FlowPageWrapper = () => {

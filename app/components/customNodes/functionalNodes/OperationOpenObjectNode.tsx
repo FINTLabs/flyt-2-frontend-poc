@@ -12,7 +12,7 @@ import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 import { getNodeIcon, getNodeMinHeight } from '~/utils/nodeHandlers';
 import type { HandleData } from '~/types/handleTypes';
 import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
-import { mockFetchDataContent } from '~/mockData/dataObjects';
+import { mockFetchDataContentHandles } from '~/mockData/dataObjects';
 import { DataType } from '~/types/datatypes';
 
 type OperationObjectNodeData = {
@@ -76,7 +76,7 @@ export const OperationOpenObjectNode = memo(
                             : (outgoingObjectHandle.typeName ?? objectDefinitionNode.typeName),
                         required: true,
                     };
-                    const objectDefinitionHandles = mockFetchDataContent(
+                    const objectDefinitionHandles = mockFetchDataContentHandles(
                         objectHandle.typeName || 'Object',
                         objectHandle.label
                     );

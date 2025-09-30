@@ -16,7 +16,7 @@ import {
     MenuElipsisVerticalCircleIcon,
     MenuElipsisVerticalIcon,
     PencilIcon,
-    PlusIcon, TasklistIcon,
+    PlusIcon, TasklistIcon, TestFlaskIcon,
     TrashIcon,
 } from '@navikt/aksel-icons';
 import { Link } from 'react-router';
@@ -42,7 +42,7 @@ export default function FlowIndex() {
                     </BodyShort>
                     <Button
                         as={Link}
-                        to={'/flow/edit/new'}
+                        to={'/flow/new'}
                         size="small"
                         iconPosition="right"
                         icon={<PlusIcon title="Opprett ny" fontSize="2rem" />}>
@@ -91,14 +91,20 @@ export default function FlowIndex() {
                                                         icon={<ExpandIcon />}
                                                         as={Link}
                                                         to={`/flow/view/${flow.id}`}>
-                                                        Åpne flyt
+                                                        Åpne
                                                     </ActionMenu.Item>
                                                     <ActionMenu.Item
                                                         disabled={flow.id === 'demo'}
                                                         icon={<PencilIcon />}
                                                         as={Link}
                                                         to={`/flow/edit/${flow.id}`}>
-                                                        Rediger flyt
+                                                        Rediger
+                                                    </ActionMenu.Item>
+                                                    <ActionMenu.Item
+                                                        icon={<TestFlaskIcon />}
+                                                        as={Link}
+                                                        to={`/flow/run/${flow.id}`}>
+                                                        Test
                                                     </ActionMenu.Item>
                                                     <ActionMenu.Item
                                                         icon={<TasklistIcon />}

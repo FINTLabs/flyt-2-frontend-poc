@@ -72,7 +72,8 @@ export const getTypeSymbolWidth = (type?: DataTypeValue, typeText?: string): num
         type === 'input' ||
         type === 'reference' ||
         type === 'undefined' ||
-        type === 'file'
+        type === 'file' ||
+        type === 'boolean'
     ) {
         return 15;
     }

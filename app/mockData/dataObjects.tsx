@@ -1,13 +1,76 @@
 import { DataType } from '~/types/datatypes';
 import type { HandleData } from '~/types/handleTypes';
 
-export const mockFetchDataContent = (
+// EgrunnervervSakInstance
+export type EgrvSakspartType = {
+    navn: string;
+    organisasjonsnummer: string;
+    epost: string;
+    telefon: string;
+    postadresse: string;
+    postnummer: string;
+    poststed: string;
+};
+
+// EgrunnervervSakInstance
+export type EgrvSakType = {
+    id: string;
+    kommunenavn: string;
+    prosjektnavn: string;
+    gaardsnummer: string;
+    bruksnummer: string;
+    seksjonsnummer: string;
+    tittel: string;
+    adresse: string;
+    saksansvarligEpost: string;
+    sakspartner: EgrvSakspartType;
+};
+
+export type ArkivSakType = {
+    tittel: string;
+    offentligTittel?: string;
+    saksmappetype?: string; // Reference
+    administrativEnhet?: string; // Reference
+    saksansvarlig?: string; // Reference
+    skjerming: {};
+    arkivdel?: string; // Reference
+    saksstatus?: string; // Reference
+    parter?: Array<{}>;
+};
+
+export type AcosInstanceMetadataType = {
+    formId: string;
+    instanceId: string;
+    instanceUri?: string;
+};
+
+export type AcosInstanceElementType = {
+    id: string;
+    value?: string;
+    hashCode?: number;
+};
+
+export type AcosDocumentType = {
+    name: string;
+    encoding: string;
+    filinnhold?: string; // Base64
+    mediatype: string; // Reference
+};
+
+// AcosInstance
+export type AcosInstanceType = {
+    metadata: AcosInstanceMetadataType;
+    formPdfBase64: string;
+    elements: AcosInstanceElementType[];
+    documents: AcosDocumentType[];
+};
+
+export const mockFetchDataContentHandles = (
     dataType: string,
     dataLabel?: string
 ): HandleData[] | undefined => {
     switch (dataType.toLowerCase()) {
         case 'egrv sak':
-            // EgrunnervervSakInstance
             return [
                 { id: 'a', label: 'Kommunenavn', type: DataType.Text, required: true },
                 { id: 'b', label: 'Prosjektnavn', type: DataType.Text, required: true },
@@ -55,7 +118,6 @@ export const mockFetchDataContent = (
                 },
             ];
         case 'egrv sakspart':
-            // EgrunnervervSakInstance
             return [
                 { id: 'a', label: 'Navn', type: DataType.Text, required: true },
                 { id: 'b', label: 'Organisasjonsnummer', type: DataType.Text, required: true },
@@ -121,5 +183,106 @@ export const mockFetchDataContent = (
                     required: true,
                 },
             ];
+    }
+};
+
+export type MockDataTypes =
+    | EgrvSakType
+    | ArkivSakType
+    | EgrvSakspartType
+    | AcosInstanceType
+    | AcosInstanceMetadataType
+    | AcosInstanceElementType
+    | AcosDocumentType
+    | undefined;
+
+export const eGrvSakMockData: EgrvSakType = {
+    id: '123testID456',
+    kommunenavn: '2222',
+    prosjektnavn: '215400',
+    gaardsnummer: '333',
+    bruksnummer: '4',
+    seksjonsnummer: '0',
+    tittel: 'TEST - E39 Mandal - Lyngdal øst - Grunnerverv - 2222 / 333 / 4, 0, 0, H - Testvei 321 3531 KROKKLEIVA - Navnesen Navn',
+    adresse: 'Testvei 321 3531 KROKKLEIVA',
+    saksansvarligEpost: 'hilde.nordeide@vlfk.no',
+    sakspartner: {
+        navn: 'Navnesen Navn',
+        organisasjonsnummer: '07018549519',
+        epost: 'navn.navnesen@gmail.com',
+        telefon: '12345678',
+        postadresse: 'Testadresse 12',
+        postnummer: '1234',
+        poststed: 'Oslo',
+    },
+}
+
+export const mockDataContent = (
+    dataType: string
+):MockDataTypes => {
+    switch (dataType.toLowerCase()) {
+        case 'egrv sak':
+            return eGrvSakMockData
+        case 'arkiv sak':
+            return {
+                tittel: '',
+                offentligTittel: '',
+                saksmappetype: '',
+                administrativEnhet: '',
+                saksansvarlig: '',
+                skjerming: {
+                    skjermingshjemmel: '',
+                    skjermingskode: '',
+                    skjermingsfrist: '',
+                    begrunnelse: '',
+                },
+                arkivdel: '',
+                saksstatus: '',
+                parter: [],
+            } as ArkivSakType;
+        case 'egrv sakspart':
+            return {
+                id: '',
+                navn: '',
+                organisasjonsnummer: '',
+                epost: '',
+                telefon: '',
+                postadresse: '',
+                postnummer: '',
+                poststed: '',
+            } as EgrvSakspartType;
+        case 'acos':
+            return {
+                metadata: {
+                    formId: '',
+                    instanceId: '',
+                    instanceUri: '',
+                },
+                formPdfBase64: '',
+                elements: [],
+                documents: [],
+            } as AcosInstanceType;
+        case 'acosinstancemetadata':
+            return {
+                formId: '',
+                instanceId: '',
+                instanceUri: '',
+            } as AcosInstanceMetadataType;
+        case 'acosinstanceelement':
+            return {
+                id: '',
+                value: '',
+                hashCode: 0,
+            } as AcosInstanceElementType;
+        case 'acosdocument':
+            return {
+                name: '',
+                encoding: '',
+                filinnhold: '',
+                mediatype: '',
+            } as AcosDocumentType;
+        case 'object':
+        default:
+            return undefined;
     }
 };
