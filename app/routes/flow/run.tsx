@@ -8,7 +8,7 @@ const RunnableFlowPageWrapper = () => {
     const reactFlowWrapper = useRef(null);
 
     return (
-        <div className="flow-page">
+        <div className="flow-page runnable">
             <InputSidebar />
             <div className="reactflow-wrapper" ref={reactFlowWrapper}>
                 <RunnableFlow />

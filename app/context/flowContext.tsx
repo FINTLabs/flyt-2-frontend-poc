@@ -1,15 +1,12 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { type Node, type Edge, useUpdateNodeInternals, type XYPosition } from '@xyflow/react';
-import {
-    allFunctionalNodes,
-    defaultPosition,
-    getInitialDemoNodes,
-} from '~/mockData/nodes';
+import { allFunctionalNodes, defaultPosition, getInitialDemoNodes } from '~/mockData/nodes';
 import { initDemoEdges } from '~/mockData/edges';
 import type { BaseNodeData, CustomNode } from '~/types/nodeTypes';
 import { createAlmostRandomId } from '~/utils/generalUtils';
 import { useParams } from 'react-router';
+import type { ArkivSakType } from '~/types/mockedDataTypes';
 
 const FLOW_STORAGE_KEY = 'fint-flyt';
 const FLOW_ID_PREFIX = 'flyt-id';
@@ -36,7 +33,9 @@ export interface FlowContextType {
     allFlows: LocalStorageFlow[];
     getAllFlows: () => LocalStorageFlow[] | undefined;
     deleteFLow: (flowId: string) => void;
-    runDataThroughFlow: (data: any) => void;
+    runDataThroughFlow: (runType: string, data: any) => void;
+    testFlowOutput: { runType: string; data: ArkivSakType } | undefined;
+    isEditable?: boolean;
 }
 
 const FlowContext = createContext<FlowContextType | undefined>(undefined);
@@ -45,13 +44,17 @@ interface FlowProviderProps {
 }
 
 export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
-    const { flowId: paramsFlowId } = useParams();
+    const { flowId: paramsFlowId, mode } = useParams();
 
     const [currentFlow, setCurrentFlow] = useState<LocalStorageFlow | undefined>(undefined);
+    const isEditable = useMemo(() => mode === 'edit', [mode]);
     const [allFlows, setAllFlows] = useState<LocalStorageFlow[]>([]);
     const [initNodes, setInitialNodes] = useState<CustomNode[]>([]);
     const [initEdges, setInitialEdges] = useState<Edge[]>([]);
     const [newNodeId, setNewNodeId] = useState<string | null>(null);
+    const [testFlowOutput, setTestFlowOutput] = useState<
+        { runType: string; data: ArkivSakType } | undefined
+    >();
     const updateNodeInternals = useUpdateNodeInternals();
 
     useEffect(() => {
@@ -87,6 +90,9 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
                     setInitialEdges([]);
                     updateNodeInternals([]);
                 }
+            }
+
+            if (mode === 'view') {
             }
         }
     }, [paramsFlowId]);
@@ -126,31 +132,6 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         let newNode = allFunctionalNodes.find((node) => node.id === id);
 
         if (newNode) {
-            /*            if (id === 'operationListInnerFlow') {
-                const parentId = createAlmostRandomId('node-id', id);
-                return [
-                    {
-                        ...newNode,
-                        position: position || defaultPosition,
-                        id: parentId,
-                    },
-                    {
-                        ...innerFlowInput,
-                        parentId,
-                        extent: 'parent',
-                        position: { x: 10, y: 55 },
-                        id: createAlmostRandomId('node-id', 'innerFlowInput'),
-                    },
-                    {
-                        ...innerFlowOutput,
-                        parentId,
-                        extent: 'parent',
-                        position: { x: 170, y: 55 },
-                        id: createAlmostRandomId('node-id', 'innerFlowOutput'),
-                    },
-                ];
-            }*/
-
             return {
                 ...newNode,
                 id: createAlmostRandomId('node-id', id),
@@ -221,9 +202,30 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         localStorage.setItem(FLOW_STORAGE_KEY, JSON.stringify(flows));
     };
 
-    const runDataThroughFlow = (data: any) => {
+    const runDataThroughFlow = (runType: string, data: any) => {
         // This function would contain the logic to process the data through the flow's nodes and edges.
-    }
+        if (runType === 'egrv sak') {
+            console.log('Running data through flow:', data);
+            // Implement the actual flow processing logic here.
+            setTestFlowOutput({
+                runType: 'egrv sak',
+                data: {
+                    tittel: `${data.kommunenavn} kommune - ${data.prosjektnavn} gbnr ${data.gaardsnummer}/${data.bruksnummer} - Grunnerverv`,
+                    offentligTittel: 'TEST SAK - gnr. 333 bnr. 4 - Porsgrunn kommune - grunnerverv',
+                    saksansvarlig: 'egil.ballestad@novari.no',
+                    arkivdel:
+                        'https://beta.felleskomponent.no/arkiv/noark/arkivdel/systemid/GRUNNERV',
+                    saksstatus:
+                        'https://beta.felleskomponent.no/arkiv/kodeverk/saksstatus/systemid/R',
+                    administrativEnhet:
+                        'https://beta.felleskomponent.no/arkiv/noark/administrativenhet/systemid/94',
+                    skjerming: {},
+                },
+            });
+        } else {
+            console.warn('Unsupported run type:', runType);
+        }
+    };
 
     const contextValue: FlowContextType = {
         currentFlow,
@@ -237,7 +239,9 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         allFlows,
         getAllFlows,
         deleteFLow,
-        runDataThroughFlow
+        runDataThroughFlow,
+        testFlowOutput,
+        isEditable,
     };
 
     return <FlowContext.Provider value={contextValue}>{children}</FlowContext.Provider>;

@@ -8,7 +8,7 @@ import {
     useNodesData,
     useReactFlow,
 } from '@xyflow/react';
-import { BodyShort, Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
+import { Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 import { getNodeMinHeight, getNodeIcon } from '~/utils/nodeHandlers';
 import type { BaseNodeData, CustomNode } from '~/types/nodeTypes';

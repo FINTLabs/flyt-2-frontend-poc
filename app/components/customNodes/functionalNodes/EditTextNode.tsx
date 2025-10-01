@@ -1,14 +1,6 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import {
-    type Node,
-    type NodeProps,
-    NodeToolbar,
-    Position,
-    useNodeConnections,
-    useNodesData,
-    useReactFlow,
-} from '@xyflow/react';
-import { BodyShort, Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
+import React, { memo } from 'react';
+import { type Node, type NodeProps } from '@xyflow/react';
+import { VStack } from '@navikt/ds-react';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 import { getNodeMinHeight, getNodeIcon } from '~/utils/nodeHandlers';
 import type { BaseNodeData } from '~/types/nodeTypes';
@@ -34,7 +26,7 @@ export const EditTextNode = memo(
                     align={'center'}
                     justify={'center'}
                     gap="1"
-                    padding={"1"}
+                    padding={'1'}
                     style={{ minHeight: minHeight.cssString }}>
                     {data.iconType && getNodeIcon(data.iconType)}
                 </VStack>

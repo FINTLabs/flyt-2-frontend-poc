@@ -1,15 +1,14 @@
 import { useFlow } from '~/context/flowContext';
 import { allIntegrationsInputNodes } from '~/mockData/nodes';
 import { useMemo } from 'react';
-import { Heading, VStack } from '@navikt/ds-react';
-import { eGrvSakMockData, mockDataContent } from '~/mockData/dataObjects';
+import { Button, Heading, HStack, VStack } from '@navikt/ds-react';
+import { eGrvSakMockData } from '~/mockData/dataObjects';
 import TestForm from '~/components/sidebar/testForms/TestForm';
 import EgrvTestForm from '~/components/sidebar/testForms/EgrvTestForm';
+import type { MockDataTypes } from '~/types/mockedDataTypes';
 
 const InputSidebar = () => {
-    const { currentFlow } = useFlow();
-
-    console.log('Current Flow:', currentFlow);
+    const { currentFlow, runDataThroughFlow } = useFlow();
 
     const inputNode = useMemo(() => {
         if (!currentFlow) return null;
@@ -18,25 +17,27 @@ const InputSidebar = () => {
         );
     }, [currentFlow]);
 
-    const dataContent = useMemo(() => {
+    /*    const dataContent = useMemo(() => {
         if (!inputNode || !inputNode.data.typeName) return;
         return mockDataContent(inputNode.data.typeName);
-    }, [inputNode]);
-    console.log('Input Node:', inputNode);
+    }, [inputNode]);*/
+
+    const handleRun = (data: MockDataTypes) => {
+        runDataThroughFlow('egrv sak', data);
+    };
 
     return (
-        <aside className={'sidebar_form'} style={{ overflowY: 'auto', height: '100%' }}>
-            <VStack paddingInline={'4'}>
-                <Heading size="xsmall" spacing>
+        <aside className={'sidebar-form input'} style={{ overflowY: 'auto', height: '100%' }}>
+            <VStack padding={'4'}>
+                <Heading size="medium" spacing>
                     {inputNode ? inputNode.data.label : 'Ingen input node funnet'}
                 </Heading>
-                <form id={'testForm'}>
+                <form id={'testForm'} onSubmit={(e) => e.preventDefault()}>
                     {/*
-                    onSubmit={onSubmit}
                     <TestForm dataContent={dataContent} />
                      */}
                     {inputNode?.data.typeName === 'eGrv Sak' && (
-                        <EgrvTestForm dataContent={eGrvSakMockData} />
+                        <EgrvTestForm dataContent={eGrvSakMockData} onRunFlow={handleRun} />
                     )}
                 </form>
             </VStack>

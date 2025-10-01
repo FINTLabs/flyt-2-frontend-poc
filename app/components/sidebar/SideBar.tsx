@@ -17,9 +17,9 @@ import { elev, fravaer, person } from '~/mockData/fintNodes';
 
 export const Sidebar = () => {
     const { currentFlow } = useFlow();
-    const { mode } = useParams();
+    const { mode }  = useParams();
     return (
-        <aside>
+        <aside className={'sidebar-flow'} >
             <VStack paddingInline={'4'}>
                 <Heading size="xsmall" spacing>
                     Flow: {currentFlow?.name ? currentFlow.name : 'Ny flyt'}

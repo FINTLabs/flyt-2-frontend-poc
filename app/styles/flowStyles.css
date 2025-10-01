@@ -5,27 +5,8 @@
     flex-grow: 1;
     height: 93vh;
 
-    aside {
-        width: 20%;
-        max-width: 250px;
-        height: 100%;
-        padding: 15px 0;
-        background: #fff;
-
-        .navds-accordion__header {
-            padding: var(--a-spacing-1);
-            gap: var(--a-spacing-1);
-
-            .navds-accordion__icon-wrapper {
-                svg {
-                    height: 1rem;
-                }
-            }
-        }
-
-        .navds-heading--small {
-            font-size: var(--a-font-size-small);
-        }
+    &.runnable {
+        height: 90vh;
     }
 
     .reactflow-wrapper {

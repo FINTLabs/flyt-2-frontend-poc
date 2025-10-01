@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {
-    ReactFlow,
-    MiniMap,
-    Controls,
-    type Node,
-    BackgroundVariant,
-    Background
-} from '@xyflow/react';
+import { ReactFlow, Controls, BackgroundVariant, Background } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
-import { getMinimapNodeColor, getMinimapNodeStrokeColor } from '~/utils/nodeHandlers';
 import { useFlow } from '~/context/flowContext';
 import { nodeTypes } from '~/components/customNodes/nodetypes';
-
-
 
 const RunnableFlow = () => {
     const { initNodes, initEdges } = useFlow();
@@ -39,10 +29,6 @@ const RunnableFlow = () => {
             isValidConnection={() => false}
             defaultEdgeOptions={{ type: 'step' }}>
             <Background variant={BackgroundVariant.Dots} />
-            <MiniMap
-                nodeStrokeColor={(n: Node): string => getMinimapNodeStrokeColor(n)}
-                nodeColor={(n) => getMinimapNodeColor(n)}
-            />
             <Controls showInteractive={false} />
         </ReactFlow>
     );
