@@ -156,6 +156,11 @@ h6 {
         width: 25%;
         max-width: 600px;
         inline-size: 25%;
+        overflow-y: auto;
+
+        .navds-form-summary__value {
+            overflow-wrap: break-word;
+        }
 
 
         pre {
@@ -172,4 +177,8 @@ h6 {
     .navds-form-field {
         gap: var(--a-space-1);
     }
+}
+
+.progress-rotation {
+    animation: spin 2s linear infinite;
 }

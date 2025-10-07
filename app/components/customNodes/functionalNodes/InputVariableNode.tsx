@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import { type NodeProps, type Node, useReactFlow } from '@xyflow/react';
 import { HStack, TextField } from '@navikt/ds-react';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
-import { getNodeMinHeight, getNodeMinHeightCss } from '~/utils/nodeHandlers';
 import { TypeTag } from '~/components/macros/TypeTag';
 import { BaseNodeWrapper } from '../nodeLayout/BaseNodeWrapper';
 import type { HandleData } from '~/types/handleTypes';
@@ -23,13 +22,8 @@ export const InputVariableNode = memo(
         const { updateNodeData } = useReactFlow();
         const { isEditable } = useFlow();
 
-        const minHeight = getNodeMinHeightCss({
-            sources: data.sourceHandles?.length,
-            handleInterval: 0,
-        });
-
         return (
-            <BaseNodeWrapper minHeight={minHeight}>
+            <BaseNodeWrapper>
                 <HStack align={'center'} justify={'center'} gap="1">
                     <TypeTag type={data.type} typeName={data.typeName} size="small" />
                     <TextField

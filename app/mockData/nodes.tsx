@@ -1,4 +1,3 @@
-import { Position } from '@xyflow/react';
 import type { ChangeEvent } from 'react';
 import { DataType } from '~/types/datatypes';
 import type { BaseNodeData, InputNodeData, SelectNodeData } from '~/types/nodeTypes';
@@ -159,9 +158,7 @@ export const operationEditText: Node<BaseNodeData> = {
     data: {
         label: 'Endre tekst',
         iconType: 'textEdit',
-        targetHandles: [
-            { id: 'a', type: DataType.Text, required: true },
-        ],
+        targetHandles: [{ id: 'a', type: DataType.Text, required: true }],
         sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
     },
     position: defaultPosition,
@@ -274,7 +271,7 @@ export const operationCreateObjectAkrivsak: Node<BaseNodeData> = {
                 required: false,
             },
         ],
-        sourceHandles: [{ id: 'a', type: DataType.Object, typeName: 'Akriv Sak', required: true }],
+        sourceHandles: [{ id: 'a', type: DataType.Object, typeName: 'Arkiv Sak', required: true }],
     },
     position: defaultPosition,
 };
@@ -287,7 +284,13 @@ export const acosDocToDocDesc: Node<BaseNodeData> = {
         iconType: 'conversion',
         targetHandles: [
             { id: 'a', type: DataType.Text, label: 'Tittel', required: false },
-            { id: 'b', type: DataType.CollectionObject, typeName: 'AcosDocument', label: 'ACOS Dokumenter', required: false },
+            {
+                id: 'b',
+                type: DataType.CollectionObject,
+                typeName: 'AcosDocument',
+                label: 'ACOS Dokumenter',
+                required: false,
+            },
         ],
         sourceHandles: [
             {

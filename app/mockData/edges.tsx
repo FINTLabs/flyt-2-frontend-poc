@@ -1,5 +1,4 @@
 import type { Edge } from '@xyflow/react';
-import { DataType } from '~/types/datatypes';
 
 export const initDemoEdges: Edge[] = [
     {
@@ -101,7 +100,7 @@ export const initDemoEdges: Edge[] = [
         source: 'n4-saksansvarligOperation',
         sourceHandle: 'a',
         target: 'n6-createObjectOperation',
-        targetHandle: 'h',
+        targetHandle: 'e',
         type: 'step',
     },
     {

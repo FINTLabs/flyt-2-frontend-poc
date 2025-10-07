@@ -9,6 +9,7 @@ export default [
             route('new', 'routes/flow/new.tsx'),
             route(':mode/:flowId', 'routes/flow/flowPage.tsx'),
             route('run/:flowId', 'routes/flow/run.tsx'),
+            route('log/:flowId', 'routes/flow/runlog.tsx'),
         ]),
     ]),
 ] satisfies RouteConfig;

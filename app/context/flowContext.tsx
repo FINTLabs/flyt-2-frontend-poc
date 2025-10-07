@@ -1,12 +1,20 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { type Node, type Edge, useUpdateNodeInternals, type XYPosition } from '@xyflow/react';
-import { allFunctionalNodes, defaultPosition, getInitialDemoNodes } from '~/mockData/nodes';
+import { type Node, type Edge, useUpdateNodeInternals } from '@xyflow/react';
+import {
+    allFunctionalNodes,
+    allIntegrationsInputNodes,
+    arkivInstanceOutput,
+    defaultPosition,
+    getInitialDemoNodes,
+} from '~/mockData/nodes';
 import { initDemoEdges } from '~/mockData/edges';
 import type { BaseNodeData, CustomNode } from '~/types/nodeTypes';
 import { createAlmostRandomId } from '~/utils/generalUtils';
 import { useParams } from 'react-router';
-import type { ArkivSakType } from '~/types/mockedDataTypes';
+import type { ArkivSakType, EgrvSakType, MockDataTypes } from '~/types/mockedDataTypes';
+import type { RunlogType, RunStatusType } from '~/types/generalTypes';
+import { runlogsForDemo } from '~/mockData/runlogs';
 
 const FLOW_STORAGE_KEY = 'fint-flyt';
 const FLOW_ID_PREFIX = 'flyt-id';
@@ -28,14 +36,18 @@ export interface FlowContextType {
     setNewNodeId: React.Dispatch<React.SetStateAction<string | null>>;
     getCustomNodeDataById: (id: string) => CustomNode;
     currentFlow?: LocalStorageFlow;
+    inputNode?: CustomNode;
+    outputNode?: CustomNode;
     saveFlow: (flowId: string, nodes: CustomNode[], edges: Edge[]) => void;
     saveNewFlow: (name: string, nodes: CustomNode[], edges: Edge[]) => string;
     allFlows: LocalStorageFlow[];
     getAllFlows: () => LocalStorageFlow[] | undefined;
     deleteFLow: (flowId: string) => void;
-    runDataThroughFlow: (runType: string, data: any) => void;
+    runDataThroughFlow: (runType: string, data: MockDataTypes) => Promise<void>;
     testFlowOutput: { runType: string; data: ArkivSakType } | undefined;
     isEditable?: boolean;
+    getRunlogsByFlowId: (flowId: string) => RunlogType[];
+    flowState: { step: number; state: RunStatusType }[] | undefined;
 }
 
 const FlowContext = createContext<FlowContextType | undefined>(undefined);
@@ -48,6 +60,9 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
 
     const [currentFlow, setCurrentFlow] = useState<LocalStorageFlow | undefined>(undefined);
     const isEditable = useMemo(() => mode === 'edit', [mode]);
+    const [flowState, setFlowState] = useState<
+        { step: number; state: RunStatusType }[] | undefined
+    >(undefined);
     const [allFlows, setAllFlows] = useState<LocalStorageFlow[]>([]);
     const [initNodes, setInitialNodes] = useState<CustomNode[]>([]);
     const [initEdges, setInitialEdges] = useState<Edge[]>([]);
@@ -56,6 +71,18 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         { runType: string; data: ArkivSakType } | undefined
     >();
     const updateNodeInternals = useUpdateNodeInternals();
+
+    const inputNode = useMemo(() => {
+        return allIntegrationsInputNodes.find((node) =>
+            currentFlow?.nodes.some((flowNode) => flowNode.type === node.type)
+        );
+    }, [currentFlow]);
+
+    const outputNode = useMemo(() => {
+        return currentFlow?.nodes.find(
+            (flowNode: CustomNode) => flowNode.type === arkivInstanceOutput.type
+        );
+    }, [currentFlow]);
 
     useEffect(() => {
         if (allFlows.length === 0) {
@@ -192,7 +219,6 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
             const updatedFlows = [...prevFlows, newFlow];
             saveAllFlowsToLocaleStorage(updatedFlows);
             setCurrentFlow(newFlow);
-            // TODO: redirect to new flow
             return updatedFlows;
         });
         return newFlowId;
@@ -202,23 +228,68 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         localStorage.setItem(FLOW_STORAGE_KEY, JSON.stringify(flows));
     };
 
-    const runDataThroughFlow = (runType: string, data: any) => {
-        // This function would contain the logic to process the data through the flow's nodes and edges.
+    const updateFlowState = (progress: number) => {
+        setFlowState((prev) => {
+            if (!prev) return prev;
+            return prev.map((step) => {
+                if (step.step < progress) {
+                    return { ...step, state: 'completed' };
+                } else if (step.step === progress) {
+                    return { ...step, state: 'running' };
+                } else {
+                    return { ...step, state: 'pending' };
+                }
+            });
+        });
+    };
+
+    const simulateFlowProgress = useCallback((): Promise<void> => {
+        setFlowState([
+            { step: 0, state: 'pending' },
+            { step: 1, state: 'pending' },
+            { step: 2, state: 'pending' },
+            { step: 3, state: 'pending' },
+            { step: 4, state: 'pending' },
+            { step: 5, state: 'pending' },
+        ]);
+        return new Promise((resolve) => {
+            let progress = 0;
+            updateFlowState(progress);
+
+            const progressIntervals = [200, 200, 200, 200, 1500, 200];
+
+            const runNextStep = () => {
+                progress += 1;
+                updateFlowState(progress);
+
+                if (progress >= 6) {
+                    resolve();
+                } else {
+                    const nextInterval = progressIntervals[progress] || 500;
+                    setTimeout(runNextStep, nextInterval);
+                }
+            };
+
+            setTimeout(runNextStep, progressIntervals[0]);
+        });
+    }, []);
+
+    const runDataThroughFlow = async (runType: string, data: MockDataTypes) => {
         if (runType === 'egrv sak') {
+            setTestFlowOutput(undefined);
+            await simulateFlowProgress();
+            const egrData = data as EgrvSakType;
             console.log('Running data through flow:', data);
-            // Implement the actual flow processing logic here.
+            const title = `${egrData.kommunenavn} kommune - ${egrData.prosjektnavn} gbnr ${egrData.gaardsnummer}/${egrData.bruksnummer} - Grunnerverv`;
             setTestFlowOutput({
                 runType: 'egrv sak',
                 data: {
-                    tittel: `${data.kommunenavn} kommune - ${data.prosjektnavn} gbnr ${data.gaardsnummer}/${data.bruksnummer} - Grunnerverv`,
-                    offentligTittel: 'TEST SAK - gnr. 333 bnr. 4 - Porsgrunn kommune - grunnerverv',
-                    saksansvarlig: 'egil.ballestad@novari.no',
-                    arkivdel:
-                        'https://beta.felleskomponent.no/arkiv/noark/arkivdel/systemid/GRUNNERV',
-                    saksstatus:
-                        'https://beta.felleskomponent.no/arkiv/kodeverk/saksstatus/systemid/R',
-                    administrativEnhet:
-                        'https://beta.felleskomponent.no/arkiv/noark/administrativenhet/systemid/94',
+                    tittel: title,
+                    offentligTittel: title,
+                    saksansvarlig: `'https://api.felleskomponent.no/arkiv/noark/arkivressurs/systemid/${egrData.saksansvarligEpost.split('@')[0]}'`,
+                    arkivdel: '', // 'https://beta.felleskomponent.no/arkiv/noark/arkivdel/systemid/GRUNNERV',
+                    saksstatus: '', // 'https://beta.felleskomponent.no/arkiv/kodeverk/saksstatus/systemid/R',
+                    administrativEnhet: '', // 'https://beta.felleskomponent.no/arkiv/noark/administrativenhet/systemid/94',
                     skjerming: {},
                 },
             });
@@ -227,8 +298,18 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         }
     };
 
+    const getRunlogsByFlowId = (flowId: string): RunlogType[] => {
+        if (flowId === 'demo') {
+            return runlogsForDemo;
+        } else {
+            return [];
+        }
+    };
+
     const contextValue: FlowContextType = {
         currentFlow,
+        inputNode,
+        outputNode,
         initNodes,
         initEdges,
         newNodeId,
@@ -242,6 +323,8 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         runDataThroughFlow,
         testFlowOutput,
         isEditable,
+        getRunlogsByFlowId,
+        flowState,
     };
 
     return <FlowContext.Provider value={contextValue}>{children}</FlowContext.Provider>;

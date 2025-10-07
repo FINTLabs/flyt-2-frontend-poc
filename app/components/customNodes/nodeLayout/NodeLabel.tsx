@@ -31,7 +31,7 @@ export const NodeLabel: React.FC<NodeLabelProps> = ({ label, italic = false, siz
             size={size}
             style={{
                 position: 'absolute',
-                top: -25,
+                top: -35,
                 left: '50%',
                 transform: 'translateX(-50%)',
                 textWrap: 'nowrap',

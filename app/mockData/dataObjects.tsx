@@ -141,7 +141,7 @@ export const eGrvSakMockData: EgrvSakType = {
     seksjonsnummer: '0',
     tittel: 'TEST - E39 Mandal - Lyngdal øst - Grunnerverv - 2222 / 333 / 4, 0, 0, H - Testvei 321 3531 KROKKLEIVA - Navnesen Navn',
     adresse: 'Testvei 321 3531 KROKKLEIVA',
-    saksansvarligEpost: 'hilde.nordeide@vlfk.no',
+    saksansvarligEpost: 'fornavn.etternavn@novari.no',
     sakspartner: {
         navn: 'Navnesen Navn',
         organisasjonsnummer: '07018549519',
