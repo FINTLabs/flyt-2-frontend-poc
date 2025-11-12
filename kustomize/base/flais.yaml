@@ -32,10 +32,6 @@ spec:
     - name: BASE_PATH
       value: path
 
-  url:
-    hostname: flyt.vigoiks.no
-    basePath: path
-
   ingress:
     routes:
       - host: flyt.vigoiks.no
