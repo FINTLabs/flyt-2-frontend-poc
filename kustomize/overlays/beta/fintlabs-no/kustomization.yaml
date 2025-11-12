@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: fintlabs-no
+
+resources:
+  - ../../../base
+
+patches:
+  - patch: |-
+      - op: replace
+        path: "/metadata/labels/app.kubernetes.io~1instance"
+        value: "flyt-2-frontend-poc_fintlabs_no"
+      - op: replace
+        path: "/metadata/labels/fintlabs.no~1org-id"
+        value: "fintlabs.no"
+      - op: replace
+        path: "/spec/orgId"
+        value: "fintlabs.no"
+      - op: replace
+        path: "/spec/env/0/value"
+        value: "/beta/fintlabs-no/v2"
+      - op: replace
+        path: "/spec/ingress/0/path"
+        value: "/beta/fintlabs-no/v2"
+    target:
+      kind: Application
+      name: flyt-2-frontend-poc

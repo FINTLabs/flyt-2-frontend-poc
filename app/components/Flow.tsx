@@ -114,6 +114,7 @@ const Flow = () => {
         [screenToFlowPosition, newNodeId]
     );
 
+    // @ts-ignore
     const onDragStart: DragEventHandler<HTMLDivElement> = (
         event: React.DragEvent<HTMLDivElement>,
         nodeId: string
