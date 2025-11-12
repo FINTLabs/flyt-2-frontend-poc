@@ -1,17 +1,20 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { type Node, type Edge, useUpdateNodeInternals, type XYPosition } from '@xyflow/react';
+import { type Node, type Edge, useUpdateNodeInternals } from '@xyflow/react';
 import {
     allFunctionalNodes,
+    allIntegrationsInputNodes,
+    arkivInstanceOutput,
     defaultPosition,
     getInitialDemoNodes,
-    innerFlowInput,
-    innerFlowOutput,
 } from '~/mockData/nodes';
 import { initDemoEdges } from '~/mockData/edges';
-import type { BaseNodeData } from '~/types/nodeTypes';
+import type { BaseNodeData, CustomNode } from '~/types/nodeTypes';
 import { createAlmostRandomId } from '~/utils/generalUtils';
 import { useParams } from 'react-router';
+import type { ArkivSakType, EgrvSakType, MockDataTypes } from '~/types/mockedDataTypes';
+import type { RunlogType, RunStatusType } from '~/types/generalTypes';
+import { runlogsForDemo } from '~/mockData/runlogs';
 
 const FLOW_STORAGE_KEY = 'fint-flyt';
 const FLOW_ID_PREFIX = 'flyt-id';
@@ -19,7 +22,7 @@ const FLOW_ID_PREFIX = 'flyt-id';
 type LocalStorageFlow = {
     id: string;
     name: string;
-    nodes: Node[];
+    nodes: CustomNode[];
     edges: Edge[];
     createdAt: string;
     updatedAt: string;
@@ -27,17 +30,24 @@ type LocalStorageFlow = {
 };
 
 export interface FlowContextType {
-    initNodes: Node[];
+    initNodes: CustomNode[];
     initEdges: Edge[];
     newNodeId: string | null;
     setNewNodeId: React.Dispatch<React.SetStateAction<string | null>>;
-    getCustomNodeDataById: (id: string) => Node<BaseNodeData>;
+    getCustomNodeDataById: (id: string) => CustomNode;
     currentFlow?: LocalStorageFlow;
-    saveFlow: (flowId: string, nodes: Node[], edges: Edge[]) => void;
-    saveNewFlow: (name: string, nodes: Node[], edges: Edge[]) => void;
+    inputNode?: CustomNode;
+    outputNode?: CustomNode;
+    saveFlow: (flowId: string, nodes: CustomNode[], edges: Edge[]) => void;
+    saveNewFlow: (name: string, nodes: CustomNode[], edges: Edge[]) => string;
     allFlows: LocalStorageFlow[];
     getAllFlows: () => LocalStorageFlow[] | undefined;
     deleteFLow: (flowId: string) => void;
+    runDataThroughFlow: (runType: string, data: MockDataTypes) => Promise<void>;
+    testFlowOutput: { runType: string; data: ArkivSakType } | undefined;
+    isEditable?: boolean;
+    getRunlogsByFlowId: (flowId: string) => RunlogType[];
+    flowState: { step: number; state: RunStatusType }[] | undefined;
 }
 
 const FlowContext = createContext<FlowContextType | undefined>(undefined);
@@ -46,14 +56,33 @@ interface FlowProviderProps {
 }
 
 export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
-    const { flowId: paramsFlowId } = useParams();
+    const { flowId: paramsFlowId, mode } = useParams();
 
     const [currentFlow, setCurrentFlow] = useState<LocalStorageFlow | undefined>(undefined);
+    const isEditable = useMemo(() => mode === 'edit', [mode]);
+    const [flowState, setFlowState] = useState<
+        { step: number; state: RunStatusType }[] | undefined
+    >(undefined);
     const [allFlows, setAllFlows] = useState<LocalStorageFlow[]>([]);
-    const [initNodes, setInitialNodes] = useState<Node[]>([]);
+    const [initNodes, setInitialNodes] = useState<CustomNode[]>([]);
     const [initEdges, setInitialEdges] = useState<Edge[]>([]);
     const [newNodeId, setNewNodeId] = useState<string | null>(null);
+    const [testFlowOutput, setTestFlowOutput] = useState<
+        { runType: string; data: ArkivSakType } | undefined
+    >();
     const updateNodeInternals = useUpdateNodeInternals();
+
+    const inputNode = useMemo(() => {
+        return allIntegrationsInputNodes.find((node) =>
+            currentFlow?.nodes.some((flowNode) => flowNode.type === node.type)
+        );
+    }, [currentFlow]);
+
+    const outputNode = useMemo(() => {
+        return currentFlow?.nodes.find(
+            (flowNode: CustomNode) => flowNode.type === arkivInstanceOutput.type
+        );
+    }, [currentFlow]);
 
     useEffect(() => {
         if (allFlows.length === 0) {
@@ -88,6 +117,9 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
                     setInitialEdges([]);
                     updateNodeInternals([]);
                 }
+            }
+
+            if (mode === 'view') {
             }
         }
     }, [paramsFlowId]);
@@ -127,31 +159,6 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         let newNode = allFunctionalNodes.find((node) => node.id === id);
 
         if (newNode) {
-            /*            if (id === 'operationListInnerFlow') {
-                const parentId = createAlmostRandomId('node-id', id);
-                return [
-                    {
-                        ...newNode,
-                        position: position || defaultPosition,
-                        id: parentId,
-                    },
-                    {
-                        ...innerFlowInput,
-                        parentId,
-                        extent: 'parent',
-                        position: { x: 10, y: 55 },
-                        id: createAlmostRandomId('node-id', 'innerFlowInput'),
-                    },
-                    {
-                        ...innerFlowOutput,
-                        parentId,
-                        extent: 'parent',
-                        position: { x: 170, y: 55 },
-                        id: createAlmostRandomId('node-id', 'innerFlowOutput'),
-                    },
-                ];
-            }*/
-
             return {
                 ...newNode,
                 id: createAlmostRandomId('node-id', id),
@@ -167,7 +174,7 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
     };
 
     const saveFlow = useCallback(
-        (flowId: string, nodes: Node[], edges: Edge[]) => {
+        (flowId: string, nodes: CustomNode[], edges: Edge[]) => {
             setAllFlows((prevFlows) => {
                 const updatedFlows = prevFlows.map((flow) => {
                     if (flow.id === flowId) {
@@ -198,7 +205,7 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         });
     }, []);
 
-    const saveNewFlow = useCallback((name: string, nodes: Node[], edges: Edge[]) => {
+    const saveNewFlow = useCallback((name: string, nodes: CustomNode[], edges: Edge[]): string => {
         const newFlowId = createAlmostRandomId(FLOW_ID_PREFIX, name);
         setAllFlows((prevFlows) => {
             const newFlow: LocalStorageFlow = {
@@ -212,17 +219,97 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
             const updatedFlows = [...prevFlows, newFlow];
             saveAllFlowsToLocaleStorage(updatedFlows);
             setCurrentFlow(newFlow);
-            // TODO: redirect to new flow
             return updatedFlows;
         });
+        return newFlowId;
     }, []);
 
     const saveAllFlowsToLocaleStorage = (flows: LocalStorageFlow[]) => {
         localStorage.setItem(FLOW_STORAGE_KEY, JSON.stringify(flows));
     };
 
+    const updateFlowState = (progress: number) => {
+        setFlowState((prev) => {
+            if (!prev) return prev;
+            return prev.map((step) => {
+                if (step.step < progress) {
+                    return { ...step, state: 'completed' };
+                } else if (step.step === progress) {
+                    return { ...step, state: 'running' };
+                } else {
+                    return { ...step, state: 'pending' };
+                }
+            });
+        });
+    };
+
+    const simulateFlowProgress = useCallback((): Promise<void> => {
+        setFlowState([
+            { step: 0, state: 'pending' },
+            { step: 1, state: 'pending' },
+            { step: 2, state: 'pending' },
+            { step: 3, state: 'pending' },
+            { step: 4, state: 'pending' },
+            { step: 5, state: 'pending' },
+        ]);
+        return new Promise((resolve) => {
+            let progress = 0;
+            updateFlowState(progress);
+
+            const progressIntervals = [200, 200, 200, 200, 1500, 200];
+
+            const runNextStep = () => {
+                progress += 1;
+                updateFlowState(progress);
+
+                if (progress >= 6) {
+                    resolve();
+                } else {
+                    const nextInterval = progressIntervals[progress] || 500;
+                    setTimeout(runNextStep, nextInterval);
+                }
+            };
+
+            setTimeout(runNextStep, progressIntervals[0]);
+        });
+    }, []);
+
+    const runDataThroughFlow = async (runType: string, data: MockDataTypes) => {
+        if (runType === 'egrv sak') {
+            setTestFlowOutput(undefined);
+            await simulateFlowProgress();
+            const egrData = data as EgrvSakType;
+            console.log('Running data through flow:', data);
+            const title = `${egrData.kommunenavn} kommune - ${egrData.prosjektnavn} gbnr ${egrData.gaardsnummer}/${egrData.bruksnummer} - Grunnerverv`;
+            setTestFlowOutput({
+                runType: 'egrv sak',
+                data: {
+                    tittel: title,
+                    offentligTittel: title,
+                    saksansvarlig: `'https://api.felleskomponent.no/arkiv/noark/arkivressurs/systemid/${egrData.saksansvarligEpost.split('@')[0]}'`,
+                    arkivdel: '', // 'https://beta.felleskomponent.no/arkiv/noark/arkivdel/systemid/GRUNNERV',
+                    saksstatus: '', // 'https://beta.felleskomponent.no/arkiv/kodeverk/saksstatus/systemid/R',
+                    administrativEnhet: '', // 'https://beta.felleskomponent.no/arkiv/noark/administrativenhet/systemid/94',
+                    skjerming: {},
+                },
+            });
+        } else {
+            console.warn('Unsupported run type:', runType);
+        }
+    };
+
+    const getRunlogsByFlowId = (flowId: string): RunlogType[] => {
+        if (flowId === 'demo') {
+            return runlogsForDemo;
+        } else {
+            return [];
+        }
+    };
+
     const contextValue: FlowContextType = {
         currentFlow,
+        inputNode,
+        outputNode,
         initNodes,
         initEdges,
         newNodeId,
@@ -233,6 +320,11 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         allFlows,
         getAllFlows,
         deleteFLow,
+        runDataThroughFlow,
+        testFlowOutput,
+        isEditable,
+        getRunlogsByFlowId,
+        flowState,
     };
 
     return <FlowContext.Provider value={contextValue}>{children}</FlowContext.Provider>;

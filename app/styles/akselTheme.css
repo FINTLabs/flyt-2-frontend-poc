@@ -2,7 +2,7 @@
 @import '@navikt/ds-css';
 @import '@xyflow/react/dist/style.css';
 
-[data-theme="novari"]{
+[data-theme='novari'] {
     /* Color Palette */
     --orange-dark: #a61d08;
     --orange-primary: #f76650;
@@ -82,6 +82,7 @@
 html,
 body {
     @apply bg-white;
+    overflow-x: hidden;
     /*
     @apply bg-white dark:bg-gray-950;
     @media (prefers-color-scheme: dark) {
@@ -100,18 +101,84 @@ body {
     background: #6b133d;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     @apply font-sans text-gray-900 dark:text-gray-100;
     color: var(--red-primary);
 }
 
 .navds-table__row--selected,
-.navds-table__row--selected:first-of-type{
+.navds-table__row--selected:first-of-type {
     box-shadow: none;
 }
 
 .navds-table__row--selected :is(.navds-table__header-cell, .navds-table__data-cell),
 .navds-table__row--selected:first-of-type,
-.navds-table__row:has(+ .navds-table__row--selected) :is(.navds-table__header-cell, .navds-table__data-cell){
+.navds-table__row:has(+ .navds-table__row--selected)
+    :is(.navds-table__header-cell, .navds-table__data-cell) {
     border-color: inherit;
+}
+
+.sidebar-flow {
+    width: 20%;
+    max-width: 250px;
+    height: 100%;
+    padding: 15px 0;
+    background: #fff;
+
+    .navds-accordion__header {
+        padding: var(--a-spacing-1);
+        gap: var(--a-spacing-1);
+
+        .navds-accordion__icon-wrapper {
+            svg {
+                height: 1rem;
+            }
+        }
+    }
+
+    .navds-heading--small {
+        font-size: var(--a-font-size-small);
+    }
+}
+
+.sidebar-form {
+    &.input {
+        width: 25%;
+        max-width: 450px;
+    }
+
+    &.output {
+        width: 25%;
+        max-width: 600px;
+        inline-size: 25%;
+        overflow-y: auto;
+
+        .navds-form-summary__value {
+            overflow-wrap: break-word;
+        }
+
+
+        pre {
+            font-size: 0.7rem;
+            line-height: 1rem;
+        }
+    }
+
+    input:focus-visible,
+    textarea:focus-visible {
+        box-shadow: 0 0 0 1px var(--a-border-focus);
+    }
+
+    .navds-form-field {
+        gap: var(--a-space-1);
+    }
+}
+
+.progress-rotation {
+    animation: spin 2s linear infinite;
 }

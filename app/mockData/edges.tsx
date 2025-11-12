@@ -1,12 +1,11 @@
 import type { Edge } from '@xyflow/react';
-import { DataType } from '~/types/datatypes';
 
 export const initDemoEdges: Edge[] = [
     {
         id: 'e-n1-n2a',
         source: 'n1-startNode',
         target: 'n2-openOperation',
-        targetHandle: "a",
+        targetHandle: 'a',
         type: 'step',
     },
     {
@@ -36,7 +35,7 @@ export const initDemoEdges: Edge[] = [
     {
         id: 'e-n2e-n3e',
         source: 'n2-openOperation',
-        sourceHandle: 'e',
+        sourceHandle: 'c',
         target: 'n3-mergeTextOperation',
         targetHandle: 'e',
         type: 'step',
@@ -49,7 +48,7 @@ export const initDemoEdges: Edge[] = [
         targetHandle: 'd',
         type: 'step',
     },
-        {
+    {
         id: 'e-n8a-n3f',
         source: 'n8-skraastrekInput',
         sourceHandle: 'a',
@@ -101,7 +100,7 @@ export const initDemoEdges: Edge[] = [
         source: 'n4-saksansvarligOperation',
         sourceHandle: 'a',
         target: 'n6-createObjectOperation',
-        targetHandle: 'h',
+        targetHandle: 'e',
         type: 'step',
     },
     {
@@ -111,5 +110,5 @@ export const initDemoEdges: Edge[] = [
         target: 'n3-mergeTextOperation',
         targetHandle: 'h',
         type: 'step',
-    }
-]
+    },
+];

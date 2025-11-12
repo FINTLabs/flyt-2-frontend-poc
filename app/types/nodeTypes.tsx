@@ -30,4 +30,4 @@ export type SelectNodeData = BaseNodeData & {
     value: string;
 };
 
-export type CustomNode = Node<BaseNodeData>;
+export type CustomNode = Node<BaseNodeData | InputNodeData | SelectNodeData>;

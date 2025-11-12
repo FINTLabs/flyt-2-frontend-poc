@@ -2,7 +2,13 @@ import { Box, HStack, Tag } from '@navikt/ds-react';
 import type { DataTypeValue } from '~/types/datatypes';
 import React from 'react';
 import DataTypeText from '~/components/icons/DataTypeText';
-import { BulletListIcon, FileIcon, LinkIcon, QuestionmarkIcon } from '@navikt/aksel-icons';
+import {
+    BulletListIcon,
+    FileIcon,
+    QuestionmarkDiamondIcon,
+    LinkIcon,
+    QuestionmarkIcon,
+} from '@navikt/aksel-icons';
 import { getTypeFromCollection, isCollectionType } from '~/utils/nodeHandlers';
 
 type TypeProps = {
@@ -37,7 +43,8 @@ export const TypeTag = ({
                 background="surface-subtle"
                 style={{
                     borderStyle: required ? 'solid' : 'dashed',
-                }}>
+                }}
+            >
                 <TypeSymbol type={type} typeName={typeName} size="small" />
             </Box>
         );
@@ -54,7 +61,10 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
                     lineHeight: '0.9rem',
                     margin: '0 2px',
                     fontSize: '0.7rem',
-                }}>{`{${typeName}}`}</p>
+                }}
+            >
+                {`{${typeName}}`}
+            </p>
         );
     }
     if (isCollectionType(type)) {
@@ -70,5 +80,6 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
     if (type === 'reference') return <LinkIcon fontSize="0.95rem" />;
     if (type === 'undefined') return <QuestionmarkIcon fontSize="0.9rem" />;
     if (type === 'file') return <FileIcon fontSize="0.9rem" />;
+    if (type === 'boolean') return <QuestionmarkDiamondIcon fontSize="0.9rem" />;
     return typeName;
 };

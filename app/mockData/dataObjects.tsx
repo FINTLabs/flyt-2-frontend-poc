@@ -1,13 +1,23 @@
 import { DataType } from '~/types/datatypes';
 import type { HandleData } from '~/types/handleTypes';
+import type {
+    AcosDocumentType,
+    AcosInstanceElementType,
+    AcosInstanceMetadataType,
+    AcosInstanceType,
+    ArkivSakType,
+    EgrvSakspartType,
+    EgrvSakType,
+    MockDataTypes,
+} from '~/types/mockedDataTypes';
 
-export const mockFetchDataContent = (
+export const mockFetchDataContentHandles = (
     dataType: string,
     dataLabel?: string
 ): HandleData[] | undefined => {
+    console.log('mockFetchDataContentHandles', dataType, dataLabel);
     switch (dataType.toLowerCase()) {
         case 'egrv sak':
-            // EgrunnervervSakInstance
             return [
                 { id: 'a', label: 'Kommunenavn', type: DataType.Text, required: true },
                 { id: 'b', label: 'Prosjektnavn', type: DataType.Text, required: true },
@@ -55,7 +65,6 @@ export const mockFetchDataContent = (
                 },
             ];
         case 'egrv sakspart':
-            // EgrunnervervSakInstance
             return [
                 { id: 'a', label: 'Navn', type: DataType.Text, required: true },
                 { id: 'b', label: 'Organisasjonsnummer', type: DataType.Text, required: true },
@@ -91,6 +100,83 @@ export const mockFetchDataContent = (
                     required: true,
                 },
             ];
+        case 'acos vik304':
+            return [
+                {
+                    id: 'a',
+                    type: DataType.File,
+                    label: 'Skjema-PDF',
+                    required: true,
+                },
+                {
+                    id: 'b',
+                    type: DataType.CollectionObject,
+                    typeName: 'Vedlegg',
+                    label: 'Vedlegg',
+                    required: true,
+                },
+                {
+                    id: 'c',
+                    type: DataType.Object,
+                    typeName: 'Innledning',
+                    label: 'Innledning',
+                    required: true,
+                },
+                {
+                    id: 'd',
+                    type: DataType.Object,
+                    typeName: 'Ref',
+                    label: 'Ref',
+                    required: true,
+                },
+            ];
+        case 'innledning':
+            return [
+                {
+                    id: 'a',
+                    type: DataType.Object,
+                    typeName: 'Soeker',
+                    label: 'Om søkeren',
+                    required: true,
+                },
+                {
+                    id: 'b',
+                    type: DataType.Object,
+                    label: 'Om flyttingen',
+                    required: true,
+                },
+                {
+                    id: 'c',
+                    type: DataType.Object,
+                    label: 'Ny adresse',
+                    required: true,
+                },
+            ];
+        case 'ref':
+            return [{ id: 'a', type: DataType.Text, label: 'Ref', required: true }];
+        case 'soeker':
+            return [
+                { id: 'a', type: DataType.Text, label: 'Fødselsnummer', required: true },
+                {
+                    id: 'b',
+                    type: DataType.Text,
+                    label: 'Fnr til avlevering',
+                    required: true,
+                },
+                {
+                    id: 'c',
+                    type: DataType.Text,
+                    label: 'Fødselsdato',
+                    required: true,
+                },
+                { id: 'd', type: DataType.Text, label: 'Fødsel', required: true },
+                { id: 'e', type: DataType.Text, label: 'Fornavn', required: true },
+                { id: 'f', type: DataType.Text, label: 'Etternavn', required: true },
+                { id: 'g', type: DataType.Text, label: 'Adresse', required: true },
+                { id: 'h', type: DataType.Text, label: 'Postnr', required: true },
+                { id: 'i', type: DataType.Text, label: 'Telefonnr', required: true },
+                { id: 'j', type: DataType.Text, label: 'E-post', required: true },
+            ];
         case 'acosinstancemetadata':
             return [
                 { id: 'a', type: DataType.Text, label: 'formId', required: true },
@@ -121,5 +207,94 @@ export const mockFetchDataContent = (
                     required: true,
                 },
             ];
+    }
+};
+
+export const eGrvSakMockData: EgrvSakType = {
+    id: '123testID456',
+    kommunenavn: '2222',
+    prosjektnavn: '215400',
+    gaardsnummer: '333',
+    bruksnummer: '4',
+    seksjonsnummer: '0',
+    tittel: 'TEST - E39 Mandal - Lyngdal øst - Grunnerverv - 2222 / 333 / 4, 0, 0, H - Testvei 321 3531 KROKKLEIVA - Navnesen Navn',
+    adresse: 'Testvei 321 3531 KROKKLEIVA',
+    saksansvarligEpost: 'fornavn.etternavn@novari.no',
+    sakspartner: {
+        navn: 'Navnesen Navn',
+        organisasjonsnummer: '07018549519',
+        epost: 'navn.navnesen@gmail.com',
+        telefon: '12345678',
+        postadresse: 'Testadresse 12',
+        postnummer: '1234',
+        poststed: 'Oslo',
+    },
+};
+
+export const mockDataContent = (dataType: string): MockDataTypes => {
+    switch (dataType.toLowerCase()) {
+        case 'egrv sak':
+            return eGrvSakMockData;
+        case 'arkiv sak':
+            return {
+                tittel: '',
+                offentligTittel: '',
+                saksmappetype: '',
+                administrativEnhet: '',
+                saksansvarlig: '',
+                skjerming: {
+                    skjermingshjemmel: '',
+                    skjermingskode: '',
+                    skjermingsfrist: '',
+                    begrunnelse: '',
+                },
+                arkivdel: '',
+                saksstatus: '',
+                parter: [],
+            } as ArkivSakType;
+        case 'egrv sakspart':
+            return {
+                id: '',
+                navn: '',
+                organisasjonsnummer: '',
+                epost: '',
+                telefon: '',
+                postadresse: '',
+                postnummer: '',
+                poststed: '',
+            } as EgrvSakspartType;
+        case 'acos':
+            return {
+                metadata: {
+                    formId: '',
+                    instanceId: '',
+                    instanceUri: '',
+                },
+                formPdfBase64: '',
+                elements: [],
+                documents: [],
+            } as AcosInstanceType;
+        case 'acosinstancemetadata':
+            return {
+                formId: '',
+                instanceId: '',
+                instanceUri: '',
+            } as AcosInstanceMetadataType;
+        case 'acosinstanceelement':
+            return {
+                id: '',
+                value: '',
+                hashCode: 0,
+            } as AcosInstanceElementType;
+        case 'acosdocument':
+            return {
+                name: '',
+                encoding: '',
+                filinnhold: '',
+                mediatype: '',
+            } as AcosDocumentType;
+        case 'object':
+        default:
+            return undefined;
     }
 };

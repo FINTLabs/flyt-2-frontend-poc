@@ -11,12 +11,12 @@ import {
     ActionMenu,
 } from '@navikt/ds-react';
 import {
-    ArrowRightIcon,
-    CogRotationIcon, ExpandIcon,
-    MenuElipsisVerticalCircleIcon,
+    ExpandIcon,
     MenuElipsisVerticalIcon,
     PencilIcon,
-    PlusIcon, TasklistIcon,
+    PlusIcon,
+    TasklistIcon,
+    TestFlaskIcon,
     TrashIcon,
 } from '@navikt/aksel-icons';
 import { Link } from 'react-router';
@@ -29,7 +29,6 @@ export default function FlowIndex() {
         getAllFlows();
     }, []);
 
-    console.log(allFlows);
     return (
         <Page.Block gutters>
             <VStack paddingBlock="8" gap="4">
@@ -42,7 +41,7 @@ export default function FlowIndex() {
                     </BodyShort>
                     <Button
                         as={Link}
-                        to={'/flow/edit/new'}
+                        to={'/flow/new'}
                         size="small"
                         iconPosition="right"
                         icon={<PlusIcon title="Opprett ny" fontSize="2rem" />}>
@@ -91,18 +90,27 @@ export default function FlowIndex() {
                                                         icon={<ExpandIcon />}
                                                         as={Link}
                                                         to={`/flow/view/${flow.id}`}>
-                                                        Åpne flyt
+                                                        Åpne
                                                     </ActionMenu.Item>
                                                     <ActionMenu.Item
                                                         disabled={flow.id === 'demo'}
                                                         icon={<PencilIcon />}
                                                         as={Link}
                                                         to={`/flow/edit/${flow.id}`}>
-                                                        Rediger flyt
+                                                        Rediger
+                                                    </ActionMenu.Item>
+                                                    <ActionMenu.Item
+                                                        icon={<TestFlaskIcon />}
+                                                        disabled={flow.id !== 'demo'}
+                                                        as={Link}
+                                                        to={`/flow/run/${flow.id}`}>
+                                                        Test
                                                     </ActionMenu.Item>
                                                     <ActionMenu.Item
                                                         icon={<TasklistIcon />}
-                                                        onSelect={() => {}}>
+                                                        disabled={flow.id !== 'demo'}
+                                                        as={Link}
+                                                        to={`/flow/log/${flow.id}`}>
                                                         Se kjørelogg
                                                     </ActionMenu.Item>
                                                 </ActionMenu.Group>

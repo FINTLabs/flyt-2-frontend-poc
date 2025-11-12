@@ -8,13 +8,14 @@ import {
     useNodesData,
     useReactFlow,
 } from '@xyflow/react';
-import { BodyShort, Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
+import { Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 import { getNodeMinHeight, getNodeIcon } from '~/utils/nodeHandlers';
-import type { BaseNodeData } from '~/types/nodeTypes';
+import type { BaseNodeData, CustomNode } from '~/types/nodeTypes';
 import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
 import { MinusIcon, PlusIcon } from '@navikt/aksel-icons';
 import { DataType } from '~/types/datatypes';
+import { useFlow } from '~/context/flowContext';
 
 type JoinTextOperationNodeType = Node<BaseNodeData, 'operationJoinText'>;
 
@@ -24,6 +25,7 @@ export const JoinTextOperationNode = memo(
             sources: data.sourceHandles?.length,
             targets: data.targetHandles?.length,
         });
+        const { flowProgress, currentFlow } = useFlow();
         const reactFlow = useReactFlow();
 
         const [outputText, setOutputText] = useState<{ inputType: string; text: string }[]>([]);
@@ -40,17 +42,13 @@ export const JoinTextOperationNode = memo(
                     .filter(Boolean),
             [connections]
         );
-        const connectedNodesData = useNodesData<Node<BaseNodeData>>(connectionsNodeIds);
+        const connectedNodesData = useNodesData<CustomNode>(connectionsNodeIds);
 
         const handleAddHandle = useCallback(() => {
-            console.log('Add handle');
-            console.log('data.targetHandles', data.targetHandles);
-
             const newHandle = {
                 id: `handle-${data.targetHandles?.length || 0}`,
                 type: DataType.Text,
             };
-            console.log('New handle', newHandle);
             reactFlow.updateNodeData(id, {
                 targetHandles: [...(data.targetHandles || []), newHandle],
             });
@@ -60,7 +58,6 @@ export const JoinTextOperationNode = memo(
             console.log('Remove handle');
         }, [data.targetHandles]);
 
-        // TODO: add joinedText to a tooltiop in stead
         useEffect(() => {
             if (connectedNodesData && connectionsNodeIds.length > 0) {
                 const newOutputText = connections
@@ -84,7 +81,11 @@ export const JoinTextOperationNode = memo(
         }, [connectedNodesData, connectionsNodeIds]);
 
         return (
-            <BaseNodeWrapper label={data.label} minHeight={minHeight.cssString}>
+            <BaseNodeWrapper
+                label={data.label}
+                minHeight={minHeight.cssString}
+                currentStep={currentFlow?.id === 'demo' ? 3 : undefined}
+            >
                 <NodeToolbar position={Position.Bottom} align={'start'}>
                     <HStack gap="2">
                         <Button
@@ -107,8 +108,9 @@ export const JoinTextOperationNode = memo(
                         padding={'1'}
                         borderRadius={'small'}
                         borderWidth={'1'}
-                        borderColor={'border-subtle'}>
-                        <Detail size={'small'} >
+                        borderColor={'border-subtle'}
+                    >
+                        <Detail size={'small'}>
                             {outputText.map((text, index) =>
                                 text.inputType === 'variableInput' ? (
                                     <span key={index}>{text.text}</span>
@@ -125,21 +127,20 @@ export const JoinTextOperationNode = memo(
                     handles={data.targetHandles}
                     type={'target'}
                     isConnectable={isConnectable}
-                    nodeHeight={minHeight.number}
                 />
                 <VStack
                     align={'center'}
                     justify={'center'}
                     gap="1"
-                    padding={"1"}
-                    style={{ minHeight: minHeight.cssString }}>
+                    padding={'1'}
+                    style={{ minHeight: minHeight.cssString }}
+                >
                     {data.iconType && getNodeIcon(data.iconType)}
                 </VStack>
                 <HandlesWithLabel
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
-                    nodeHeight={minHeight.number}
                 />
             </BaseNodeWrapper>
         );
