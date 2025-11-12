@@ -93,7 +93,7 @@ jobs:
         uses: azure/k8s-bake@v3
         with:
           renderEngine: 'kustomize'
-          kustomizationPath: 'kustomize/overlays/${{ env.ORG}}/${{ steps.environment.outputs.result }}'
+          kustomizationPath: 'kustomize/overlays/${{ steps.environment.outputs.result }}/${{ env.ORG }}'
         id: bake
 
       - uses: azure/login@v2
