@@ -1,0 +1,40 @@
+apiVersion: fintlabs.no/v1alpha1
+kind: Application
+metadata:
+  name: flyt-2-frontend-poc
+  namespace: fintlabs-no
+  labels:
+    app.kubernetes.io/name: flyt-2-frontend-poc
+    app.kubernetes.io/instance: flyt-2-frontend-poc_fintlabs_no
+    app.kubernetes.io/version: latest
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/part-of: fint-flyt
+    fintlabs.no/team: flyt
+    fintlabs.no/org-id: fintlabs.no
+spec:
+  orgId: fintlabs.no
+
+  replicas: 1
+  port: 8000
+  image: ghcr.io/fintlabs/flyt-2-frontend-poc:sha-0000000
+  imagePullPolicy: Always
+  restartPolicy: Always
+
+  resources:
+    limits:
+      memory: "64Mi"
+      cpu: "25m"
+    requests:
+      memory: "40Mi"
+      cpu: "10m"
+
+  env:
+    - name: BASE_PATH
+      value: path
+
+  ingress:
+    routes:
+      - host: flyt.vigoiks.no
+        path: path
+    middlewares:
+      - fint-flyt-auth-forward-sso
