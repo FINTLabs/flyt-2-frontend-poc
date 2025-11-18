@@ -9,6 +9,7 @@ import {
 
 import type { Route } from './+types/root';
 import './styles';
+import allStyles from './styles/styles.css?url';
 import { Page } from '@navikt/ds-react';
 import { AppBar } from '~/components/layout/AppBar';
 import Footer from '~/components/layout/Footer';
@@ -39,6 +40,7 @@ export const links: Route.LinksFunction = () => [
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
     },
+    { rel: 'stylesheet', href: allStyles },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
