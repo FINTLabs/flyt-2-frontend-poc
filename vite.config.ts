@@ -6,7 +6,15 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig(({ mode }) => {
     return {
         plugins: [tailwindcssVite(), reactRouter(), tsconfigPaths()],
-        base: '',
+        base: './',
+        experimental: {
+            renderBuiltUrl(filename: string, { type }: { type: "public" | "asset" }) {
+                if (type === "asset") {
+                    return `{{ .Base }}/${filename}`;
+                }
+                return filename;
+            },
+        }
     }
 });
 
