@@ -19,6 +19,14 @@ spec:
   restartPolicy: Always
   orgId: fintlabs.no
 
+  resources:
+    limits:
+      memory: "64Mi"
+      cpu: "25m"
+    requests:
+      memory: "40Mi"
+      cpu: "10m"
+
   env:
     - name: BASE_PATH
       value: path
