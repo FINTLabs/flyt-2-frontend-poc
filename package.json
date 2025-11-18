@@ -30,6 +30,7 @@
     "@types/node": "^24",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "tailwindcss": "^4.1.17",
     "prettier": "^3.5.3",
     "typescript": "^5.8.3",
     "vite": "^6.3.3",
