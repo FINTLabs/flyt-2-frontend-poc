@@ -1,14 +1,17 @@
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcssVite from "@tailwindcss/vite";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-const BASE_PATH = process.env.BASE_PATH
-console.log("=== BASE_PATH ====", BASE_PATH);
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), '')
 
-export default defineConfig({
-  plugins: [tailwindcssVite(), reactRouter(), tsconfigPaths()],
-    base: `${process.env.APP_PORT}/`,
+    console.log("=== defineConfig env ====", env.BASE_PATH);
+
+    return {
+        plugins: [tailwindcssVite(), reactRouter(), tsconfigPaths()],
+        base: `${env.BASE_PATH}/`,
+    }
 });
 
 
