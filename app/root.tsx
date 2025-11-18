@@ -9,7 +9,9 @@ import {
 
 import type { Route } from './+types/root';
 import './styles';
-import allStyles from './styles/styles.css?url';
+import akselTheme from './styles/akselTheme.css?url';
+import reactFlowTheme from './styles/reactFlowTheme.css?url';
+import flowStyles from './styles/flowStyles.css?url';
 import { Page } from '@navikt/ds-react';
 import { AppBar } from '~/components/layout/AppBar';
 import Footer from '~/components/layout/Footer';
@@ -40,7 +42,9 @@ export const links: Route.LinksFunction = () => [
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
     },
-    { rel: 'stylesheet', href: allStyles },
+    { rel: 'stylesheet', href: akselTheme },
+    { rel: 'stylesheet', href: reactFlowTheme },
+    { rel: 'stylesheet', href: flowStyles },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
