@@ -18,7 +18,7 @@ patches:
         value: "fintlabs.no"
       - op: replace
         path: "/spec/env/0/value"
-        value: "/beta/fintlabs-no/v2"
+        value: "/beta/fintlabs-no/v2/"
       - op: replace
         path: "/spec/ingress/routes/0/path"
         value: "/beta/fintlabs-no/v2"
