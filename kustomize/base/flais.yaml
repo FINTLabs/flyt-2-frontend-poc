@@ -21,7 +21,7 @@ spec:
 
   env:
     - name: BASE_PATH
-      value: path
+      value: "/beta/fintlabs-no/v2"
 
   ingress:
     routes:
