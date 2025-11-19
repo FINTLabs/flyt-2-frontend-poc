@@ -4,17 +4,11 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(({ mode }) => {
+    console.log("=== BASE_PATH", process.env.BASE_PATH);
+
     return {
         plugins: [tailwindcssVite(), reactRouter(), tsconfigPaths()],
-        base: './',
-        experimental: {
-            renderBuiltUrl(filename: string, { type }: { type: "public" | "asset" }) {
-                if (type === "asset") {
-                    return `{{ .Base }}/${filename}`;
-                }
-                return filename;
-            },
-        }
+        base: '',
     }
 });
 
