@@ -1,9 +1,12 @@
+ARG BASE_PATH=/
+
 FROM node:22.12.0-alpine AS build
 WORKDIR /app
+ENV BASE_PATH=$BASE_PATH
 COPY package*.json ./
 RUN npm ci --omit=dev
 COPY . .
-RUN npm run build
+RUN BASE_PATH=$BASE_PATH npm run build
 
 FROM node:22.12.0-alpine
 WORKDIR /app
