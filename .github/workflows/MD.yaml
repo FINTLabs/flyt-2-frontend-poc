@@ -25,28 +25,7 @@ env:
   ORG: ${{ inputs.org }}
 
 jobs:
-  install:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: "npm"
-
-      - name: Cache Node.js modules
-        uses: actions/cache@v4
-        id: node_modules
-        with:
-          path: ./node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
-
-      - run: npm ci --ignore-scripts
-        if: steps.node_modules.outputs.cache-hit != 'true'
-
   build-and-deploy:
-    needs: [ install ]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -80,15 +59,6 @@ jobs:
             return `secrets.AKS_${e}_FINT_GITHUB`
           result-encoding: string
 
-      - uses: actions/checkout@v5
-        name: NPM build
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: "npm"
-      - run: npm ci
-      - run: 'BASE_PATH=/${{ steps.environment.outputs.result }}/${{ env.ORG }}/v2 npm run build'
-
       - run: |
           echo "Cluster: $CLUSTER_NAME"
           echo "Resource group: ${{ steps.rg.outputs.result }}"
@@ -119,6 +89,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BASE_PATH=/${{ steps.environment.outputs.result }}/${{ env.ORG }}/v2
 
       - name: Bake manifests with Kustomize
         uses: azure/k8s-bake@v3
