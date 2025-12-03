@@ -25,7 +25,28 @@ env:
   ORG: ${{ inputs.org }}
 
 jobs:
-  cd:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
+        id: node_modules
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}
+
+      - run: npm ci --ignore-scripts
+        if: steps.node_modules.outputs.cache-hit != 'true'
+
+  build-and-deploy:
+    needs: [ install ]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -49,6 +70,7 @@ jobs:
             const a = '${{ inputs.cluster }}'.split('-')
             return `${a[1]}`
           result-encoding: string
+
       - uses: actions/github-script@v8
         name: Get auth
         id: auth
@@ -57,6 +79,15 @@ jobs:
             const e = '${{ steps.environment.outputs.result }}'.toUpperCase()
             return `secrets.AKS_${e}_FINT_GITHUB`
           result-encoding: string
+
+      - uses: actions/checkout@v5
+        name: NPM build
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: "npm"
+      - run: npm ci
+      - run: 'BASE_PATH=/${{ steps.environment.outputs.result }}/${{ env.ORG }}/v2 npm run build'
 
       - run: |
           echo "Cluster: $CLUSTER_NAME"
