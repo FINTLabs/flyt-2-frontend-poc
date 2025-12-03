@@ -5,7 +5,7 @@ WORKDIR /app
 ARG BASE_PATH
 ENV BASE_PATH=$BASE_PATH
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm ci
 COPY . .
 RUN npm run build
 
