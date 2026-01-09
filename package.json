@@ -5,6 +5,7 @@
   "engines": {
     "node": ">=22.12.0"
   },
+  "proxy": "http://localhost:8080",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
@@ -22,6 +23,7 @@
     "isbot": "^5.1.27",
     "react": "19.2.1",
     "react-dom": "19.2.1",
+    "react-hook-form": "^7.70.0",
     "react-router": "7.10.1"
   },
   "devDependencies": {
