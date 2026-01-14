@@ -1,4 +1,4 @@
-import type { HandleData } from '~/types/handleTypes';
+import type { HandleDataOld } from '~/types/handleTypes';
 import {
     type Node,
     type NodeConnection,
@@ -9,20 +9,20 @@ import {
     useReactFlow,
 } from '@xyflow/react';
 import React, { memo, useEffect, useState } from 'react';
-import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
+import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
 import { BodyShort, HStack } from '@navikt/ds-react';
-import { TypeTag } from '~/components/macros/TypeTag';
-import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
-import { DataType, type DataTypeValue } from '~/types/datatypes';
-import { getCollectionTypeFromType } from '~/utils/nodeHandlers';
+import { TypeTagOld } from '~/components/macros/TypeTagOld';
+import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
+import { DataTypeOld, type DataTypeValue } from '~/demo/types/datatypes';
+import { getCollectionTypeFromType } from '~/demo/utils/nodeHandlers';
 
 type InnerFlowDataNodeData = {
     label: string;
     type: DataTypeValue;
     typeName: string;
     iconType?: string;
-    sourceHandles?: HandleData[];
-    targetHandles?: HandleData[];
+    sourceHandles?: HandleDataOld[];
+    targetHandles?: HandleDataOld[];
 };
 
 type InnerFlowDataNodeType = Node<InnerFlowDataNodeData, 'innerFlowInput' | 'innerFlowOutput'>;
@@ -49,11 +49,11 @@ export const InnerFlowDataNode = memo(
         }, [targetConnections]);
 
         useEffect(() => {
-            if (!isInput && targetEdge && data.type === DataType.Undefined) {
+            if (!isInput && targetEdge && data.type === DataTypeOld.Undefined) {
                 const objectDefinitionNode = getNode(targetEdge.source)?.data;
                 if (objectDefinitionNode) {
                     console.log('objectDefinitionNode: ', objectDefinitionNode);
-                    const incomingObjectHandle: HandleData | undefined =
+                    const incomingObjectHandle: HandleDataOld | undefined =
                         objectDefinitionNode.sourceHandles
                             ? Object.values(objectDefinitionNode.sourceHandles).find(
                                   (h) => h.id === targetEdge.sourceHandle
@@ -99,13 +99,13 @@ export const InnerFlowDataNode = memo(
         }, [targetEdge]);
 
         return (
-            <BaseNodeWrapper>
+            <BaseNodeWrapperOld>
                 <HStack align={'center'} gap="1">
-                    <TypeTag type={data.type} typeName={data.typeName} />
+                    <TypeTagOld type={data.type} typeName={data.typeName} />
                     <BodyShort size={'small'}>{data.label}</BodyShort>
                 </HStack>
                 {data.sourceHandles?.length && (
-                    <HandlesWithLabel
+                    <HandlesWithLabelOld
                         handles={data.sourceHandles}
                         type={handleType}
                         isConnectable={isConnectable}
@@ -113,14 +113,14 @@ export const InnerFlowDataNode = memo(
                     />
                 )}
                 {data.targetHandles?.length && (
-                    <HandlesWithLabel
+                    <HandlesWithLabelOld
                         handles={data.targetHandles}
                         type={handleType}
                         isConnectable={isConnectable}
                         hideLabels={true}
                     />
                 )}
-            </BaseNodeWrapper>
+            </BaseNodeWrapperOld>
         );
     }
 );

@@ -1,26 +1,28 @@
 import { Handle, Position } from '@xyflow/react';
 import React, { useMemo } from 'react';
-import { Detail, HStack } from '@navikt/ds-react';
+import { BodyShort, Detail, HStack, VStack } from '@navikt/ds-react';
 import { calculateHandlePosition, measureTextWidthOld } from '~/demo/utils/nodeHandlers';
-import type { HandleData } from '~/types/flow/edges';
+import { HANDLE_HEIGHT_DEMO } from '~/demo/mockData/constants';
+import type { HandleData, HandlesWithCategories } from '~/types/flow/edges';
 import { getValueTypeSymbolWidth } from '~/utils/dataTypeUtils';
 import { TypeTag } from '~/components/macros/TypeTag';
-import { HANDLE_HEIGHT } from '~/utils/constants';
 
 export type MultipleHandlesWithLabelProps = {
-    handles?: HandleData[];
+    handles?: HandlesWithCategories;
     type: 'target' | 'source';
     isConnectable: boolean;
     x?: number;
     y?: number;
     hideLabels?: boolean;
+    totalItems: number;
 };
 
-export const HandlesWithLabel = ({
+export const MetadataHandles = ({
     handles,
     type,
     isConnectable,
     hideLabels = false,
+    totalItems,
 }: MultipleHandlesWithLabelProps) => {
     if (!handles?.length) return null;
 
@@ -29,36 +31,63 @@ export const HandlesWithLabel = ({
             {handles.map((handle, index) => {
                 const transform =
                     type === 'target'
-                        ? handles.length > 1
+                        ? totalItems > 1
                             ? 'translateX(-100%)'
                             : 'translate(-100%, -50%)'
-                        : handles.length > 1
+                        : totalItems > 1
                           ? 'translateX(100%)'
                           : 'translate(100%, -50%)';
 
-                const handlePosition = calculateHandlePosition(index, handles.length);
-
-                if (hideLabels) {
+                const handlePosition = calculateHandlePosition(index, totalItems);
+                if ('id' in handle) {
                     return (
-                        <Handle
+                        <MetadataHandleWithLabel
                             key={handle.id}
-                            id={handle.id}
+                            handle={handle}
                             type={type}
-                            position={type === 'target' ? Position.Left : Position.Right}
                             isConnectable={isConnectable}
+                            transform={transform}
+                            handlePosition={handlePosition}
                         />
                     );
+                } else if ('displayName' in handle) {
+                    return (
+                        <>
+                            <BodyShort
+                                key={handle.displayName}
+                                size={'small'}
+                                style={{
+                                    position: 'absolute',
+                                    transform: transform,
+                                    top: handlePosition,
+                                    padding: '2px',
+                                    right: type === 'source' ? '-5px' : undefined,
+                                    left: type === 'target' ? '-5px' : undefined,
+                                }}
+                            >
+                                {handle.displayName}
+                            </BodyShort>
+                            {handle.handles.map((categoryHandle, categoryIndex) => {
+                                const categoryHandlePosition = calculateHandlePosition(
+                                    index + categoryIndex + 1,
+                                    totalItems
+                                );
+
+                                return (
+                                    <MetadataHandleWithLabel
+                                        key={categoryHandle.id}
+                                        handle={categoryHandle}
+                                        type={type}
+                                        isConnectable={isConnectable}
+                                        transform={transform}
+                                        handlePosition={categoryHandlePosition}
+                                        paddingFromNode={'-15px'}
+                                    />
+                                );
+                            })}
+                        </>
+                    );
                 }
-                return (
-                    <HandleWithLabel
-                        key={handle.id}
-                        handle={handle}
-                        type={type}
-                        isConnectable={isConnectable}
-                        transform={transform}
-                        handlePosition={handlePosition}
-                    />
-                );
             })}
         </>
     );
@@ -70,14 +99,16 @@ export type HandleWithLabelProps = {
     isConnectable: boolean;
     transform: string;
     handlePosition: string;
+    paddingFromNode?: string;
 };
 
-const HandleWithLabel = ({
+const MetadataHandleWithLabel = ({
     handle,
     type,
     isConnectable,
     transform,
     handlePosition,
+    paddingFromNode = '-5px',
 }: HandleWithLabelProps) => {
     const memorizedHandleWidth = useMemo(() => {
         const typeTagWidth = getValueTypeSymbolWidth(handle.type, handle.typeName);
@@ -95,15 +126,15 @@ const HandleWithLabel = ({
             style={{
                 top: handlePosition,
                 width: memorizedHandleWidth,
-                height: HANDLE_HEIGHT,
+                height: HANDLE_HEIGHT_DEMO,
                 padding: '2px',
                 zIndex: 2,
                 backgroundColor: 'var(--a-bg-default)',
                 borderWidth: '1px',
                 borderRadius: '4px',
                 borderColor: 'var(--a-border-subtle)',
-                right: type === 'source' ? '-5px' : undefined,
-                left: type === 'target' ? '-5px' : undefined,
+                right: type === 'source' ? paddingFromNode : undefined,
+                left: type === 'target' ? paddingFromNode : undefined,
                 transform: transform,
                 textAlign: 'left',
                 alignContent: 'center',

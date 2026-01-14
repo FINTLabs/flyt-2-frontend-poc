@@ -57,3 +57,5 @@ export enum ValueType {
     COLLECTION = 'COLLECTION',
     VALUE_CONVERTING = 'VALUE_CONVERTING',
 }
+
+export type ValueTypeValue = `${ValueType}`;

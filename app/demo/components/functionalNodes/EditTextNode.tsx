@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import { type Node, type NodeProps } from '@xyflow/react';
 import { VStack } from '@navikt/ds-react';
-import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
-import { getNodeMinHeight, getNodeIcon } from '~/utils/nodeHandlers';
+import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
+import { getNodeMinHeight, getNodeIcon } from '~/demo/utils/nodeHandlers';
 import type { BaseNodeData } from '~/types/nodeTypes';
-import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
+import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
 
 type JoinTextOperationNodeType = Node<BaseNodeData, 'operationJoinText'>;
 
@@ -16,8 +16,8 @@ export const EditTextNode = memo(
         });
 
         return (
-            <BaseNodeWrapper label={data.label} minHeight={minHeight.cssString}>
-                <HandlesWithLabel
+            <BaseNodeWrapperOld label={data.label} minHeight={minHeight.cssString}>
+                <HandlesWithLabelOld
                     handles={data.targetHandles}
                     type={'target'}
                     isConnectable={isConnectable}
@@ -27,15 +27,16 @@ export const EditTextNode = memo(
                     justify={'center'}
                     gap="1"
                     padding={'1'}
-                    style={{ minHeight: minHeight.cssString }}>
+                    style={{ minHeight: minHeight.cssString }}
+                >
                     {data.iconType && getNodeIcon(data.iconType)}
                 </VStack>
-                <HandlesWithLabel
+                <HandlesWithLabelOld
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
                 />
-            </BaseNodeWrapper>
+            </BaseNodeWrapperOld>
         );
     }
 );

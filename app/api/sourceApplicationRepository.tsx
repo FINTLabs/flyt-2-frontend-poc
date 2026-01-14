@@ -1,5 +1,5 @@
 import { getData } from '~/api/apiAdapter';
-import type { IIntegrationMetadata } from '~/types/data/integration';
+import type { IInstanceMetadataContent, IIntegrationMetadata } from '~/types/data/integration';
 
 export const getMetadataForSourceApplications = (
     request: Request,
@@ -9,4 +9,11 @@ export const getMetadataForSourceApplications = (
     return getData<Record<number, IIntegrationMetadata[]>>(request, '/api/intern/metadata', {
         params: { kildeapplikasjonIds: ids, bareSisteVersjoner: onlyLastestVersion },
     });
+};
+
+export const getInstanceElementMetadataById = (request: Request, metadataId: string) => {
+    return getData<IInstanceMetadataContent>(
+        request,
+        `/api/intern/metadata/${metadataId}/instans-metadata`
+    );
 };

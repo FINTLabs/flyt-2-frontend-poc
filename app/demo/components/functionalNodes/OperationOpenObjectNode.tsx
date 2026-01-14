@@ -8,19 +8,19 @@ import {
     type NodeConnection,
 } from '@xyflow/react';
 import { VStack } from '@navikt/ds-react';
-import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
-import { getNodeIcon, getNodeMinHeight } from '~/utils/nodeHandlers';
-import type { HandleData } from '~/types/handleTypes';
-import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
-import { mockFetchDataContentHandles } from '~/mockData/dataObjects';
-import { DataType } from '~/types/datatypes';
+import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
+import { getNodeIcon, getNodeMinHeight } from '~/demo/utils/nodeHandlers';
+import type { HandleDataOld } from '~/types/handleTypes';
+import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
+import { mockFetchDataContentHandles } from '~/demo/mockData/dataObjects';
+import { DataTypeOld } from '~/demo/types/datatypes';
 import { useFlow } from '~/context/flowContext';
 
 type OperationObjectNodeData = {
     label: string;
     iconType?: string;
-    sourceHandles?: HandleData[];
-    targetHandles?: HandleData[];
+    sourceHandles?: HandleDataOld[];
+    targetHandles?: HandleDataOld[];
 };
 
 type OperationNodeType = Node<OperationObjectNodeData, 'openObject' | 'createObject'>;
@@ -31,7 +31,7 @@ export const OperationOpenObjectNode = memo(
             sources: data.sourceHandles?.length,
             targets: data.targetHandles?.length,
         });
-        const { flowProgress, currentFlow } = useFlow();
+        const { currentFlow } = useFlow();
 
         const isOpenObject = useMemo(() => type === 'openObject', [type]);
 
@@ -72,7 +72,7 @@ export const OperationOpenObjectNode = memo(
                         label: isOpenObject
                             ? incomingObjectHandle.label
                             : (outgoingObjectHandle.label ?? objectDefinitionNode.label),
-                        type: DataType.Object,
+                        type: DataTypeOld.Object,
                         typeName: isOpenObject
                             ? incomingObjectHandle.typeName
                             : (outgoingObjectHandle.typeName ?? objectDefinitionNode.typeName),
@@ -99,12 +99,12 @@ export const OperationOpenObjectNode = memo(
         }, [edge]);
 
         return (
-            <BaseNodeWrapper
+            <BaseNodeWrapperOld
                 label={data.label}
                 minHeight={minHeight.cssString}
                 currentStep={currentFlow?.id === 'demo' ? 1 : undefined}
             >
-                <HandlesWithLabel
+                <HandlesWithLabelOld
                     handles={data.targetHandles}
                     type={'target'}
                     isConnectable={isOpenObject ? connections.length < 1 : isConnectable}
@@ -118,12 +118,12 @@ export const OperationOpenObjectNode = memo(
                 >
                     {data.iconType && getNodeIcon(data.iconType)}
                 </VStack>
-                <HandlesWithLabel
+                <HandlesWithLabelOld
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={!isOpenObject ? connections.length < 1 : isConnectable}
                 />
-            </BaseNodeWrapper>
+            </BaseNodeWrapperOld>
         );
     }
 );

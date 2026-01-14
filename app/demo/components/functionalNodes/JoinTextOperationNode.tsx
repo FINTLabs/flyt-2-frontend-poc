@@ -9,12 +9,12 @@ import {
     useReactFlow,
 } from '@xyflow/react';
 import { Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
-import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
-import { getNodeMinHeight, getNodeIcon } from '~/utils/nodeHandlers';
-import type { BaseNodeData, CustomNode } from '~/types/nodeTypes';
-import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
+import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
+import { getNodeMinHeight, getNodeIcon } from '~/demo/utils/nodeHandlers';
+import type { BaseNodeData, CustomNodeOld } from '~/types/nodeTypes';
+import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
 import { MinusIcon, PlusIcon } from '@navikt/aksel-icons';
-import { DataType } from '~/types/datatypes';
+import { DataTypeOld } from '~/demo/types/datatypes';
 import { useFlow } from '~/context/flowContext';
 
 type JoinTextOperationNodeType = Node<BaseNodeData, 'operationJoinText'>;
@@ -42,12 +42,12 @@ export const JoinTextOperationNode = memo(
                     .filter(Boolean),
             [connections]
         );
-        const connectedNodesData = useNodesData<CustomNode>(connectionsNodeIds);
+        const connectedNodesData = useNodesData<CustomNodeOld>(connectionsNodeIds);
 
         const handleAddHandle = useCallback(() => {
             const newHandle = {
                 id: `handle-${data.targetHandles?.length || 0}`,
-                type: DataType.Text,
+                type: DataTypeOld.Text,
             };
             reactFlow.updateNodeData(id, {
                 targetHandles: [...(data.targetHandles || []), newHandle],
@@ -81,7 +81,7 @@ export const JoinTextOperationNode = memo(
         }, [connectedNodesData, connectionsNodeIds]);
 
         return (
-            <BaseNodeWrapper
+            <BaseNodeWrapperOld
                 label={data.label}
                 minHeight={minHeight.cssString}
                 currentStep={currentFlow?.id === 'demo' ? 3 : undefined}
@@ -123,7 +123,7 @@ export const JoinTextOperationNode = memo(
                         </Detail>
                     </Box>
                 </NodeToolbar>
-                <HandlesWithLabel
+                <HandlesWithLabelOld
                     handles={data.targetHandles}
                     type={'target'}
                     isConnectable={isConnectable}
@@ -137,12 +137,12 @@ export const JoinTextOperationNode = memo(
                 >
                     {data.iconType && getNodeIcon(data.iconType)}
                 </VStack>
-                <HandlesWithLabel
+                <HandlesWithLabelOld
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
                 />
-            </BaseNodeWrapper>
+            </BaseNodeWrapperOld>
         );
     }
 );

@@ -9,14 +9,14 @@ import {
     NodeResizeControl,
 } from '@xyflow/react';
 import { VStack } from '@navikt/ds-react';
-import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
-import { getNodeIcon, getNodeMinHeight } from '~/utils/nodeHandlers';
-import type { HandleData } from '~/types/handleTypes';
-import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
-import { DataType } from '~/types/datatypes';
+import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
+import { getNodeIcon, getNodeMinHeight } from '~/demo/utils/nodeHandlers';
+import type { HandleDataOld } from '~/types/handleTypes';
+import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
+import { DataTypeOld } from '~/demo/types/datatypes';
 import { useFlow } from '~/context/flowContext';
-import { innerFlowInput, innerFlowOutput } from '~/mockData/nodes';
-import { createAlmostRandomId } from '~/utils/generalUtils';
+import { innerFlowInput, innerFlowOutput } from '~/demo/mockData/nodes';
+import { createAlmostRandomId } from '~/demo/utils/generalUtils';
 
 function ResizeIcon() {
     return (
@@ -30,7 +30,8 @@ function ResizeIcon() {
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
-            style={{ position: 'absolute', right: 5, bottom: 5 }}>
+            style={{ position: 'absolute', right: 5, bottom: 5 }}
+        >
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <polyline points="16 20 20 20 20 16" />
             <line x1="14" y1="14" x2="20" y2="20" />
@@ -43,8 +44,8 @@ function ResizeIcon() {
 type InnerFlowListOperationData = {
     label: string;
     iconType?: string;
-    sourceHandles?: HandleData[];
-    targetHandles?: HandleData[];
+    sourceHandles?: HandleDataOld[];
+    targetHandles?: HandleDataOld[];
 };
 
 type InnerFlowListOperationType = Node<InnerFlowListOperationData, 'listOperation'>;
@@ -77,7 +78,7 @@ export const InnerFlowListOperation = memo(
         }, [targetConnections]);
 
         useEffect(() => {
-            if (targetEdge && data.targetHandles?.[0]?.type === DataType.CollectionObject) {
+            if (targetEdge && data.targetHandles?.[0]?.type === DataTypeOld.CollectionObject) {
                 console.log('FOUND EDGE', targetEdge, data);
                 const objectDefinitionNode = getNode(targetEdge.source)?.data;
                 if (objectDefinitionNode) {
@@ -90,7 +91,7 @@ export const InnerFlowListOperation = memo(
                     const objectHandle = {
                         id: 'a',
                         label: incomingObjectHandle.label,
-                        type: DataType.Object,
+                        type: DataTypeOld.Object,
                         typeName: incomingObjectHandle.typeName,
                         required: true,
                     };
@@ -102,10 +103,12 @@ export const InnerFlowListOperation = memo(
                     updateNode(id, {
                         data: {
                             ...data,
-                            targetHandles: [{
-                                ...objectHandle,
-                                type: DataType.CollectionObject,
-                            }],
+                            targetHandles: [
+                                {
+                                    ...objectHandle,
+                                    type: DataTypeOld.CollectionObject,
+                                },
+                            ],
                         },
                         style: { height: 150, width: 270 },
                     });
@@ -118,7 +121,7 @@ export const InnerFlowListOperation = memo(
                             id: createAlmostRandomId('node-id', 'innerFlowInput'),
                             data: {
                                 sourceHandles: [objectHandle],
-                                type: DataType.Object,
+                                type: DataTypeOld.Object,
                                 typeName: incomingObjectHandle.typeName || 'Object',
                                 label: incomingObjectHandle.label || 'object',
                             },
@@ -142,8 +145,8 @@ export const InnerFlowListOperation = memo(
         }, [targetEdge]);
 
         return (
-            <BaseNodeWrapper label={data.label} minHeight={minHeight.cssString}>
-                <HandlesWithLabel
+            <BaseNodeWrapperOld label={data.label} minHeight={minHeight.cssString}>
+                <HandlesWithLabelOld
                     handles={data.targetHandles}
                     type={'target'}
                     isConnectable={targetConnections.length < 1}
@@ -153,7 +156,8 @@ export const InnerFlowListOperation = memo(
                     justify={'center'}
                     gap="1"
                     style={{ minHeight: minHeight.cssString }}
-                    padding={'1'}>
+                    padding={'1'}
+                >
                     {targetConnections.length === 0 && data.iconType && getNodeIcon(data.iconType)}
                 </VStack>
                 {targetConnections.length > 0 && (
@@ -161,12 +165,12 @@ export const InnerFlowListOperation = memo(
                         <ResizeIcon />
                     </NodeResizeControl>
                 )}
-                <HandlesWithLabel
+                <HandlesWithLabelOld
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
                 />
-            </BaseNodeWrapper>
+            </BaseNodeWrapperOld>
         );
     }
 );

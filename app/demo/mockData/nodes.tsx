@@ -1,8 +1,8 @@
 import type { ChangeEvent } from 'react';
-import { DataType } from '~/types/datatypes';
+import { DataTypeOld } from '~/demo/types/datatypes';
 import type { BaseNodeData, InputNodeData, SelectNodeData } from '~/types/nodeTypes';
 import { type Node } from '@xyflow/react';
-import { allFintNodes } from '~/mockData/fintNodes';
+import { allFintNodes } from '~/demo/mockData/fintNodes';
 
 export const defaultPosition = { x: 0, y: 0 };
 export const defaultOutputPosition = { x: 800, y: 0 };
@@ -14,13 +14,13 @@ export const egrunnervervSakInstance: Node<BaseNodeData> = {
     data: {
         label: 'eGrunnerverv sak',
         typeName: 'eGrv Sak',
-        type: DataType.Object,
+        type: DataTypeOld.Object,
         iconType: 'dataInstanceIn',
         sourceHandles: [
             {
                 id: 'a',
                 label: 'eGrunnerverv sak',
-                type: DataType.Object,
+                type: DataTypeOld.Object,
                 typeName: 'eGrv Sak',
                 required: true,
             },
@@ -35,13 +35,13 @@ export const acosInstance: Node<BaseNodeData> = {
     data: {
         label: 'ACOS dokument',
         typeName: 'ACOS',
-        type: DataType.Object,
+        type: DataTypeOld.Object,
         iconType: 'dataInstanceIn',
         sourceHandles: [
             {
                 id: 'a',
                 label: 'ACOS instans',
-                type: DataType.Object,
+                type: DataTypeOld.Object,
                 typeName: 'ACOS',
                 required: true,
             },
@@ -56,13 +56,13 @@ export const acosInstanceVIK304: Node<BaseNodeData> = {
     data: {
         label: 'ACOS VIK304',
         typeName: 'ACOS VIK304',
-        type: DataType.Object,
+        type: DataTypeOld.Object,
         iconType: 'dataInstanceIn',
         sourceHandles: [
             {
                 id: 'a',
                 label: 'ACOS VIK304',
-                type: DataType.Object,
+                type: DataTypeOld.Object,
                 typeName: 'ACOS VIK304',
                 required: true,
             },
@@ -76,10 +76,12 @@ export const arkivInstanceOutput: Node<BaseNodeData> = {
     type: 'flowOutput',
     data: {
         label: 'Arkivsak',
-        type: DataType.Object,
+        type: DataTypeOld.Object,
         typeName: 'Arkiv Sak',
         iconType: 'dataInstanceOut',
-        targetHandles: [{ id: 'a', type: DataType.Object, typeName: 'Arkiv Sak', required: true }],
+        targetHandles: [
+            { id: 'a', type: DataTypeOld.Object, typeName: 'Arkiv Sak', required: true },
+        ],
     },
     position: defaultOutputPosition,
 };
@@ -90,7 +92,7 @@ export const innerFlowInput: Node<BaseNodeData> = {
     data: {
         label: 'Input',
         typeName: '?',
-        type: DataType.Object,
+        type: DataTypeOld.Object,
     },
     position: defaultPosition,
 };
@@ -101,8 +103,8 @@ export const innerFlowOutput: Node<BaseNodeData> = {
     data: {
         label: 'Output',
         typeName: '?',
-        type: DataType.Undefined,
-        targetHandles: [{ id: 'a', type: DataType.Undefined, required: true, typeName: '?' }],
+        type: DataTypeOld.Undefined,
+        targetHandles: [{ id: 'a', type: DataTypeOld.Undefined, required: true, typeName: '?' }],
     },
     position: defaultPosition,
 };
@@ -114,8 +116,8 @@ export const variableInputNode: Node<InputNodeData> = {
     data: {
         label: 'Variabel input',
         text: '',
-        type: DataType.Text,
-        sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
+        type: DataTypeOld.Text,
+        sourceHandles: [{ id: 'a', type: DataTypeOld.Text, required: true }],
     },
     position: defaultPosition,
 };
@@ -127,8 +129,8 @@ export const dataSourceNode: Node<SelectNodeData> = {
         label: 'Fylkesråd: Dokumentstatus',
         value: '',
         options: [],
-        type: DataType.Reference,
-        sourceHandles: [{ id: 'a', type: DataType.Reference, required: true }],
+        type: DataTypeOld.Reference,
+        sourceHandles: [{ id: 'a', type: DataTypeOld.Reference, required: true }],
     },
     position: defaultPosition,
 };
@@ -139,7 +141,7 @@ export const operationOpenObject: Node<BaseNodeData> = {
     data: {
         label: 'Åpne objekt',
         iconType: 'openData2',
-        targetHandles: [{ id: 'a', type: DataType.Object, required: true, typeName: '?' }],
+        targetHandles: [{ id: 'a', type: DataTypeOld.Object, required: true, typeName: '?' }],
         sourceHandles: [],
     },
     position: defaultPosition,
@@ -152,7 +154,7 @@ export const operationCreateObject: Node<BaseNodeData> = {
         label: 'Opprett objekt',
         iconType: 'packData2',
         targetHandles: [],
-        sourceHandles: [{ id: 'a', type: DataType.Object, required: true, typeName: '?' }],
+        sourceHandles: [{ id: 'a', type: DataTypeOld.Object, required: true, typeName: '?' }],
     },
     position: defaultPosition,
 };
@@ -164,11 +166,11 @@ export const operationJoinText: Node<BaseNodeData> = {
         label: 'Slå sammen tekst',
         iconType: 'textEdit',
         targetHandles: [
-            { id: 'a', type: DataType.Text, required: true },
-            { id: 'b', type: DataType.Text, required: true },
-            { id: 'c', type: DataType.Text, required: false },
+            { id: 'a', type: DataTypeOld.Text, required: true },
+            { id: 'b', type: DataTypeOld.Text, required: true },
+            { id: 'c', type: DataTypeOld.Text, required: false },
         ],
-        sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
+        sourceHandles: [{ id: 'a', type: DataTypeOld.Text, required: true }],
     },
     position: defaultPosition,
 };
@@ -179,8 +181,8 @@ export const operationEditText: Node<BaseNodeData> = {
     data: {
         label: 'Endre tekst',
         iconType: 'textEdit',
-        targetHandles: [{ id: 'a', type: DataType.Text, required: true }],
-        sourceHandles: [{ id: 'a', type: DataType.Text, required: true }],
+        targetHandles: [{ id: 'a', type: DataTypeOld.Text, required: true }],
+        sourceHandles: [{ id: 'a', type: DataTypeOld.Text, required: true }],
     },
     position: defaultPosition,
 };
@@ -192,10 +194,10 @@ export const innerFlowListOperation: Node<BaseNodeData> = {
         label: 'For hvert element i listen',
         iconType: 'listOperation',
         targetHandles: [
-            { id: 'a', type: DataType.CollectionObject, required: true, typeName: '?' },
+            { id: 'a', type: DataTypeOld.CollectionObject, required: true, typeName: '?' },
         ],
         sourceHandles: [
-            { id: 'a', type: DataType.CollectionUndefined, required: true, typeName: '?' },
+            { id: 'a', type: DataTypeOld.CollectionUndefined, required: true, typeName: '?' },
         ],
     },
     position: defaultPosition,
@@ -213,24 +215,24 @@ export const operationOpenEGrvSak: Node<BaseNodeData> = {
             {
                 id: 'a',
                 label: 'eGrunnerverv sak',
-                type: DataType.Object,
+                type: DataTypeOld.Object,
                 typeName: 'eGrv Sak',
                 required: true,
             },
         ],
         sourceHandles: [
-            { id: 'a', label: 'Kommunenavn', type: DataType.Text, required: true },
-            { id: 'b', label: 'Prosjektnavn', type: DataType.Text, required: true },
-            { id: 'c', label: 'Gårdsnummer', type: DataType.Text, required: true },
-            { id: 'd', label: 'Bruksnummer', type: DataType.Text, required: true },
-            { id: 'e', label: 'Seksjonsnummer', type: DataType.Text, required: true },
-            { id: 'f', label: 'Tittel', type: DataType.Text, required: true },
-            { id: 'g', label: 'Adresse', type: DataType.Text, required: true },
-            { id: 'h', label: 'Saksansvarlig e-post', type: DataType.Text, required: true },
+            { id: 'a', label: 'Kommunenavn', type: DataTypeOld.Text, required: true },
+            { id: 'b', label: 'Prosjektnavn', type: DataTypeOld.Text, required: true },
+            { id: 'c', label: 'Gårdsnummer', type: DataTypeOld.Text, required: true },
+            { id: 'd', label: 'Bruksnummer', type: DataTypeOld.Text, required: true },
+            { id: 'e', label: 'Seksjonsnummer', type: DataTypeOld.Text, required: true },
+            { id: 'f', label: 'Tittel', type: DataTypeOld.Text, required: true },
+            { id: 'g', label: 'Adresse', type: DataTypeOld.Text, required: true },
+            { id: 'h', label: 'Saksansvarlig e-post', type: DataTypeOld.Text, required: true },
             {
                 id: 'i',
                 label: 'Sakspartner',
-                type: DataType.CollectionObject,
+                type: DataTypeOld.CollectionObject,
                 typeName: 'eGrv Sakspart',
                 required: true,
             },
@@ -245,12 +247,12 @@ export const operationExternalGetSaksansvarlig: Node<BaseNodeData> = {
     data: {
         label: 'Finn saksansvalig ref. med e-post',
         iconType: 'lookup',
-        targetHandles: [{ id: 'a', type: DataType.Text, label: 'E-post', required: true }],
+        targetHandles: [{ id: 'a', type: DataTypeOld.Text, label: 'E-post', required: true }],
         sourceHandles: [
             {
                 id: 'a',
                 label: 'Saksannsvarlig ref.',
-                type: DataType.Reference,
+                type: DataTypeOld.Reference,
                 required: true,
             },
         ],
@@ -265,34 +267,36 @@ export const operationCreateObjectAkrivsak: Node<BaseNodeData> = {
         label: 'Opprett arkivsak',
         iconType: 'packData',
         targetHandles: [
-            { id: 'a', type: DataType.Text, label: 'Tittel', required: true },
-            { id: 'b', type: DataType.Text, label: 'Offentlig tittel', required: false },
-            { id: 'c', type: DataType.Reference, label: 'Saksmappetype', required: false },
+            { id: 'a', type: DataTypeOld.Text, label: 'Tittel', required: true },
+            { id: 'b', type: DataTypeOld.Text, label: 'Offentlig tittel', required: false },
+            { id: 'c', type: DataTypeOld.Reference, label: 'Saksmappetype', required: false },
             {
                 id: 'd',
-                type: DataType.Reference,
+                type: DataTypeOld.Reference,
                 label: 'Administrativ enhet',
                 required: false,
             },
-            { id: 'e', type: DataType.Reference, label: 'Saksansvarlig', required: false },
+            { id: 'e', type: DataTypeOld.Reference, label: 'Saksansvarlig', required: false },
             {
                 id: 'f',
-                type: DataType.Object,
+                type: DataTypeOld.Object,
                 typeName: 'Arkiv Skjerming',
                 label: 'Skjerming',
                 required: true,
             },
-            { id: 'g', type: DataType.Reference, label: 'Arkivdel', required: false },
-            { id: 'h', type: DataType.Reference, label: 'Saksstatus', required: false },
+            { id: 'g', type: DataTypeOld.Reference, label: 'Arkivdel', required: false },
+            { id: 'h', type: DataTypeOld.Reference, label: 'Saksstatus', required: false },
             {
                 id: 'i',
-                type: DataType.CollectionObject,
+                type: DataTypeOld.CollectionObject,
                 typeName: 'Arkiv Part',
                 label: 'Parter',
                 required: false,
             },
         ],
-        sourceHandles: [{ id: 'a', type: DataType.Object, typeName: 'Arkiv Sak', required: true }],
+        sourceHandles: [
+            { id: 'a', type: DataTypeOld.Object, typeName: 'Arkiv Sak', required: true },
+        ],
     },
     position: defaultPosition,
 };
@@ -304,10 +308,10 @@ export const acosDocToDocDesc: Node<BaseNodeData> = {
         label: 'ACOS dokument til dokumentbeskrivelser',
         iconType: 'conversion',
         targetHandles: [
-            { id: 'a', type: DataType.Text, label: 'Tittel', required: false },
+            { id: 'a', type: DataTypeOld.Text, label: 'Tittel', required: false },
             {
                 id: 'b',
-                type: DataType.CollectionObject,
+                type: DataTypeOld.CollectionObject,
                 typeName: 'AcosDocument',
                 label: 'ACOS Dokumenter',
                 required: false,
@@ -318,7 +322,7 @@ export const acosDocToDocDesc: Node<BaseNodeData> = {
                 id: 'a',
                 label: 'Dokumentbeskrivelse',
                 typeName: 'Document',
-                type: DataType.CollectionObject,
+                type: DataTypeOld.CollectionObject,
                 required: true,
             },
         ],
@@ -332,12 +336,12 @@ export const acosUploadFile: Node<BaseNodeData> = {
     data: {
         label: 'Fylkesård: Last opp fil',
         iconType: 'lookup',
-        targetHandles: [{ id: 'a', type: DataType.File, label: 'Filinnhold', required: true }],
+        targetHandles: [{ id: 'a', type: DataTypeOld.File, label: 'Filinnhold', required: true }],
         sourceHandles: [
             {
                 id: 'a',
                 label: 'Dokumentfil',
-                type: DataType.Reference,
+                type: DataTypeOld.Reference,
                 required: true,
             },
         ],
@@ -361,14 +365,14 @@ export const getInitialDemoNodes = (
             data: {
                 ...operationJoinText.data,
                 targetHandles: [
-                    { id: 'a', type: DataType.Text, required: true },
-                    { id: 'b', type: DataType.Text, required: true },
-                    { id: 'c', type: DataType.Text, required: true },
-                    { id: 'd', type: DataType.Text, required: true },
-                    { id: 'e', type: DataType.Text, required: true },
-                    { id: 'f', type: DataType.Text, required: true },
-                    { id: 'g', type: DataType.Text, required: true },
-                    { id: 'h', type: DataType.Text, required: true },
+                    { id: 'a', type: DataTypeOld.Text, required: true },
+                    { id: 'b', type: DataTypeOld.Text, required: true },
+                    { id: 'c', type: DataTypeOld.Text, required: true },
+                    { id: 'd', type: DataTypeOld.Text, required: true },
+                    { id: 'e', type: DataTypeOld.Text, required: true },
+                    { id: 'f', type: DataTypeOld.Text, required: true },
+                    { id: 'g', type: DataTypeOld.Text, required: true },
+                    { id: 'h', type: DataTypeOld.Text, required: true },
                 ],
             },
             position: { x: 1110, y: -510 },

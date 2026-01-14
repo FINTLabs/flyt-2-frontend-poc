@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField, VStack } from '@navikt/ds-react';
-import type { MockDataTypes } from '~/mockData/dataObjects';
+import type { MockDataTypes } from '~/demo/mockData/dataObjects';
 
 type TestFormPropsType = {
     dataContent: MockDataTypes;

@@ -1,17 +1,17 @@
 import React, { memo, useMemo } from 'react';
 import { type NodeProps, type Node } from '@xyflow/react';
 import { VStack } from '@navikt/ds-react';
-import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
-import { getNodeIcon, getNodeMinHeightCss } from '~/utils/nodeHandlers';
-import { BaseNodeWrapper } from './nodeLayout/BaseNodeWrapper';
-import type { HandleData } from '~/types/handleTypes';
+import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
+import { getNodeIcon, getNodeMinHeightCss } from '~/demo/utils/nodeHandlers';
+import { BaseNodeWrapperOld } from '../BaseNodeWrapperOld';
+import type { HandleDataOld } from '~/types/handleTypes';
 import { useFlow } from '~/context/flowContext';
 
 type OperationNodeData = {
     label: string;
     iconType?: string;
-    sourceHandles?: HandleData[];
-    targetHandles?: HandleData[];
+    sourceHandles?: HandleDataOld[];
+    targetHandles?: HandleDataOld[];
 };
 
 type OperationNodeType = Node<OperationNodeData, 'operation' | 'externalFunction'>;
@@ -35,8 +35,8 @@ export const OperationNode = memo(
         }, [currentFlow]);
 
         return (
-            <BaseNodeWrapper label={data.label} minHeight={minHeight} currentStep={step}>
-                <HandlesWithLabel
+            <BaseNodeWrapperOld label={data.label} minHeight={minHeight} currentStep={step}>
+                <HandlesWithLabelOld
                     handles={data.targetHandles}
                     type={'target'}
                     isConnectable={isConnectable}
@@ -50,12 +50,12 @@ export const OperationNode = memo(
                 >
                     {data.iconType && getNodeIcon(data.iconType)}
                 </VStack>
-                <HandlesWithLabel
+                <HandlesWithLabelOld
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
                 />
-            </BaseNodeWrapper>
+            </BaseNodeWrapperOld>
         );
     }
 );

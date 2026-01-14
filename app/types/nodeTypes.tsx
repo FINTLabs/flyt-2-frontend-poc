@@ -1,5 +1,5 @@
-import type { DataType } from '~/types/datatypes';
-import type { HandleData } from '~/types/handleTypes';
+import type { DataTypeOld } from '~/demo/types/datatypes';
+import type { HandleDataOld } from '~/types/handleTypes';
 import { type Node } from '@xyflow/react';
 
 export type CustomNodeType =
@@ -15,10 +15,10 @@ export type CustomNodeTypeValue = `${CustomNodeType}`;
 export type BaseNodeData = {
     label: string;
     typeName?: string;
-    type?: DataType;
+    type?: DataTypeOld;
     iconType?: string;
-    targetHandles?: HandleData[];
-    sourceHandles?: HandleData[];
+    targetHandles?: HandleDataOld[];
+    sourceHandles?: HandleDataOld[];
 };
 
 export type InputNodeData = BaseNodeData & {
@@ -30,4 +30,4 @@ export type SelectNodeData = BaseNodeData & {
     value: string;
 };
 
-export type CustomNode = Node<BaseNodeData | InputNodeData | SelectNodeData>;
+export type CustomNodeOld = Node<BaseNodeData | InputNodeData | SelectNodeData>;

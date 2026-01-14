@@ -14,9 +14,9 @@ import {
     acosUploadFile,
     acosDocToDocDesc,
     operationEditText,
-} from '~/mockData/nodes';
+} from '~/demo/mockData/nodes';
 import { useParams } from 'react-router';
-import { elev, fravaer, person } from '~/mockData/fintNodes';
+import { elev, fravaer, person } from '~/demo/mockData/fintNodes';
 
 export const Sidebar = () => {
     const { currentFlow } = useFlow();

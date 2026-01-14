@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import React, { useCallback, useState } from 'react';
 import { useFlow } from '~/context/flowContext';
 import { Button, Heading, HStack, Page, Select, TextField, VStack } from '@navikt/ds-react';
-import { allIntegrationsInputNodes, arkivInstanceOutput } from '~/mockData/nodes';
+import { allIntegrationsInputNodes, arkivInstanceOutput } from '~/demo/mockData/nodes';
 import { ArrowRightIcon } from '@navikt/aksel-icons';
 
 const NewFlowPage = () => {

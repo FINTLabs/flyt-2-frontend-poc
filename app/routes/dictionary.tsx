@@ -12,9 +12,9 @@ import {
     type TagProps,
     type SortState,
 } from '@navikt/ds-react';
-import { dictionaryData } from '~/mockData/dictionary';
-import type { DictionaryTerm } from '~/mockData/dictionary';
-import { tableSortComperator } from '~/utils/generalUtils';
+import { dictionaryData } from '~/demo/mockData/dictionary';
+import type { DictionaryTerm } from '~/demo/mockData/dictionary';
+import { tableSortComperator } from '~/demo/utils/generalUtils';
 
 interface ScopedSortState extends SortState {
     orderBy: 'term' | 'category';
@@ -81,7 +81,8 @@ export default function DictionaryPage() {
                             sort={sort}
                             onSortChange={(sortKey) =>
                                 handleSort(sortKey as ScopedSortState['orderBy'])
-                            }>
+                            }
+                        >
                             <Table.Header>
                                 <Table.Row>
                                     <Table.ColumnHeader sortKey="term" sortable>
@@ -98,7 +99,8 @@ export default function DictionaryPage() {
                                         key={term.id}
                                         onClick={() => setSelectedTerm(term)}
                                         selected={selectedTerm?.id === term.id}
-                                        style={{ cursor: 'pointer' }}>
+                                        style={{ cursor: 'pointer' }}
+                                    >
                                         <Table.HeaderCell>{term.term}</Table.HeaderCell>
                                         <Table.DataCell textSize={'small'}>
                                             {term.category}
@@ -114,7 +116,8 @@ export default function DictionaryPage() {
                             style={{
                                 backgroundColor: 'var(--beige-primary)',
                                 borderRadius: '0 8px 8px 0',
-                            }}>
+                            }}
+                        >
                             <VStack gap="3" align="start">
                                 <Tag variant={getTagColor(selectedTerm.category)} size="small">
                                     {selectedTerm.category}

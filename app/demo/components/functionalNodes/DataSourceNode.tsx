@@ -1,18 +1,18 @@
-import type { HandleData } from '~/types/handleTypes';
+import type { HandleDataOld } from '~/types/handleTypes';
 import { type Node, type NodeProps } from '@xyflow/react';
 import React, { memo } from 'react';
-import { BaseNodeWrapper } from '~/components/customNodes/nodeLayout/BaseNodeWrapper';
+import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
 import { HStack, Select } from '@navikt/ds-react';
-import { TypeTag } from '~/components/macros/TypeTag';
-import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
-import type { DataTypeValue } from '~/types/datatypes';
+import { TypeTagOld } from '~/components/macros/TypeTagOld';
+import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
+import type { DataTypeValue } from '~/demo/types/datatypes';
 
 type DataSourceData = {
     label: string;
     iconType?: string;
     type: DataTypeValue;
-    sourceHandles?: HandleData[];
-    targetHandles?: HandleData[];
+    sourceHandles?: HandleDataOld[];
+    targetHandles?: HandleDataOld[];
     typeName: string;
     value?: string;
     options?: string[];
@@ -22,9 +22,9 @@ type DataSourceType = Node<DataSourceData, 'dataSource'>;
 
 export const DataSourceNode = memo(({ id, data, isConnectable }: NodeProps<DataSourceType>) => {
     return (
-        <BaseNodeWrapper label={data.label} italic={true}>
+        <BaseNodeWrapperOld label={data.label} italic={true}>
             <HStack align={'center'} justify={'center'} gap="1">
-                <TypeTag type={data.type} typeName={data.typeName} size="small" />
+                <TypeTagOld type={data.type} typeName={data.typeName} size="small" />
 
                 <Select label="Velg bostedsland" size="small" hideLabel={true}>
                     <option>- Velg datakilde -</option>
@@ -33,11 +33,11 @@ export const DataSourceNode = memo(({ id, data, isConnectable }: NodeProps<DataS
                     <option value="danmark">Danmark</option>
                 </Select>
             </HStack>
-            <HandlesWithLabel
+            <HandlesWithLabelOld
                 handles={data.sourceHandles}
                 type={'source'}
                 isConnectable={isConnectable}
             />
-        </BaseNodeWrapper>
+        </BaseNodeWrapperOld>
     );
 });

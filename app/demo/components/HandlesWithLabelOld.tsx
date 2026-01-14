@@ -1,14 +1,17 @@
 import { Handle, Position } from '@xyflow/react';
 import React, { useMemo } from 'react';
 import { Detail, HStack } from '@navikt/ds-react';
-import { calculateHandlePosition, measureTextWidthOld } from '~/demo/utils/nodeHandlers';
-import type { HandleData } from '~/types/flow/edges';
-import { getValueTypeSymbolWidth } from '~/utils/dataTypeUtils';
-import { TypeTag } from '~/components/macros/TypeTag';
-import { HANDLE_HEIGHT } from '~/utils/constants';
+import type { HandleDataOld } from '~/types/handleTypes';
+import {
+    calculateHandlePosition,
+    getTypeSymbolWidth,
+    measureTextWidthOld,
+} from '~/demo/utils/nodeHandlers';
+import { HANDLE_HEIGHT_DEMO } from '~/demo/mockData/constants';
+import { TypeTagOld } from '~/components/macros/TypeTagOld';
 
 export type MultipleHandlesWithLabelProps = {
-    handles?: HandleData[];
+    handles?: HandleDataOld[];
     type: 'target' | 'source';
     isConnectable: boolean;
     x?: number;
@@ -16,7 +19,7 @@ export type MultipleHandlesWithLabelProps = {
     hideLabels?: boolean;
 };
 
-export const HandlesWithLabel = ({
+export const HandlesWithLabelOld = ({
     handles,
     type,
     isConnectable,
@@ -49,6 +52,7 @@ export const HandlesWithLabel = ({
                         />
                     );
                 }
+
                 return (
                     <HandleWithLabel
                         key={handle.id}
@@ -64,8 +68,8 @@ export const HandlesWithLabel = ({
     );
 };
 
-export type HandleWithLabelProps = {
-    handle: HandleData;
+export type HandleWithLabelPropsOld = {
+    handle: HandleDataOld;
     type: 'target' | 'source';
     isConnectable: boolean;
     transform: string;
@@ -78,9 +82,9 @@ const HandleWithLabel = ({
     isConnectable,
     transform,
     handlePosition,
-}: HandleWithLabelProps) => {
+}: HandleWithLabelPropsOld) => {
     const memorizedHandleWidth = useMemo(() => {
-        const typeTagWidth = getValueTypeSymbolWidth(handle.type, handle.typeName);
+        const typeTagWidth = getTypeSymbolWidth(handle.type, handle.typeName);
         const labelWidth = handle.label ? Math.max(10, measureTextWidthOld(handle.label)) : 0;
         return Math.max(16, typeTagWidth + (handle.label ? labelWidth + 16 : 8));
     }, [handle.label, handle.typeName, handle.type]);
@@ -95,7 +99,7 @@ const HandleWithLabel = ({
             style={{
                 top: handlePosition,
                 width: memorizedHandleWidth,
-                height: HANDLE_HEIGHT,
+                height: HANDLE_HEIGHT_DEMO,
                 padding: '2px',
                 zIndex: 2,
                 backgroundColor: 'var(--a-bg-default)',
@@ -115,9 +119,9 @@ const HandleWithLabel = ({
                 wrap={false}
                 paddingInline={`0 ${handle.label ? '1' : '0'}`}
             >
-                <TypeTag
+                <TypeTagOld
                     type={handle.type}
-                    typeName={handle.id}
+                    typeName={handle.typeName}
                     required={handle.required}
                     size="small"
                 />

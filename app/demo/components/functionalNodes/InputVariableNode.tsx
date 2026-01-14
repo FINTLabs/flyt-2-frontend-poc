@@ -1,17 +1,17 @@
 import React, { memo } from 'react';
 import { type NodeProps, type Node, useReactFlow } from '@xyflow/react';
 import { HStack, TextField } from '@navikt/ds-react';
-import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
-import { TypeTag } from '~/components/macros/TypeTag';
-import { BaseNodeWrapper } from '../nodeLayout/BaseNodeWrapper';
-import type { HandleData } from '~/types/handleTypes';
+import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
+import { TypeTagOld } from '~/components/macros/TypeTagOld';
+import { BaseNodeWrapperOld } from '../BaseNodeWrapperOld';
+import type { HandleDataOld } from '~/types/handleTypes';
 import { useFlow } from '~/context/flowContext';
 
 type VariableInputData = {
     label: string;
     typeName: string;
     type: string;
-    sourceHandles?: HandleData[];
+    sourceHandles?: HandleDataOld[];
     text?: string;
 };
 
@@ -23,9 +23,9 @@ export const InputVariableNode = memo(
         const { isEditable } = useFlow();
 
         return (
-            <BaseNodeWrapper>
+            <BaseNodeWrapperOld>
                 <HStack align={'center'} justify={'center'} gap="1">
-                    <TypeTag type={data.type} typeName={data.typeName} size="small" />
+                    <TypeTagOld type={data.type} typeName={data.typeName} size="small" />
                     <TextField
                         size={'small'}
                         label={'Variable Name'}
@@ -35,12 +35,12 @@ export const InputVariableNode = memo(
                         onChange={(evt) => updateNodeData(id, { text: evt.target.value })}
                     />
                 </HStack>
-                <HandlesWithLabel
+                <HandlesWithLabelOld
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
                 />
-            </BaseNodeWrapper>
+            </BaseNodeWrapperOld>
         );
     }
 );

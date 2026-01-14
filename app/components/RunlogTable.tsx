@@ -1,7 +1,7 @@
 import { useFlow } from '~/context/flowContext';
 import { Heading, HStack, Page, Table, VStack } from '@navikt/ds-react';
 import { useMemo, useState } from 'react';
-import ProgressIndicator from '~/components/customNodes/nodeLayout/ProgressIndicator';
+import ProgressIndicator from '~/demo/components/functionalNodes/ProgressIndicator';
 import RunlogContent from '~/components/RunlogContent';
 
 const RunlogTable = () => {
