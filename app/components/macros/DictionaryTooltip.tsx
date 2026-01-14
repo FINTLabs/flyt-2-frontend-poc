@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Tooltip, Box } from '@navikt/ds-react';
-import { dictionaryData } from '~/mockData/dictionary';
+import { dictionaryData } from '~/demo/mockData/dictionary';
 
 interface DictionaryTooltipProps {
     termId: string;
@@ -8,19 +8,19 @@ interface DictionaryTooltipProps {
     className?: string;
 }
 
-export const DictionaryTooltip: React.FC<DictionaryTooltipProps> = ({ 
-    termId, 
-    children, 
-    className 
+export const DictionaryTooltip: React.FC<DictionaryTooltipProps> = ({
+    termId,
+    children,
+    className,
 }) => {
     const [isOpen, setIsOpen] = useState(false);
-    
-    const term = dictionaryData.find(t => t.id === termId);
-    
+
+    const term = dictionaryData.find((t) => t.id === termId);
+
     if (!term) {
         return <span className={className}>{children}</span>;
     }
-    
+
     const tooltipContent = (
         <Box padding="3" maxWidth="300px">
             <div className="font-semibold text-sm mb-2">{term.term}</div>
@@ -33,14 +33,10 @@ export const DictionaryTooltip: React.FC<DictionaryTooltipProps> = ({
             )}
         </Box>
     );
-    
+
     return (
-        <Tooltip
-            open={isOpen}
-            onOpenChange={setIsOpen}
-            content={tooltipContent}
-        >
-            <span 
+        <Tooltip open={isOpen} onOpenChange={setIsOpen} content={tooltipContent}>
+            <span
                 className={`cursor-help border-b border-dotted border-gray-400 hover:border-gray-600 ${className || ''}`}
                 onMouseEnter={() => setIsOpen(true)}
                 onMouseLeave={() => setIsOpen(false)}

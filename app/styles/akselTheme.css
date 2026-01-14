@@ -35,7 +35,7 @@
     --beige-20: #fefcfa;
 
     /* Aksel design token overrides */
-    --a-bg-default: #fefcfa;
+    --a-bg-default: #ffffff;
     --a-bg-subtle: #fcf5ed;
 
     --a-surface-action: var(--a-surface-alt-3-strong);

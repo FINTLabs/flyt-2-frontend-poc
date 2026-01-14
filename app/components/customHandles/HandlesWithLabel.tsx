@@ -1,14 +1,11 @@
 import { Handle, Position } from '@xyflow/react';
 import React, { useMemo } from 'react';
 import { Detail, HStack } from '@navikt/ds-react';
-import type { HandleData } from '~/types/handleTypes';
-import {
-    calculateHandlePosition,
-    getTypeSymbolWidth,
-    measureTextWidth,
-} from '~/utils/nodeHandlers';
-import { HANDLE_HEIGHT } from '~/mockData/constants';
+import { calculateHandlePosition, measureTextWidthOld } from '~/demo/utils/nodeHandlers';
+import type { HandleData } from '~/types/flow/edges';
+import { getValueTypeSymbolWidth } from '~/utils/dataTypeUtils';
 import { TypeTag } from '~/components/macros/TypeTag';
+import { HANDLE_HEIGHT } from '~/utils/constants';
 
 export type MultipleHandlesWithLabelProps = {
     handles?: HandleData[];
@@ -52,7 +49,6 @@ export const HandlesWithLabel = ({
                         />
                     );
                 }
-
                 return (
                     <HandleWithLabel
                         key={handle.id}
@@ -84,8 +80,8 @@ const HandleWithLabel = ({
     handlePosition,
 }: HandleWithLabelProps) => {
     const memorizedHandleWidth = useMemo(() => {
-        const typeTagWidth = getTypeSymbolWidth(handle.type, handle.typeName);
-        const labelWidth = handle.label ? Math.max(10, measureTextWidth(handle.label)) : 0;
+        const typeTagWidth = getValueTypeSymbolWidth(handle.type, handle.typeName);
+        const labelWidth = handle.label ? Math.max(10, measureTextWidthOld(handle.label)) : 0;
         return Math.max(16, typeTagWidth + (handle.label ? labelWidth + 16 : 8));
     }, [handle.label, handle.typeName, handle.type]);
 
@@ -111,15 +107,17 @@ const HandleWithLabel = ({
                 transform: transform,
                 textAlign: 'left',
                 alignContent: 'center',
-            }}>
+            }}
+        >
             <HStack
                 gap="1"
                 align="center"
                 wrap={false}
-                paddingInline={`0 ${handle.label ? '1' : '0'}`}>
+                paddingInline={`0 ${handle.label ? '1' : '0'}`}
+            >
                 <TypeTag
                     type={handle.type}
-                    typeName={handle.typeName}
+                    typeName={handle.id}
                     required={handle.required}
                     size="small"
                 />

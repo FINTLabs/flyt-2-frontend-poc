@@ -1,7 +1,7 @@
 import { Box, Button, Heading, HStack, VStack } from '@navikt/ds-react';
 import type { RunlogType } from '~/types/generalTypes';
 import { Background, BackgroundVariant, Controls, ReactFlow, useReactFlow } from '@xyflow/react';
-import { nodeTypes } from '~/components/customNodes/nodetypes';
+import { nodeTypes } from '~/demo/components/functionalNodes/nodetypes';
 import React, { useEffect, useState } from 'react';
 import { useFlow } from '~/context/flowContext';
 

@@ -1,6 +1,6 @@
 import { useFlow } from '~/context/flowContext';
 import { Heading, VStack } from '@navikt/ds-react';
-import { eGrvSakMockData } from '~/mockData/dataObjects';
+import { eGrvSakMockData } from '~/demo/mockData/dataObjects';
 import EgrvTestForm from '~/components/sidebar/testForms/EgrvTestForm';
 import type { MockDataTypes } from '~/types/mockedDataTypes';
 

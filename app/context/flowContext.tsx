@@ -7,14 +7,14 @@ import {
     arkivInstanceOutput,
     defaultPosition,
     getInitialDemoNodes,
-} from '~/mockData/nodes';
-import { initDemoEdges } from '~/mockData/edges';
-import type { BaseNodeData, CustomNode } from '~/types/nodeTypes';
-import { createAlmostRandomId } from '~/utils/generalUtils';
+} from '~/demo/mockData/nodes';
+import { initDemoEdges } from '~/demo/mockData/edges';
+import type { BaseNodeData, CustomNodeOld } from '~/types/nodeTypes';
+import { createAlmostRandomId } from '~/demo/utils/generalUtils';
 import { useParams } from 'react-router';
 import type { ArkivSakType, EgrvSakType, MockDataTypes } from '~/types/mockedDataTypes';
 import type { RunlogType, RunStatusType } from '~/types/generalTypes';
-import { runlogsForDemo } from '~/mockData/runlogs';
+import { runlogsForDemo } from '~/demo/mockData/runlogs';
 
 const FLOW_STORAGE_KEY = 'fint-flyt';
 const FLOW_ID_PREFIX = 'flyt-id';
@@ -22,7 +22,7 @@ const FLOW_ID_PREFIX = 'flyt-id';
 type LocalStorageFlow = {
     id: string;
     name: string;
-    nodes: CustomNode[];
+    nodes: CustomNodeOld[];
     edges: Edge[];
     createdAt: string;
     updatedAt: string;
@@ -30,16 +30,16 @@ type LocalStorageFlow = {
 };
 
 export interface FlowContextType {
-    initNodes: CustomNode[];
+    initNodes: CustomNodeOld[];
     initEdges: Edge[];
     newNodeId: string | null;
     setNewNodeId: React.Dispatch<React.SetStateAction<string | null>>;
-    getCustomNodeDataById: (id: string) => CustomNode;
+    getCustomNodeDataById: (id: string) => CustomNodeOld;
     currentFlow?: LocalStorageFlow;
-    inputNode?: CustomNode;
-    outputNode?: CustomNode;
-    saveFlow: (flowId: string, nodes: CustomNode[], edges: Edge[]) => void;
-    saveNewFlow: (name: string, nodes: CustomNode[], edges: Edge[]) => string;
+    inputNode?: CustomNodeOld;
+    outputNode?: CustomNodeOld;
+    saveFlow: (flowId: string, nodes: CustomNodeOld[], edges: Edge[]) => void;
+    saveNewFlow: (name: string, nodes: CustomNodeOld[], edges: Edge[]) => string;
     allFlows: LocalStorageFlow[];
     getAllFlows: () => LocalStorageFlow[] | undefined;
     deleteFLow: (flowId: string) => void;
@@ -64,7 +64,7 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         { step: number; state: RunStatusType }[] | undefined
     >(undefined);
     const [allFlows, setAllFlows] = useState<LocalStorageFlow[]>([]);
-    const [initNodes, setInitialNodes] = useState<CustomNode[]>([]);
+    const [initNodes, setInitialNodes] = useState<CustomNodeOld[]>([]);
     const [initEdges, setInitialEdges] = useState<Edge[]>([]);
     const [newNodeId, setNewNodeId] = useState<string | null>(null);
     const [testFlowOutput, setTestFlowOutput] = useState<
@@ -80,7 +80,7 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
 
     const outputNode = useMemo(() => {
         return currentFlow?.nodes.find(
-            (flowNode: CustomNode) => flowNode.type === arkivInstanceOutput.type
+            (flowNode: CustomNodeOld) => flowNode.type === arkivInstanceOutput.type
         );
     }, [currentFlow]);
 
@@ -174,7 +174,7 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
     };
 
     const saveFlow = useCallback(
-        (flowId: string, nodes: CustomNode[], edges: Edge[]) => {
+        (flowId: string, nodes: CustomNodeOld[], edges: Edge[]) => {
             setAllFlows((prevFlows) => {
                 const updatedFlows = prevFlows.map((flow) => {
                     if (flow.id === flowId) {
@@ -205,24 +205,27 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         });
     }, []);
 
-    const saveNewFlow = useCallback((name: string, nodes: CustomNode[], edges: Edge[]): string => {
-        const newFlowId = createAlmostRandomId(FLOW_ID_PREFIX, name);
-        setAllFlows((prevFlows) => {
-            const newFlow: LocalStorageFlow = {
-                id: newFlowId,
-                name,
-                nodes,
-                edges,
-                createdAt: new Date().toString(),
-                updatedAt: new Date().toString(),
-            };
-            const updatedFlows = [...prevFlows, newFlow];
-            saveAllFlowsToLocaleStorage(updatedFlows);
-            setCurrentFlow(newFlow);
-            return updatedFlows;
-        });
-        return newFlowId;
-    }, []);
+    const saveNewFlow = useCallback(
+        (name: string, nodes: CustomNodeOld[], edges: Edge[]): string => {
+            const newFlowId = createAlmostRandomId(FLOW_ID_PREFIX, name);
+            setAllFlows((prevFlows) => {
+                const newFlow: LocalStorageFlow = {
+                    id: newFlowId,
+                    name,
+                    nodes,
+                    edges,
+                    createdAt: new Date().toString(),
+                    updatedAt: new Date().toString(),
+                };
+                const updatedFlows = [...prevFlows, newFlow];
+                saveAllFlowsToLocaleStorage(updatedFlows);
+                setCurrentFlow(newFlow);
+                return updatedFlows;
+            });
+            return newFlowId;
+        },
+        []
+    );
 
     const saveAllFlowsToLocaleStorage = (flows: LocalStorageFlow[]) => {
         localStorage.setItem(FLOW_STORAGE_KEY, JSON.stringify(flows));

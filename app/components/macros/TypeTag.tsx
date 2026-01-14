@@ -1,5 +1,5 @@
 import { Box, HStack, Tag } from '@navikt/ds-react';
-import type { DataTypeValue } from '~/types/datatypes';
+import type { DataTypeValue } from '~/demo/types/datatypes';
 import React from 'react';
 import DataTypeText from '~/components/icons/DataTypeText';
 import {
@@ -9,10 +9,11 @@ import {
     LinkIcon,
     QuestionmarkIcon,
 } from '@navikt/aksel-icons';
-import { getTypeFromCollection, isCollectionType } from '~/utils/nodeHandlers';
+import { ValueType, type ValueTypeValue } from '~/types/data/integration';
+import { getValueTypeFromCollection } from '~/utils/dataTypeUtils';
 
 type TypeProps = {
-    type: DataTypeValue | string;
+    type: ValueTypeValue;
     typeName?: string;
     className?: string;
     size?: 'small' | 'medium' | 'large';
@@ -53,7 +54,7 @@ export const TypeTag = ({
 
 const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
     if (!type) return typeName ?? undefined;
-    if (type === 'object') {
+    /*    if (type === 'object') {
         return (
             <p
                 style={{
@@ -66,8 +67,8 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
                 {`{${typeName}}`}
             </p>
         );
-    }
-    if (isCollectionType(type)) {
+    }*/
+    /*    if (isCollectionType(type)) {
         const innertype = getTypeFromCollection(type);
         return (
             <HStack wrap={false} gap={'space-1'} align="center">
@@ -80,6 +81,23 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
     if (type === 'reference') return <LinkIcon fontSize="0.95rem" />;
     if (type === 'undefined') return <QuestionmarkIcon fontSize="0.9rem" />;
     if (type === 'file') return <FileIcon fontSize="0.9rem" />;
-    if (type === 'boolean') return <QuestionmarkDiamondIcon fontSize="0.9rem" />;
+    if (type === 'boolean') return <QuestionmarkDiamondIcon fontSize="0.9rem" />;*/
+
+    if (type === ValueType.STRING) {
+        return <DataTypeText />;
+    }
+    if (type === ValueType.COLLECTION) {
+        const innertype = getValueTypeFromCollection(type);
+
+        return (
+            <HStack wrap={false} gap={'space-1'} align="center">
+                <BulletListIcon fontSize="0.9rem" />
+                <TypeTag type={innertype} typeName={typeName} size={size} inner={true} />
+            </HStack>
+        );
+    }
+    if (type === ValueType.FILE) {
+        return <FileIcon fontSize="0.9rem" />;
+    }
     return typeName;
 };

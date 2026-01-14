@@ -3,7 +3,7 @@ import { ReactFlow, Controls, BackgroundVariant, Background } from '@xyflow/reac
 
 import '@xyflow/react/dist/style.css';
 import { useFlow } from '~/context/flowContext';
-import { nodeTypes } from '~/components/customNodes/nodetypes';
+import { nodeTypes } from '~/demo/components/functionalNodes/nodetypes';
 
 const RunnableFlow = () => {
     const { initNodes, initEdges } = useFlow();
@@ -27,7 +27,8 @@ const RunnableFlow = () => {
             selectNodesOnDrag={false}
             fitView
             isValidConnection={() => false}
-            defaultEdgeOptions={{ type: 'step' }}>
+            defaultEdgeOptions={{ type: 'step' }}
+        >
             <Background variant={BackgroundVariant.Dots} />
             <Controls showInteractive={false} />
         </ReactFlow>
