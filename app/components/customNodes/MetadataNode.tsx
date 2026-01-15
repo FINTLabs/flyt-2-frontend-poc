@@ -7,7 +7,7 @@ import { MetadataHandles } from '~/components/customHandles/MetadataHandles';
 import { countNumberOfMetadataHandleItems, getNodeMinHeight } from '~/utils/nodePositionUtils';
 
 export const MetadataNode = memo(({ data, isConnectable }: NodeProps<MetadataNodeType>) => {
-    const totalHandleItems = countNumberOfMetadataHandleItems(data.sourceHandles ?? []);
+    const totalHandleItems = countNumberOfMetadataHandleItems(data.sourceHandles);
     const minHeight = getNodeMinHeight({
         sources: totalHandleItems,
         targets: data.targetHandles?.length,

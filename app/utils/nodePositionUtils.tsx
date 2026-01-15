@@ -1,14 +1,14 @@
 import { HANDLE_INTERVAL, NODE_BASE_HEIGHT } from '~/utils/constants';
-import type { HandlesWithCategories } from '~/types/flow/edges';
+import type { HandleData } from '~/types/flow/edges';
 
-export const countNumberOfMetadataHandleItems = (items: HandlesWithCategories): number => {
-    return items.reduce((count, item) => {
-        if ('handles' in item) {
-            return count + 1 + item.handles.length;
-        } else {
-            return count + 1;
-        }
-    }, 0);
+export const countNumberOfMetadataHandleItems = (items?: HandleData[]): number => {
+    if (!items) return 0;
+
+    const uniqueCategories = new Set(
+        items.map((h) => h.categoryName).filter((name): name is string => Boolean(name))
+    );
+
+    return items.length + uniqueCategories.size;
 };
 
 export const getNodeMinHeight = ({
@@ -47,4 +47,19 @@ export const measureTextWidth = (
         return metrics.width + 4;
     }
     return text.length * 8 + 8;
+};
+
+export const getHandlesByCategory = (handles: HandleData[]): Record<string, HandleData[]> => {
+    return handles.reduce<Record<string, HandleData[]>>((acc, handle) => {
+        if (!handle.categoryName) {
+            return acc;
+        }
+
+        if (!acc[handle.categoryName]) {
+            acc[handle.categoryName] = [];
+        }
+
+        acc[handle.categoryName].push(handle);
+        return acc;
+    }, {});
 };
