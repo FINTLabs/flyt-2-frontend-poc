@@ -7,7 +7,7 @@ import {
     type IInstanceValueMetadata,
     ValueType,
 } from '~/types/data/integration';
-import type { HandleData, HandlesWithCategories } from '~/types/flow/edges';
+import type { HandleData } from '~/types/flow/edges';
 export const defaultPosition = { x: 0, y: 0 };
 
 export const initNodes: CustomNode[] = [];
@@ -16,8 +16,8 @@ export const initEdges: Edge[] = [];
 const getMetadataHandles = (
     metadataContent?: IInstanceMetadataContent,
     categoryDisplayName?: string
-): HandlesWithCategories => {
-    const sourceHandles: HandlesWithCategories = [];
+): HandleData[] => {
+    const sourceHandles: HandleData[] = [];
 
     if (metadataContent?.instanceValueMetadata) {
         metadataContent?.instanceValueMetadata.forEach((md: IInstanceValueMetadata) => {
@@ -26,6 +26,7 @@ const getMetadataHandles = (
                 label: md.displayName,
                 required: true,
                 type: md.type,
+                categoryName: categoryDisplayName,
             });
         });
     }
@@ -48,10 +49,7 @@ const getMetadataHandles = (
     if (metadataContent?.categories) {
         metadataContent?.categories.forEach((mdCategory: IInstanceMetadataCategory) => {
             const categoryHandles = getMetadataHandles(mdCategory.content, mdCategory.displayName);
-            sourceHandles.push({
-                displayName: mdCategory.displayName,
-                handles: categoryHandles as HandleData[],
-            });
+            sourceHandles.push(...categoryHandles);
         });
     }
 

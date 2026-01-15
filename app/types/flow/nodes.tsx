@@ -1,6 +1,6 @@
 import type { Node, NodeTypes } from '@xyflow/react';
 import { MetadataNode } from '~/components/customNodes/MetadataNode';
-import type { HandleData, HandlesWithCategories } from '~/types/flow/edges';
+import type { HandleData } from '~/types/flow/edges';
 
 export type CustomNodeTypes = 'metadataNode';
 
@@ -8,7 +8,7 @@ export type MetadataNodeData = {
     label: string;
     typeName: string;
     type: string;
-    sourceHandles?: HandlesWithCategories;
+    sourceHandles?: HandleData[];
     targetHandles?: HandleData[];
 };
 export type MetadataNodeType = Node<MetadataNodeData, 'metadataNode'>;

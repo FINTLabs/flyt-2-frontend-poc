@@ -1,19 +1,19 @@
 import { Handle, Position } from '@xyflow/react';
-import React, { useMemo } from 'react';
+import React, { Fragment, useMemo } from 'react';
 import { BodyShort, Detail, HStack, VStack } from '@navikt/ds-react';
 import { calculateHandlePosition, measureTextWidthOld } from '~/demo/utils/nodeHandlers';
 import { HANDLE_HEIGHT_DEMO } from '~/demo/mockData/constants';
-import type { HandleData, HandlesWithCategories } from '~/types/flow/edges';
+import type { HandleData } from '~/types/flow/edges';
 import { getValueTypeSymbolWidth } from '~/utils/dataTypeUtils';
 import { TypeTag } from '~/components/macros/TypeTag';
+import { getHandlesByCategory } from '~/utils/nodePositionUtils';
 
 export type MultipleHandlesWithLabelProps = {
-    handles?: HandlesWithCategories;
+    handles?: HandleData[];
     type: 'target' | 'source';
     isConnectable: boolean;
     x?: number;
     y?: number;
-    hideLabels?: boolean;
     totalItems: number;
 };
 
@@ -21,73 +21,80 @@ export const MetadataHandles = ({
     handles,
     type,
     isConnectable,
-    hideLabels = false,
     totalItems,
 }: MultipleHandlesWithLabelProps) => {
     if (!handles?.length) return null;
 
+    let handlePositionInList = -1;
+
+    const handlesWithoutCategory = handles.filter((handle) => !handle.categoryName);
+    const handlesByCategory = getHandlesByCategory(handles);
+
+    const transform =
+        type === 'target'
+            ? totalItems > 1
+                ? 'translateX(-100%)'
+                : 'translate(-100%, -50%)'
+            : totalItems > 1
+              ? 'translateX(100%)'
+              : 'translate(100%, -50%)';
+
     return (
         <>
-            {handles.map((handle, index) => {
-                const transform =
-                    type === 'target'
-                        ? totalItems > 1
-                            ? 'translateX(-100%)'
-                            : 'translate(-100%, -50%)'
-                        : totalItems > 1
-                          ? 'translateX(100%)'
-                          : 'translate(100%, -50%)';
+            {handlesWithoutCategory.map((handle) => {
+                handlePositionInList = handlePositionInList + 1;
+                const handlePosition = calculateHandlePosition(handlePositionInList, totalItems);
+                return (
+                    <MetadataHandleWithLabel
+                        key={handle.id}
+                        handle={handle}
+                        type={type}
+                        isConnectable={isConnectable}
+                        transform={transform}
+                        handlePosition={handlePosition}
+                    />
+                );
+            })}
+            {Object.keys(handlesByCategory).map((categoryHandleName) => {
+                handlePositionInList = handlePositionInList + 1;
+                const handlePosition = calculateHandlePosition(handlePositionInList, totalItems);
 
-                const handlePosition = calculateHandlePosition(index, totalItems);
-                if ('id' in handle) {
-                    return (
-                        <MetadataHandleWithLabel
-                            key={handle.id}
-                            handle={handle}
-                            type={type}
-                            isConnectable={isConnectable}
-                            transform={transform}
-                            handlePosition={handlePosition}
-                        />
-                    );
-                } else if ('displayName' in handle) {
-                    return (
-                        <>
-                            <BodyShort
-                                key={handle.displayName}
-                                size={'small'}
-                                style={{
-                                    position: 'absolute',
-                                    transform: transform,
-                                    top: handlePosition,
-                                    padding: '2px',
-                                    right: type === 'source' ? '-5px' : undefined,
-                                    left: type === 'target' ? '-5px' : undefined,
-                                }}
-                            >
-                                {handle.displayName}
-                            </BodyShort>
-                            {handle.handles.map((categoryHandle, categoryIndex) => {
-                                const categoryHandlePosition = calculateHandlePosition(
-                                    index + categoryIndex + 1,
-                                    totalItems
-                                );
+                return (
+                    <Fragment key={`categoryHandles-${categoryHandleName}`}>
+                        <BodyShort
+                            size={'small'}
+                            style={{
+                                position: 'absolute',
+                                transform: transform,
+                                top: handlePosition,
+                                padding: '2px',
+                                right: type === 'source' ? '-5px' : undefined,
+                                left: type === 'target' ? '-5px' : undefined,
+                            }}
+                        >
+                            {categoryHandleName}
+                        </BodyShort>
+                        {handlesByCategory[categoryHandleName].map((categoryHandle) => {
+                            handlePositionInList = handlePositionInList + 1;
+                            const categoryHandlePosition = calculateHandlePosition(
+                                handlePositionInList,
+                                totalItems
+                            );
 
-                                return (
-                                    <MetadataHandleWithLabel
-                                        key={categoryHandle.id}
-                                        handle={categoryHandle}
-                                        type={type}
-                                        isConnectable={isConnectable}
-                                        transform={transform}
-                                        handlePosition={categoryHandlePosition}
-                                        paddingFromNode={'-15px'}
-                                    />
-                                );
-                            })}
-                        </>
-                    );
-                }
+                            return (
+                                <MetadataHandleWithLabel
+                                    key={categoryHandle.id}
+                                    handle={categoryHandle}
+                                    type={type}
+                                    isConnectable={isConnectable}
+                                    transform={transform}
+                                    handlePosition={categoryHandlePosition}
+                                    paddingFromNode={'-15px'}
+                                />
+                            );
+                        })}
+                    </Fragment>
+                );
             })}
         </>
     );

@@ -1,4 +1,3 @@
-import { MetadataType } from '~/types/flow/metadataTypes';
 import { ValueType } from '~/types/data/integration';
 
 export type HandleData = {
@@ -7,11 +6,5 @@ export type HandleData = {
     type: ValueType;
     typeName?: string;
     required: boolean;
+    categoryName?: string;
 };
-
-export type HandleCategory = {
-    displayName: string;
-    handles: HandleData[];
-};
-
-export type HandlesWithCategories = (HandleData | HandleCategory)[];
