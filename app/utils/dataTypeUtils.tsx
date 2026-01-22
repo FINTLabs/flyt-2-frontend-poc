@@ -1,7 +1,7 @@
-import { ValueType, type ValueTypeValue } from '~/types/data/integration';
+import { DataValueType, type ValueTypeValue } from '~/types/data/integration';
 import { measureTextWidth } from '~/utils/nodePositionUtils';
 
-export const getValueTypeSymbolWidth = (type?: ValueType, typeText?: string): number => {
+export const getValueTypeSymbolWidth = (type?: DataValueType, typeText?: string): number => {
     if (!type) {
         return typeText ? measureTextWidth(typeText) : 0;
     }
@@ -19,16 +19,15 @@ export const getValueTypeSymbolWidth = (type?: ValueType, typeText?: string): nu
         return textWidth + 15;
     }*/
 
-    if (type === ValueType.COLLECTION) {
+    if (type === DataValueType.COLLECTION) {
         return 30;
     }
-    if (type === ValueType.STRING) {
+    if (type === DataValueType.STRING) {
         return 15;
     }
-
     return typeText ? measureTextWidth(typeText) : 0;
 };
 
-export const getValueTypeFromCollection = (type: ValueType): ValueTypeValue => {
-    return ValueType.FILE;
+export const getValueTypeFromCollection = (type: string): ValueTypeValue => {
+    return DataValueType.FILE;
 };

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { type NodeProps, type Node } from '@xyflow/react';
 import { BodyShort, HStack } from '@navikt/ds-react';
-import { TypeTagOld } from '~/components/macros/TypeTagOld';
+import { TypeTagOld } from '~/demo/components/macros/TypeTagOld';
 import { BaseNodeWrapperOld } from '../BaseNodeWrapperOld';
 import type { HandleDataOld } from '~/types/handleTypes';
 import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';

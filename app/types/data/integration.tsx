@@ -30,7 +30,7 @@ export interface IInstanceMetadataContent {
 
 export interface IInstanceValueMetadata {
     displayName: string;
-    type: ValueType;
+    type: DataValueType;
     key: string;
 }
 
@@ -45,7 +45,7 @@ export interface IInstanceMetadataCategory {
     content: IInstanceMetadataContent;
 }
 
-export enum ValueType {
+export enum DataValueType {
     STRING = 'STRING',
     BOOLEAN = 'BOOLEAN',
     INTEGER = 'INTEGER',
@@ -56,6 +56,7 @@ export enum ValueType {
     FILE = 'FILE',
     COLLECTION = 'COLLECTION',
     VALUE_CONVERTING = 'VALUE_CONVERTING',
+    DATA_OBJECT = 'DATA_OBJECT',
 }
 
-export type ValueTypeValue = `${ValueType}`;
+export type ValueTypeValue = `${DataValueType}`;

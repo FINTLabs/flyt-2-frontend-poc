@@ -1,54 +1,76 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import {
-    addEdge,
-    applyEdgeChanges,
-    applyNodeChanges,
     ReactFlow,
-    type EdgeChange,
     type NodeChange,
-    useNodesInitialized,
     useReactFlow,
     useEdgesState,
     useNodesState,
-    useUpdateNodeInternals,
+    type Edge,
+    type Node,
+    Background,
+    Panel,
+    type OnNodesChange,
+    Controls,
+    MiniMap,
 } from '@xyflow/react';
 import type { IInstanceMetadataContent } from '~/types/data/integration';
-import useLayoutNodes, { getLayoutedNodes } from '~/context/useLayoutNodes';
-import { initEdges, initNodes, mapMetaDataToNode } from '~/dataHandlers/dataMapper/metadataMapper';
-import {
-    allNodeTypes,
-    type CustomNode,
-    type CustomNodeTypes,
-    type ElkNode,
-} from '~/types/flow/nodes';
+import useLayoutNodes from '~/context/useLayoutNodes';
+import { initEdges, initNodes } from '~/dataHandlers/dataMapper/metadataMapper';
+import { allNodeTypes, type CustomNode } from '~/types/flow/nodes';
+import type { IConfiguration } from '~/types/data/configuration';
+import { Button } from '@navikt/ds-react';
+import { createIncomingDataNodes } from '~/dataHandlers/dataMapper/incomingDataMapper';
 
 type ConfigurationFlowProps = {
+    dataName: string;
     metadataContent?: IInstanceMetadataContent;
+    configuration: IConfiguration;
 };
 
 // http://localhost:3000/integration/configuration/edit/18
-const ConfigurationFlow = ({ metadataContent }: ConfigurationFlowProps) => {
+const ConfigurationFlow = ({
+    dataName,
+    metadataContent,
+    configuration,
+}: ConfigurationFlowProps) => {
     const [nodes, setNodes, onNodesChange] = useNodesState<CustomNode>(initNodes);
-    const [edges, , onEdgesChange] = useEdgesState(initEdges);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(initEdges);
 
-    useLayoutNodes();
+    const { resetLayout } = useLayoutNodes();
+
+    const handleNodeChange: OnNodesChange<CustomNode> = (changes: NodeChange<CustomNode>[]) => {
+        onNodesChange(changes);
+    };
+
+    const onRedoLayout = useCallback(() => {
+        resetLayout();
+    }, [nodes, edges]);
 
     useEffect(() => {
-        console.log('=== metadataContent', metadataContent);
-        const metadataNode = mapMetaDataToNode(metadataContent);
-        setNodes([metadataNode]);
+        const incomingDataNodes = createIncomingDataNodes(dataName, metadataContent, configuration);
+        setNodes(incomingDataNodes.nodes);
+        setEdges(incomingDataNodes.edges);
     }, []);
 
     return (
-        <div style={{ width: '100vw', height: '100vh' }}>
+        <div style={{ width: '100vw', height: '75vh' }}>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
                 nodeTypes={allNodeTypes}
-                onNodesChange={onNodesChange}
+                onNodesChange={handleNodeChange}
                 onEdgesChange={onEdgesChange}
                 fitView
-            />
+            >
+                <MiniMap />
+                <Panel position="top-right">
+                    <Button size={'small'} onClick={() => onRedoLayout()}>
+                        Tilbakestill plassering
+                    </Button>
+                </Panel>
+                <Background />
+                <Controls />
+            </ReactFlow>
         </div>
     );
 };

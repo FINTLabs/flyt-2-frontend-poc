@@ -4,7 +4,7 @@ import type { BaseNodeData, InputNodeData, SelectNodeData } from '~/types/nodeTy
 import { type Node } from '@xyflow/react';
 import { allFintNodes } from '~/demo/mockData/fintNodes';
 
-export const defaultPosition = { x: 0, y: 0 };
+export const defaultPositionOld = { x: 0, y: 0 };
 export const defaultOutputPosition = { x: 800, y: 0 };
 
 // INSTANCE NODES
@@ -26,7 +26,7 @@ export const egrunnervervSakInstance: Node<BaseNodeData> = {
             },
         ],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const acosInstance: Node<BaseNodeData> = {
@@ -47,7 +47,7 @@ export const acosInstance: Node<BaseNodeData> = {
             },
         ],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const acosInstanceVIK304: Node<BaseNodeData> = {
@@ -68,7 +68,7 @@ export const acosInstanceVIK304: Node<BaseNodeData> = {
             },
         ],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const arkivInstanceOutput: Node<BaseNodeData> = {
@@ -94,7 +94,7 @@ export const innerFlowInput: Node<BaseNodeData> = {
         typeName: '?',
         type: DataTypeOld.Object,
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const innerFlowOutput: Node<BaseNodeData> = {
@@ -106,7 +106,7 @@ export const innerFlowOutput: Node<BaseNodeData> = {
         type: DataTypeOld.Undefined,
         targetHandles: [{ id: 'a', type: DataTypeOld.Undefined, required: true, typeName: '?' }],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 // GENERIC NODES
@@ -119,7 +119,7 @@ export const variableInputNode: Node<InputNodeData> = {
         type: DataTypeOld.Text,
         sourceHandles: [{ id: 'a', type: DataTypeOld.Text, required: true }],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const dataSourceNode: Node<SelectNodeData> = {
@@ -132,7 +132,7 @@ export const dataSourceNode: Node<SelectNodeData> = {
         type: DataTypeOld.Reference,
         sourceHandles: [{ id: 'a', type: DataTypeOld.Reference, required: true }],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const operationOpenObject: Node<BaseNodeData> = {
@@ -144,7 +144,7 @@ export const operationOpenObject: Node<BaseNodeData> = {
         targetHandles: [{ id: 'a', type: DataTypeOld.Object, required: true, typeName: '?' }],
         sourceHandles: [],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const operationCreateObject: Node<BaseNodeData> = {
@@ -156,7 +156,7 @@ export const operationCreateObject: Node<BaseNodeData> = {
         targetHandles: [],
         sourceHandles: [{ id: 'a', type: DataTypeOld.Object, required: true, typeName: '?' }],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const operationJoinText: Node<BaseNodeData> = {
@@ -172,7 +172,7 @@ export const operationJoinText: Node<BaseNodeData> = {
         ],
         sourceHandles: [{ id: 'a', type: DataTypeOld.Text, required: true }],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const operationEditText: Node<BaseNodeData> = {
@@ -184,7 +184,7 @@ export const operationEditText: Node<BaseNodeData> = {
         targetHandles: [{ id: 'a', type: DataTypeOld.Text, required: true }],
         sourceHandles: [{ id: 'a', type: DataTypeOld.Text, required: true }],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const innerFlowListOperation: Node<BaseNodeData> = {
@@ -200,7 +200,7 @@ export const innerFlowListOperation: Node<BaseNodeData> = {
             { id: 'a', type: DataTypeOld.CollectionUndefined, required: true, typeName: '?' },
         ],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 // DEMO NODES
@@ -238,7 +238,7 @@ export const operationOpenEGrvSak: Node<BaseNodeData> = {
             },
         ],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const operationExternalGetSaksansvarlig: Node<BaseNodeData> = {
@@ -257,7 +257,7 @@ export const operationExternalGetSaksansvarlig: Node<BaseNodeData> = {
             },
         ],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const operationCreateObjectAkrivsak: Node<BaseNodeData> = {
@@ -298,7 +298,7 @@ export const operationCreateObjectAkrivsak: Node<BaseNodeData> = {
             { id: 'a', type: DataTypeOld.Object, typeName: 'Arkiv Sak', required: true },
         ],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const acosDocToDocDesc: Node<BaseNodeData> = {
@@ -327,7 +327,7 @@ export const acosDocToDocDesc: Node<BaseNodeData> = {
             },
         ],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const acosUploadFile: Node<BaseNodeData> = {
@@ -346,7 +346,7 @@ export const acosUploadFile: Node<BaseNodeData> = {
             },
         ],
     },
-    position: defaultPosition,
+    position: defaultPositionOld,
 };
 
 export const getInitialDemoNodes = (

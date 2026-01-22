@@ -1,10 +1,10 @@
 import { Handle, Position } from '@xyflow/react';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Detail, HStack } from '@navikt/ds-react';
 import { calculateHandlePosition, measureTextWidthOld } from '~/demo/utils/nodeHandlers';
 import type { HandleData } from '~/types/flow/edges';
 import { getValueTypeSymbolWidth } from '~/utils/dataTypeUtils';
-import { TypeTag } from '~/components/macros/TypeTag';
+import { TypeTag } from '~/components/customHandles/TypeTag';
 import { HANDLE_HEIGHT } from '~/utils/constants';
 
 export type MultipleHandlesWithLabelProps = {
@@ -82,6 +82,7 @@ const HandleWithLabel = ({
     const memorizedHandleWidth = useMemo(() => {
         const typeTagWidth = getValueTypeSymbolWidth(handle.type, handle.typeName);
         const labelWidth = handle.label ? Math.max(10, measureTextWidthOld(handle.label)) : 0;
+
         return Math.max(16, typeTagWidth + (handle.label ? labelWidth + 16 : 8));
     }, [handle.label, handle.typeName, handle.type]);
 
@@ -117,7 +118,7 @@ const HandleWithLabel = ({
             >
                 <TypeTag
                     type={handle.type}
-                    typeName={handle.id}
+                    typeName={handle.typeName}
                     required={handle.required}
                     size="small"
                 />

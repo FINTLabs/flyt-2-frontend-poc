@@ -1,9 +1,9 @@
-import { ValueType } from '~/types/data/integration';
+import { DataValueType } from '~/types/data/integration';
 
 export type HandleData = {
     id: string;
     label?: string;
-    type: ValueType;
+    type: DataValueType;
     typeName?: string;
     required: boolean;
     categoryName?: string;

@@ -3,7 +3,7 @@ import { type Node, type NodeProps } from '@xyflow/react';
 import React, { memo } from 'react';
 import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
 import { HStack, Select } from '@navikt/ds-react';
-import { TypeTagOld } from '~/components/macros/TypeTagOld';
+import { TypeTagOld } from '~/demo/components/macros/TypeTagOld';
 import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
 import type { DataTypeValue } from '~/demo/types/datatypes';
 

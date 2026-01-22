@@ -5,7 +5,7 @@ import {
     allFunctionalNodes,
     allIntegrationsInputNodes,
     arkivInstanceOutput,
-    defaultPosition,
+    defaultPositionOld,
     getInitialDemoNodes,
 } from '~/demo/mockData/nodes';
 import { initDemoEdges } from '~/demo/mockData/edges';
@@ -167,7 +167,7 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
             return {
                 id: createAlmostRandomId('node-id', id),
                 type: 'input',
-                position: defaultPosition,
+                position: defaultPositionOld,
                 data: { label: `${newNodeId} node not found` },
             };
         }

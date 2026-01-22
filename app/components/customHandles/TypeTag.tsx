@@ -9,7 +9,7 @@ import {
     LinkIcon,
     QuestionmarkIcon,
 } from '@navikt/aksel-icons';
-import { ValueType, type ValueTypeValue } from '~/types/data/integration';
+import { DataValueType, type ValueTypeValue } from '~/types/data/integration';
 import { getValueTypeFromCollection } from '~/utils/dataTypeUtils';
 
 type TypeProps = {
@@ -54,7 +54,7 @@ export const TypeTag = ({
 
 const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
     if (!type) return typeName ?? undefined;
-    /*    if (type === 'object') {
+    if (type === DataValueType.DATA_OBJECT) {
         return (
             <p
                 style={{
@@ -67,7 +67,7 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
                 {`{${typeName}}`}
             </p>
         );
-    }*/
+    }
     /*    if (isCollectionType(type)) {
         const innertype = getTypeFromCollection(type);
         return (
@@ -83,10 +83,10 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
     if (type === 'file') return <FileIcon fontSize="0.9rem" />;
     if (type === 'boolean') return <QuestionmarkDiamondIcon fontSize="0.9rem" />;*/
 
-    if (type === ValueType.STRING) {
+    if (type === DataValueType.STRING) {
         return <DataTypeText />;
     }
-    if (type === ValueType.COLLECTION) {
+    if (type === DataValueType.COLLECTION) {
         const innertype = getValueTypeFromCollection(type);
 
         return (
@@ -96,7 +96,7 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
             </HStack>
         );
     }
-    if (type === ValueType.FILE) {
+    if (type === DataValueType.FILE) {
         return <FileIcon fontSize="0.9rem" />;
     }
     return typeName;

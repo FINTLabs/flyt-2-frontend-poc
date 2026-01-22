@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { type NodeProps, type Node, useReactFlow } from '@xyflow/react';
 import { HStack, TextField } from '@navikt/ds-react';
 import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
-import { TypeTagOld } from '~/components/macros/TypeTagOld';
+import { TypeTagOld } from '~/demo/components/macros/TypeTagOld';
 import { BaseNodeWrapperOld } from '../BaseNodeWrapperOld';
 import type { HandleDataOld } from '~/types/handleTypes';
 import { useFlow } from '~/context/flowContext';

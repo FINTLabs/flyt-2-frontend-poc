@@ -1,11 +1,11 @@
 import { Handle, Position } from '@xyflow/react';
 import React, { Fragment, useMemo } from 'react';
-import { BodyShort, Detail, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, Detail, HStack } from '@navikt/ds-react';
 import { calculateHandlePosition, measureTextWidthOld } from '~/demo/utils/nodeHandlers';
 import { HANDLE_HEIGHT_DEMO } from '~/demo/mockData/constants';
 import type { HandleData } from '~/types/flow/edges';
 import { getValueTypeSymbolWidth } from '~/utils/dataTypeUtils';
-import { TypeTag } from '~/components/macros/TypeTag';
+import { TypeTag } from '~/components/customHandles/TypeTag';
 import { getHandlesByCategory } from '~/utils/nodePositionUtils';
 
 export type MultipleHandlesWithLabelProps = {

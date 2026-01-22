@@ -11,7 +11,7 @@ import {
 import React, { memo, useEffect, useState } from 'react';
 import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
 import { BodyShort, HStack } from '@navikt/ds-react';
-import { TypeTagOld } from '~/components/macros/TypeTagOld';
+import { TypeTagOld } from '~/demo/components/macros/TypeTagOld';
 import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
 import { DataTypeOld, type DataTypeValue } from '~/demo/types/datatypes';
 import { getCollectionTypeFromType } from '~/demo/utils/nodeHandlers';

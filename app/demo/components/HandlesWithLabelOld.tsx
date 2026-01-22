@@ -8,7 +8,7 @@ import {
     measureTextWidthOld,
 } from '~/demo/utils/nodeHandlers';
 import { HANDLE_HEIGHT_DEMO } from '~/demo/mockData/constants';
-import { TypeTagOld } from '~/components/macros/TypeTagOld';
+import { TypeTagOld } from '~/demo/components/macros/TypeTagOld';
 
 export type MultipleHandlesWithLabelProps = {
     handles?: HandleDataOld[];

@@ -81,8 +81,13 @@
 }
 
 .react-flow__node-externalFunction,
+.react-flow__node-sakslogikkNode,
 .menu-node-externalFunction {
     background-color: var(--theme-node-beige);
+}
+
+.react-flow__node-sakslogikkNode .react-flow__handle {
+    background-color: var(--theme-node-beige) !important;
 }
 
 .react-flow__node.highlight {
