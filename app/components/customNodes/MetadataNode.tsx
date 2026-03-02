@@ -1,11 +1,12 @@
 import React, { memo, useMemo } from 'react';
 import { type NodeProps } from '@xyflow/react';
-import { BodyShort, HStack } from '@navikt/ds-react';
 import type { MetadataNodeType } from '~/types/flow/nodes';
 import { NodeContainer } from '~/components/customNodes/nodeLayout/NodeContainer';
 import { MetadataHandles } from '~/components/customHandles/MetadataHandles';
 import { countNumberOfMetadataHandleItems } from '~/utils/nodePositionUtils';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+import { getNodeMinHeight } from '~/demo/utils/nodeHandlers';
+import { NodeIcon } from '~/components/customNodes/nodeLayout/NodeIcon';
 
 export const MetadataNode = memo(
     ({ id, data, isConnectable, width }: NodeProps<MetadataNodeType>) => {
@@ -14,16 +15,23 @@ export const MetadataNode = memo(
             []
         );
 
+        const minHeight = useMemo(
+            () =>
+                getNodeMinHeight({
+                    sources: totalHandleItems,
+                    targets: data.targetHandles?.length,
+                }),
+            []
+        );
+
         return (
             <NodeContainer
                 id={id}
-                sourceHandleAmount={totalHandleItems}
-                targetHandleAmount={data.targetHandles?.length}
-                minWidth={width}
+                label={'Metadata'}
+                subLabel={data.label}
+                minHeight={minHeight.cssString}
             >
-                <HStack align={'center'} gap="1">
-                    <BodyShort size={'small'}>{data.label}</BodyShort>
-                </HStack>
+                <NodeIcon iconName={'openData2'} minHeight={minHeight.cssString} />
                 {data.sourceHandles?.length && (
                     <MetadataHandles
                         handles={data.sourceHandles}

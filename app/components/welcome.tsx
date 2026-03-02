@@ -1,4 +1,4 @@
-import { PageLayout } from '~/components/layout/PageLayout';
+import { PageLayout } from '~/components/pageLayout/PageLayout';
 import { DictTerm } from '~/demo/components/macros/DictionaryTooltip';
 import { Box, Heading, BodyShort, VStack } from '@navikt/ds-react';
 

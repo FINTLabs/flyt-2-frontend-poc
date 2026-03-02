@@ -3,7 +3,7 @@ import { ReactFlow, Controls, BackgroundVariant, Background } from '@xyflow/reac
 
 import '@xyflow/react/dist/style.css';
 import { useFlow } from '~/context/flowContext';
-import { nodeTypes } from '~/demo/components/functionalNodes/nodetypes';
+import { nodeTypes } from '~/components/customNodes/nodetypes';
 
 const RunnableFlow = () => {
     const { initNodes, initEdges } = useFlow();

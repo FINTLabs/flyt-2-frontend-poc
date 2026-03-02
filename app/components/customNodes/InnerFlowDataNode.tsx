@@ -1,35 +1,34 @@
-import type { HandleDataOld } from '~/types/handleTypes';
+import type { HandleData } from '~/types/handleTypes';
 import {
     type Node,
     type NodeConnection,
     type NodeProps,
     useNodeConnections,
-    useNodes,
     useNodesData,
     useReactFlow,
 } from '@xyflow/react';
 import React, { memo, useEffect, useState } from 'react';
-import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
+import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
 import { BodyShort, HStack } from '@navikt/ds-react';
-import { TypeTagOld } from '~/demo/components/macros/TypeTagOld';
-import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
-import { DataTypeOld, type DataTypeValue } from '~/demo/types/datatypes';
+import { DataTypeDefinition, type DataTypeValue } from '~/types/data/datatypes';
 import { getCollectionTypeFromType } from '~/demo/utils/nodeHandlers';
+import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+import { TypeTag } from '~/components/customHandles/TypeTag';
 
 type InnerFlowDataNodeData = {
     label: string;
     type: DataTypeValue;
     typeName: string;
     iconType?: string;
-    sourceHandles?: HandleDataOld[];
-    targetHandles?: HandleDataOld[];
+    sourceHandles?: HandleData[];
+    targetHandles?: HandleData[];
 };
 
 type InnerFlowDataNodeType = Node<InnerFlowDataNodeData, 'innerFlowInput' | 'innerFlowOutput'>;
 
 export const InnerFlowDataNode = memo(
     ({ id, data, isConnectable, type, parentId }: NodeProps<InnerFlowDataNodeType>) => {
-        const { updateNode, updateEdge, getNode, addNodes, getNodes } = useReactFlow();
+        const { updateNode, getNode } = useReactFlow();
 
         const isInput = type === 'innerFlowInput';
         const handleType = isInput ? 'source' : 'target';
@@ -49,11 +48,11 @@ export const InnerFlowDataNode = memo(
         }, [targetConnections]);
 
         useEffect(() => {
-            if (!isInput && targetEdge && data.type === DataTypeOld.Undefined) {
+            if (!isInput && targetEdge && data.type === DataTypeDefinition.Undefined) {
                 const objectDefinitionNode = getNode(targetEdge.source)?.data;
                 if (objectDefinitionNode) {
                     console.log('objectDefinitionNode: ', objectDefinitionNode);
-                    const incomingObjectHandle: HandleDataOld | undefined =
+                    const incomingObjectHandle: HandleData | undefined =
                         objectDefinitionNode.sourceHandles
                             ? Object.values(objectDefinitionNode.sourceHandles).find(
                                   (h) => h.id === targetEdge.sourceHandle
@@ -99,13 +98,13 @@ export const InnerFlowDataNode = memo(
         }, [targetEdge]);
 
         return (
-            <BaseNodeWrapperOld>
+            <NodeContainerWithProgress>
                 <HStack align={'center'} gap="1">
-                    <TypeTagOld type={data.type} typeName={data.typeName} />
+                    <TypeTag type={data.type} typeName={data.typeName} />
                     <BodyShort size={'small'}>{data.label}</BodyShort>
                 </HStack>
                 {data.sourceHandles?.length && (
-                    <HandlesWithLabelOld
+                    <HandlesWithLabel
                         handles={data.sourceHandles}
                         type={handleType}
                         isConnectable={isConnectable}
@@ -113,14 +112,14 @@ export const InnerFlowDataNode = memo(
                     />
                 )}
                 {data.targetHandles?.length && (
-                    <HandlesWithLabelOld
+                    <HandlesWithLabel
                         handles={data.targetHandles}
                         type={handleType}
                         isConnectable={isConnectable}
                         hideLabels={true}
                     />
                 )}
-            </BaseNodeWrapperOld>
+            </NodeContainerWithProgress>
         );
     }
 );

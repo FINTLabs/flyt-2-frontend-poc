@@ -13,8 +13,8 @@ import akselTheme from './styles/akselTheme.css?url';
 import reactFlowTheme from './styles/reactFlowTheme.css?url';
 import flowStyles from './styles/flowStyles.css?url';
 import { Page } from '@navikt/ds-react';
-import { AppBar } from '~/components/layout/AppBar';
-import Footer from '~/components/layout/Footer';
+import { AppBar } from '~/components/pageLayout/AppBar';
+import Footer from '~/components/pageLayout/Footer';
 
 export function meta({}: Route.MetaArgs) {
     return [

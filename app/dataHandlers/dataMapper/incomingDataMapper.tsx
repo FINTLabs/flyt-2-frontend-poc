@@ -1,4 +1,4 @@
-import { DataValueType, type IInstanceMetadataContent } from '~/types/data/integration';
+import { type IInstanceMetadataContent } from '~/types/data/integration';
 import {
     ConfigValueType,
     type IConfiguration,
@@ -14,17 +14,18 @@ import type {
     SakslogikkNodeData,
 } from '~/types/flow/nodes';
 import { defaultPosition } from '~/utils/constants';
+import { DataValueTypeAPI } from '~/types/data/dataValueTypeAPI';
 
-const mapConfigValueTypeToDataType = (type: ConfigValueType): DataValueType | undefined => {
+const mapConfigValueTypeToDataType = (type: ConfigValueType): DataValueTypeAPI | undefined => {
     switch (type) {
         case ConfigValueType.STRING:
-            return DataValueType.STRING;
+            return DataValueTypeAPI.STRING;
         case ConfigValueType.BOOLEAN:
-            return DataValueType.BOOLEAN;
+            return DataValueTypeAPI.BOOLEAN;
         case ConfigValueType.URL:
-            return DataValueType.URL;
+            return DataValueTypeAPI.URL;
         case ConfigValueType.FILE:
-            return DataValueType.FILE;
+            return DataValueTypeAPI.FILE;
         case ConfigValueType.DYNAMIC_STRING:
         default:
             return undefined;
@@ -54,13 +55,13 @@ const createIncomingDataNode = (dataName: string): Node<IncomingDataNodeData> =>
         data: {
             label: dataName,
             typeName: dataName,
-            type: DataValueType.DATA_OBJECT,
+            type: DataValueTypeAPI.DATA_OBJECT,
             iconType: 'dataInstanceIn',
             sourceHandles: [
                 {
                     id: 'a',
                     label: dataName,
-                    type: DataValueType.DATA_OBJECT,
+                    type: DataValueTypeAPI.DATA_OBJECT,
                     typeName: dataName,
                     required: true,
                 },
@@ -73,9 +74,9 @@ const createIncomingDataNode = (dataName: string): Node<IncomingDataNodeData> =>
 const createDataTypeHandle = (dataName: string, identifier: string) => {
     return {
         id: `${dataName}-${identifier}`,
-        label: 'skjema',
+        label: 'Skjema',
         required: true,
-        type: DataValueType.DATA_OBJECT,
+        type: DataValueTypeAPI.DATA_OBJECT,
         typeName: dataName,
         categoryName: dataName,
     };
@@ -90,7 +91,7 @@ const createSakslogikkNode = (
             type: 'sakslogikkNode',
             data: {
                 label: 'Sakslogikk',
-                typeName: 'test',
+                typeName: '',
                 selectedValue: value.mappingString,
                 type: value.type,
                 sourceHandles: [],
@@ -116,14 +117,13 @@ export const createIncomingDataNodes = (
 
     const vmtype = configuration?.mapping.valueMappingPerKey?.['type'];
     const sakslogikkNode: Node<ConfigurationNodeData> | undefined = createSakslogikkNode(vmtype);
-    const metadataNode = mapMetaDataToNode(metadataContent);
 
+    const metadataNode = mapMetaDataToNode(metadataContent);
     const metadataTargetHandle = createDataTypeHandle(dataName, 'metadatatarget');
     metadataNode.data.targetHandles = [metadataTargetHandle];
     nodes.push(metadataNode);
     const mapping = configuration?.mapping;
 
-    console.log('mapConfigurationToNode mapping', mapping);
     if (sakslogikkNode) {
         const sakslogikkTargetHandle = createDataTypeHandle(dataName, 'sakslogikktarget');
         const sakslogikkSourceHandle = createDataTypeHandle(dataName, 'sakslogikksource');

@@ -14,12 +14,8 @@ import {
     InboxDownFillIcon,
     ArrowsSquarepathIcon,
 } from '@navikt/aksel-icons';
-import { DataTypeOld, type DataTypeValue } from '~/demo/types/datatypes';
-import {
-    HANDLE_HEIGHT_DEMO,
-    HANDLE_INTERVAL_DEMO,
-    NODE_BASE_HEIGHT_DEMO,
-} from '~/demo/mockData/constants';
+import { DataTypeDefinition, type DataTypeValue } from '~/types/data/datatypes';
+import { HANDLE_HEIGHT, HANDLE_INTERVAL, NODE_BASE_HEIGHT } from '~/utils/constants';
 
 export const onChangeNodeColor = (
     event: ChangeEvent<HTMLInputElement>,
@@ -62,7 +58,7 @@ export const getTypeSymbolWidth = (type?: DataTypeValue, typeText?: string): num
     }
 
     if (isCollectionType(type)) {
-        if (type === DataTypeOld.CollectionObject) {
+        if (type === DataTypeDefinition.CollectionObject) {
             const text = `{${typeText}}`;
             const textWidth = measureTextWidthOld(text, '0.7rem');
             return textWidth + 15;
@@ -134,7 +130,7 @@ export const getNodeIcon = (iconType: string | undefined, isSmall?: true) => {
 export const calculateHandlePosition = (
     index: number,
     totalHandles: number,
-    interval: number = HANDLE_INTERVAL_DEMO
+    interval: number = HANDLE_INTERVAL
 ): string => {
     if (totalHandles === 1) {
         return '50%';
@@ -142,14 +138,14 @@ export const calculateHandlePosition = (
     const isEven = totalHandles % 2 === 0;
     const middleIndex = isEven ? totalHandles / 2 - 1 : Math.floor(totalHandles / 2);
     const offsetFromMiddle = index - middleIndex;
-    return `calc(50% + ${(offsetFromMiddle - (isEven ? 0.5 : 0)) * interval - HANDLE_HEIGHT_DEMO / 2}px)`;
+    return `calc(50% + ${(offsetFromMiddle - (isEven ? 0.5 : 0)) * interval - HANDLE_HEIGHT / 2}px)`;
 };
 
 export const getNodeMinHeight = ({
     targets,
     sources,
-    handleInterval = HANDLE_INTERVAL_DEMO,
-    baseHeight = NODE_BASE_HEIGHT_DEMO,
+    handleInterval = HANDLE_INTERVAL,
+    baseHeight = NODE_BASE_HEIGHT,
 }: {
     targets?: number | undefined;
     sources?: number | undefined;
@@ -174,8 +170,8 @@ export const getNodeMinHeight = ({
 export const getNodeMinHeightCss = ({
     targets,
     sources,
-    handleInterval = HANDLE_INTERVAL_DEMO,
-    baseHeight = NODE_BASE_HEIGHT_DEMO,
+    handleInterval = HANDLE_INTERVAL,
+    baseHeight = NODE_BASE_HEIGHT,
 }: {
     targets?: number | undefined;
     sources?: number | undefined;
@@ -191,31 +187,31 @@ export const getNodeMinHeightCss = ({
 export const getCollectionTypeFromType = (
     type: DataTypeValue | string | undefined
 ): DataTypeValue => {
-    if (!type) return DataTypeOld.Undefined;
-    if (type === DataTypeOld.Object) return DataTypeOld.CollectionObject;
-    if (type === DataTypeOld.Undefined) return DataTypeOld.CollectionUndefined;
-    if (type === DataTypeOld.Text) return DataTypeOld.CollectionText;
-    if (type === DataTypeOld.Number) return DataTypeOld.CollectionNumber;
-    if (type === DataTypeOld.Boolean) return DataTypeOld.CollectionBoolean;
-    if (type === DataTypeOld.File) return DataTypeOld.CollectionFile;
-    if (type === DataTypeOld.Reference) return DataTypeOld.CollectionReference;
+    if (!type) return DataTypeDefinition.Undefined;
+    if (type === DataTypeDefinition.Object) return DataTypeDefinition.CollectionObject;
+    if (type === DataTypeDefinition.Undefined) return DataTypeDefinition.CollectionUndefined;
+    if (type === DataTypeDefinition.Text) return DataTypeDefinition.CollectionText;
+    if (type === DataTypeDefinition.Number) return DataTypeDefinition.CollectionNumber;
+    if (type === DataTypeDefinition.Boolean) return DataTypeDefinition.CollectionBoolean;
+    if (type === DataTypeDefinition.File) return DataTypeDefinition.CollectionFile;
+    if (type === DataTypeDefinition.Reference) return DataTypeDefinition.CollectionReference;
 
-    return DataTypeOld.Undefined;
+    return DataTypeDefinition.Undefined;
 };
 
 export const getTypeFromCollectionOld = (
     type: DataTypeValue | string | undefined
 ): DataTypeValue => {
-    if (!type) return DataTypeOld.CollectionUndefined;
-    if (type === DataTypeOld.CollectionObject) return DataTypeOld.Object;
-    if (type === DataTypeOld.CollectionUndefined) return DataTypeOld.Undefined;
-    if (type === DataTypeOld.CollectionText) return DataTypeOld.Text;
-    if (type === DataTypeOld.CollectionNumber) return DataTypeOld.Number;
-    if (type === DataTypeOld.CollectionBoolean) return DataTypeOld.Boolean;
-    if (type === DataTypeOld.CollectionFile) return DataTypeOld.File;
-    if (type === DataTypeOld.CollectionReference) return DataTypeOld.Reference;
+    if (!type) return DataTypeDefinition.CollectionUndefined;
+    if (type === DataTypeDefinition.CollectionObject) return DataTypeDefinition.Object;
+    if (type === DataTypeDefinition.CollectionUndefined) return DataTypeDefinition.Undefined;
+    if (type === DataTypeDefinition.CollectionText) return DataTypeDefinition.Text;
+    if (type === DataTypeDefinition.CollectionNumber) return DataTypeDefinition.Number;
+    if (type === DataTypeDefinition.CollectionBoolean) return DataTypeDefinition.Boolean;
+    if (type === DataTypeDefinition.CollectionFile) return DataTypeDefinition.File;
+    if (type === DataTypeDefinition.CollectionReference) return DataTypeDefinition.Reference;
 
-    return DataTypeOld.CollectionUndefined;
+    return DataTypeDefinition.CollectionUndefined;
 };
 
 export const isCollectionType = (type: DataTypeValue | string | undefined): boolean => {

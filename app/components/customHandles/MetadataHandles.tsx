@@ -2,11 +2,11 @@ import { Handle, Position } from '@xyflow/react';
 import React, { Fragment, useMemo } from 'react';
 import { BodyShort, Detail, HStack } from '@navikt/ds-react';
 import { calculateHandlePosition, measureTextWidthOld } from '~/demo/utils/nodeHandlers';
-import { HANDLE_HEIGHT_DEMO } from '~/demo/mockData/constants';
-import type { HandleData } from '~/types/flow/edges';
 import { getValueTypeSymbolWidth } from '~/utils/dataTypeUtils';
 import { TypeTag } from '~/components/customHandles/TypeTag';
 import { getHandlesByCategory } from '~/utils/nodePositionUtils';
+import type { HandleData } from '~/types/handleTypes';
+import { HANDLE_HEIGHT } from '~/utils/constants';
 
 export type MultipleHandlesWithLabelProps = {
     handles?: HandleData[];
@@ -24,7 +24,6 @@ export const MetadataHandles = ({
     totalItems,
 }: MultipleHandlesWithLabelProps) => {
     if (!handles?.length) return null;
-
     let handlePositionInList = -1;
 
     const handlesWithoutCategory = handles.filter((handle) => !handle.categoryName);
@@ -126,6 +125,7 @@ const MetadataHandleWithLabel = ({
     return (
         <Handle
             key={handle.id}
+            className={'custom-handle metadata-handle'}
             id={handle.id}
             type={type}
             position={type === 'target' ? Position.Left : Position.Right}
@@ -133,18 +133,10 @@ const MetadataHandleWithLabel = ({
             style={{
                 top: handlePosition,
                 width: memorizedHandleWidth,
-                height: HANDLE_HEIGHT_DEMO,
-                padding: '2px',
-                zIndex: 2,
-                backgroundColor: 'var(--a-bg-default)',
-                borderWidth: '1px',
-                borderRadius: '4px',
-                borderColor: 'var(--a-border-subtle)',
+                height: HANDLE_HEIGHT,
                 right: type === 'source' ? paddingFromNode : undefined,
                 left: type === 'target' ? paddingFromNode : undefined,
                 transform: transform,
-                textAlign: 'left',
-                alignContent: 'center',
             }}
         >
             <HStack

@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Box } from '@navikt/ds-react';
 import { NodeLabel } from './NodeLabel';
 import { getNodeMinHeight } from '~/utils/nodePositionUtils';
+import { NODE_BASE_WIDTH } from '~/utils/constants';
 
 interface NodeContainerProps {
     id: string;
@@ -10,7 +11,9 @@ interface NodeContainerProps {
     children: React.ReactNode;
     label?: string;
     italic?: boolean;
+    subLabel?: string;
     minWidth?: number;
+    minHeight?: string;
 }
 
 export const NodeContainer: React.FC<NodeContainerProps> = ({
@@ -18,20 +21,14 @@ export const NodeContainer: React.FC<NodeContainerProps> = ({
     targetHandleAmount = 0,
     children,
     label,
+    subLabel,
     italic,
+    minWidth = NODE_BASE_WIDTH,
+    minHeight,
 }) => {
-    const minHeight = useMemo(
-        () =>
-            getNodeMinHeight({
-                sources: sourceHandleAmount,
-                targets: targetHandleAmount,
-            }),
-        []
-    );
-
     return (
-        <Box style={{ minHeight: minHeight.cssString, margin: '2' }}>
-            {label && <NodeLabel label={label} italic={italic} />}
+        <Box style={{ minHeight, margin: '2', minWidth }}>
+            {label && <NodeLabel label={label} italic={italic} sublabel={subLabel} />}
             {children}
         </Box>
     );

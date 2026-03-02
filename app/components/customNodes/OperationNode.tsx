@@ -1,17 +1,17 @@
 import React, { memo, useMemo } from 'react';
 import { type NodeProps, type Node } from '@xyflow/react';
 import { VStack } from '@navikt/ds-react';
-import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
 import { getNodeIcon, getNodeMinHeightCss } from '~/demo/utils/nodeHandlers';
-import { BaseNodeWrapperOld } from '../BaseNodeWrapperOld';
-import type { HandleDataOld } from '~/types/handleTypes';
+import { NodeContainerWithProgress } from './nodeLayout/NodeContainerWithProgress';
+import type { HandleData } from '~/types/handleTypes';
 import { useFlow } from '~/context/flowContext';
+import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 
 type OperationNodeData = {
     label: string;
     iconType?: string;
-    sourceHandles?: HandleDataOld[];
-    targetHandles?: HandleDataOld[];
+    sourceHandles?: HandleData[];
+    targetHandles?: HandleData[];
 };
 
 type OperationNodeType = Node<OperationNodeData, 'operation' | 'externalFunction'>;
@@ -35,8 +35,8 @@ export const OperationNode = memo(
         }, [currentFlow]);
 
         return (
-            <BaseNodeWrapperOld label={data.label} minHeight={minHeight} currentStep={step}>
-                <HandlesWithLabelOld
+            <NodeContainerWithProgress label={data.label} minHeight={minHeight} currentStep={step}>
+                <HandlesWithLabel
                     handles={data.targetHandles}
                     type={'target'}
                     isConnectable={isConnectable}
@@ -50,12 +50,12 @@ export const OperationNode = memo(
                 >
                     {data.iconType && getNodeIcon(data.iconType)}
                 </VStack>
-                <HandlesWithLabelOld
+                <HandlesWithLabel
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
                 />
-            </BaseNodeWrapperOld>
+            </NodeContainerWithProgress>
         );
     }
 );

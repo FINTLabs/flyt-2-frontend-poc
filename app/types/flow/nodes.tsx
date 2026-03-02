@@ -1,9 +1,10 @@
 import type { Node, NodeTypes } from '@xyflow/react';
 import { MetadataNode } from '~/components/customNodes/MetadataNode';
-import type { HandleData } from '~/types/flow/edges';
-import { ConfigurationNode } from '~/components/customNodes/ConfigurationNode';
+import { ConfigurationNode } from '~/components/customNodes/ConfigurationNodes/ConfigurationNode';
 import { SakslogikkNode } from '~/components/customNodes/SakslogikkNode';
-import { IncomingDataNode } from '~/components/customNodes/IncomingDataNode';
+import { IncomingDataNode } from '~/components/customNodes/ConfigurationNodes/IncomingDataNode';
+import { DynamicStringNode } from '~/components/customNodes/ConfigurationNodes/DynamicStringNode';
+import type { HandleData } from '~/types/handleTypes';
 
 export type BaseNodeData = {
     label: string;
@@ -31,6 +32,12 @@ export type IncomingDataNodeData = BaseNodeData & {
 };
 export type IncomingDataNodeType = Node<IncomingDataNodeData, 'incomingData'>;
 
+export type DynamicStringNodeData = BaseNodeData & {
+    iconType?: string;
+    textString: string;
+};
+export type DynamicStringNodeType = Node<DynamicStringNodeData, 'dynamicString'>;
+
 export type ElkNodeData = {
     label: string;
     sourceHandles: { id: string }[];
@@ -43,6 +50,7 @@ export const allNodeTypes: NodeTypes = {
     metadataNode: MetadataNode,
     configNode: ConfigurationNode,
     sakslogikkNode: SakslogikkNode,
+    dynamicString: DynamicStringNode,
 };
 
 export type CustomNode = Node<MetadataNodeData | ConfigurationNodeData>;

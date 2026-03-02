@@ -1,4 +1,4 @@
-import { DataValueType, type IInstanceMetadataContent } from '~/types/data/integration';
+import { type IInstanceMetadataContent } from '~/types/data/integration';
 import type { Node } from '@xyflow/react';
 import type { ConfigurationNodeData, CustomNode, MetadataNodeData } from '~/types/flow/nodes';
 import {
@@ -6,8 +6,9 @@ import {
     type IConfiguration,
     type IValueMapping,
 } from '~/types/data/configuration';
-import { DataTypeOld } from '~/demo/types/datatypes';
+import { DataTypeDefinition } from '~/types/data/datatypes';
 import { defaultPosition } from '~/utils/constants';
+import { DataValueTypeAPI } from '~/types/data/dataValueTypeAPI';
 
 export const mapConfigurationToNode = (
     configuration?: IConfiguration

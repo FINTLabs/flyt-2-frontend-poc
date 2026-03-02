@@ -9,14 +9,14 @@ import {
     NodeResizeControl,
 } from '@xyflow/react';
 import { VStack } from '@navikt/ds-react';
-import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
 import { getNodeIcon, getNodeMinHeight } from '~/demo/utils/nodeHandlers';
-import type { HandleDataOld } from '~/types/handleTypes';
-import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
-import { DataTypeOld } from '~/demo/types/datatypes';
+import type { HandleData } from '~/types/handleTypes';
+import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
+import { DataTypeDefinition } from '~/types/data/datatypes';
 import { useFlow } from '~/context/flowContext';
-import { innerFlowInput, innerFlowOutput } from '~/demo/mockData/nodes';
+import { innerFlowInput, innerFlowOutput } from '~/mockData/nodes/general';
 import { createAlmostRandomId } from '~/demo/utils/generalUtils';
+import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 
 function ResizeIcon() {
     return (
@@ -44,8 +44,8 @@ function ResizeIcon() {
 type InnerFlowListOperationData = {
     label: string;
     iconType?: string;
-    sourceHandles?: HandleDataOld[];
-    targetHandles?: HandleDataOld[];
+    sourceHandles?: HandleData[];
+    targetHandles?: HandleData[];
 };
 
 type InnerFlowListOperationType = Node<InnerFlowListOperationData, 'listOperation'>;
@@ -78,7 +78,10 @@ export const InnerFlowListOperation = memo(
         }, [targetConnections]);
 
         useEffect(() => {
-            if (targetEdge && data.targetHandles?.[0]?.type === DataTypeOld.CollectionObject) {
+            if (
+                targetEdge &&
+                data.targetHandles?.[0]?.type === DataTypeDefinition.CollectionObject
+            ) {
                 console.log('FOUND EDGE', targetEdge, data);
                 const objectDefinitionNode = getNode(targetEdge.source)?.data;
                 if (objectDefinitionNode) {
@@ -91,7 +94,7 @@ export const InnerFlowListOperation = memo(
                     const objectHandle = {
                         id: 'a',
                         label: incomingObjectHandle.label,
-                        type: DataTypeOld.Object,
+                        type: DataTypeDefinition.Object,
                         typeName: incomingObjectHandle.typeName,
                         required: true,
                     };
@@ -106,7 +109,7 @@ export const InnerFlowListOperation = memo(
                             targetHandles: [
                                 {
                                     ...objectHandle,
-                                    type: DataTypeOld.CollectionObject,
+                                    type: DataTypeDefinition.CollectionObject,
                                 },
                             ],
                         },
@@ -121,7 +124,7 @@ export const InnerFlowListOperation = memo(
                             id: createAlmostRandomId('node-id', 'innerFlowInput'),
                             data: {
                                 sourceHandles: [objectHandle],
-                                type: DataTypeOld.Object,
+                                type: DataTypeDefinition.Object,
                                 typeName: incomingObjectHandle.typeName || 'Object',
                                 label: incomingObjectHandle.label || 'object',
                             },
@@ -145,8 +148,8 @@ export const InnerFlowListOperation = memo(
         }, [targetEdge]);
 
         return (
-            <BaseNodeWrapperOld label={data.label} minHeight={minHeight.cssString}>
-                <HandlesWithLabelOld
+            <NodeContainerWithProgress label={data.label} minHeight={minHeight.cssString}>
+                <HandlesWithLabel
                     handles={data.targetHandles}
                     type={'target'}
                     isConnectable={targetConnections.length < 1}
@@ -165,12 +168,12 @@ export const InnerFlowListOperation = memo(
                         <ResizeIcon />
                     </NodeResizeControl>
                 )}
-                <HandlesWithLabelOld
+                <HandlesWithLabel
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
                 />
-            </BaseNodeWrapperOld>
+            </NodeContainerWithProgress>
         );
     }
 );

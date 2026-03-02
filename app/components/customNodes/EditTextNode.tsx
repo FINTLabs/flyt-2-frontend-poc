@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import { type Node, type NodeProps } from '@xyflow/react';
 import { VStack } from '@navikt/ds-react';
-import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
 import { getNodeMinHeight, getNodeIcon } from '~/demo/utils/nodeHandlers';
 import type { BaseNodeData } from '~/types/nodeTypes';
-import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
+import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
+import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 
 type JoinTextOperationNodeType = Node<BaseNodeData, 'operationJoinText'>;
 
@@ -16,8 +16,8 @@ export const EditTextNode = memo(
         });
 
         return (
-            <BaseNodeWrapperOld label={data.label} minHeight={minHeight.cssString}>
-                <HandlesWithLabelOld
+            <NodeContainerWithProgress label={data.label} minHeight={minHeight.cssString}>
+                <HandlesWithLabel
                     handles={data.targetHandles}
                     type={'target'}
                     isConnectable={isConnectable}
@@ -31,12 +31,12 @@ export const EditTextNode = memo(
                 >
                     {data.iconType && getNodeIcon(data.iconType)}
                 </VStack>
-                <HandlesWithLabelOld
+                <HandlesWithLabel
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
                 />
-            </BaseNodeWrapperOld>
+            </NodeContainerWithProgress>
         );
     }
 );

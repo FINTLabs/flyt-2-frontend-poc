@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Box } from '@navikt/ds-react';
-import { NodeLabel } from '../../components/customNodes/nodeLayout/NodeLabel';
-import ProgressIndicator from '~/demo/components/functionalNodes/ProgressIndicator';
+import { NodeLabel } from './NodeLabel';
+import ProgressIndicator from '~/components/customNodes/nodeLayout/ProgressIndicator';
 import type { RunStatusType } from '~/types/generalTypes';
 import { useFlow } from '~/context/flowContext';
 
@@ -14,7 +14,7 @@ interface BaseNodeWrapperProps {
     currentStep?: number;
 }
 
-export const BaseNodeWrapperOld: React.FC<BaseNodeWrapperProps> = ({
+export const NodeContainerWithProgress: React.FC<BaseNodeWrapperProps> = ({
     children,
     label,
     italic,

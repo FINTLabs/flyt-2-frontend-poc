@@ -20,6 +20,7 @@ import { allNodeTypes, type CustomNode } from '~/types/flow/nodes';
 import type { IConfiguration } from '~/types/data/configuration';
 import { Button } from '@navikt/ds-react';
 import { createIncomingDataNodes } from '~/dataHandlers/dataMapper/incomingDataMapper';
+import { createOutgoingDataNodes } from '~/dataHandlers/dataMapper/outgoingDataMapper';
 
 type ConfigurationFlowProps = {
     dataName: string;
@@ -47,9 +48,19 @@ const ConfigurationFlow = ({
     }, [nodes, edges]);
 
     useEffect(() => {
-        const incomingDataNodes = createIncomingDataNodes(dataName, metadataContent, configuration);
-        setNodes(incomingDataNodes.nodes);
-        setEdges(incomingDataNodes.edges);
+        const incomingFlowElements = createIncomingDataNodes(
+            dataName,
+            metadataContent,
+            configuration
+        );
+        const outgoingFlowElements = createOutgoingDataNodes(
+            dataName,
+            metadataContent,
+            configuration
+        );
+
+        setNodes([...incomingFlowElements.nodes, ...outgoingFlowElements.nodes]);
+        setEdges([...incomingFlowElements.edges, ...outgoingFlowElements.edges]);
     }, []);
 
     return (

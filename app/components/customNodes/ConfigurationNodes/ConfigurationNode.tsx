@@ -1,4 +1,4 @@
-import type { HandleDataOld } from '~/types/handleTypes';
+import type { HandleData } from '~/types/handleTypes';
 import { type Node, type NodeProps } from '@xyflow/react';
 import React, { memo } from 'react';
 import { HStack, Select } from '@navikt/ds-react';

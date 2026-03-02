@@ -1,18 +1,18 @@
-import type { HandleDataOld } from '~/types/handleTypes';
+import type { HandleData } from '~/types/handleTypes';
 import { type Node, type NodeProps } from '@xyflow/react';
 import React, { memo } from 'react';
-import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
+import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
 import { HStack, Select } from '@navikt/ds-react';
-import { TypeTagOld } from '~/demo/components/macros/TypeTagOld';
-import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
-import type { DataTypeValue } from '~/demo/types/datatypes';
+import type { DataTypeValue } from '~/types/data/datatypes';
+import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+import { TypeTag } from '~/components/customHandles/TypeTag';
 
 type DataSourceData = {
     label: string;
     iconType?: string;
     type: DataTypeValue;
-    sourceHandles?: HandleDataOld[];
-    targetHandles?: HandleDataOld[];
+    sourceHandles?: HandleData[];
+    targetHandles?: HandleData[];
     typeName: string;
     value?: string;
     options?: string[];
@@ -22,9 +22,9 @@ type DataSourceType = Node<DataSourceData, 'dataSource'>;
 
 export const DataSourceNode = memo(({ id, data, isConnectable }: NodeProps<DataSourceType>) => {
     return (
-        <BaseNodeWrapperOld label={data.label} italic={true}>
+        <NodeContainerWithProgress label={data.label} italic={true}>
             <HStack align={'center'} justify={'center'} gap="1">
-                <TypeTagOld type={data.type} typeName={data.typeName} size="small" />
+                <TypeTag type={data.type} typeName={data.typeName} size="small" />
 
                 <Select label="Velg bostedsland" size="small" hideLabel={true}>
                     <option>- Velg datakilde -</option>
@@ -33,11 +33,11 @@ export const DataSourceNode = memo(({ id, data, isConnectable }: NodeProps<DataS
                     <option value="danmark">Danmark</option>
                 </Select>
             </HStack>
-            <HandlesWithLabelOld
+            <HandlesWithLabel
                 handles={data.sourceHandles}
                 type={'source'}
                 isConnectable={isConnectable}
             />
-        </BaseNodeWrapperOld>
+        </NodeContainerWithProgress>
     );
 });

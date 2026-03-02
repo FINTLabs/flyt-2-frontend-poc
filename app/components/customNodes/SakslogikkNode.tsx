@@ -1,12 +1,9 @@
-import type { HandleDataOld } from '~/types/handleTypes';
 import { type Node, type NodeProps } from '@xyflow/react';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { HStack, Select } from '@navikt/ds-react';
-import type { ConfigurationNodeType, SakslogikkNodeType } from '~/types/flow/nodes';
+import type { SakslogikkNodeType } from '~/types/flow/nodes';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 import { NodeContainer } from '~/components/customNodes/nodeLayout/NodeContainer';
-import { TypeTag } from '~/components/customHandles/TypeTag';
-import { TypeTagOld } from '~/demo/components/macros/TypeTagOld';
 import NodeOperationConversionIcon from '~/components/icons/NodeOperationConversionIcon';
 
 const sakslogikkOptionTemplate = [
@@ -26,9 +23,6 @@ const sakslogikkOptionTemplate = [
 
 export const SakslogikkNode = memo(({ id, data, isConnectable }: NodeProps<SakslogikkNodeType>) => {
     const [selected, setSelected] = useState(data.selectedValue);
-    useEffect(() => {
-        console.log('SakslogikkNode', data, sakslogikkOptionTemplate);
-    }, []);
 
     // @ts-ignore
     return (

@@ -1,17 +1,18 @@
 import React, { memo } from 'react';
 import { type NodeProps, type Node } from '@xyflow/react';
 import { BodyShort, HStack } from '@navikt/ds-react';
-import { TypeTagOld } from '~/demo/components/macros/TypeTagOld';
-import { BaseNodeWrapperOld } from '../BaseNodeWrapperOld';
-import type { HandleDataOld } from '~/types/handleTypes';
-import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
+import { NodeContainerWithProgress } from './nodeLayout/NodeContainerWithProgress';
+import type { HandleData } from '~/types/handleTypes';
+import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+import { TypeTag } from '~/components/customHandles/TypeTag';
+import type { DataTypeValue } from '~/types/data/datatypes';
 
 type IntegrationNodeData = {
     label: string;
     typeName: string;
-    type: string;
-    sourceHandles?: HandleDataOld[];
-    targetHandles?: HandleDataOld[];
+    type: DataTypeValue;
+    sourceHandles?: HandleData[];
+    targetHandles?: HandleData[];
 };
 
 type IntegrationNodeType = Node<IntegrationNodeData, 'flowOutput' | 'flowInput'>;
@@ -21,13 +22,13 @@ export const IntegrationNode = memo(
         const isInput = type === 'flowInput';
         const handleType = isInput ? 'source' : 'target';
         return (
-            <BaseNodeWrapperOld>
+            <NodeContainerWithProgress>
                 <HStack align={'center'} gap="1">
-                    <TypeTagOld type={data.type} typeName={data.typeName} />
+                    <TypeTag type={data.type} typeName={data.typeName} />
                     <BodyShort size={'small'}>{data.label}</BodyShort>
                 </HStack>
                 {data.sourceHandles?.length && (
-                    <HandlesWithLabelOld
+                    <HandlesWithLabel
                         handles={data.sourceHandles}
                         type={handleType}
                         isConnectable={isConnectable}
@@ -35,14 +36,14 @@ export const IntegrationNode = memo(
                     />
                 )}
                 {data.targetHandles?.length && (
-                    <HandlesWithLabelOld
+                    <HandlesWithLabel
                         handles={data.targetHandles}
                         type={handleType}
                         isConnectable={isConnectable}
                         hideLabels={true}
                     />
                 )}
-            </BaseNodeWrapperOld>
+            </NodeContainerWithProgress>
         );
     }
 );

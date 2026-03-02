@@ -1,14 +1,14 @@
 import type { Edge, Node } from '@xyflow/react';
 import type { CustomNode, MetadataNodeData } from '~/types/flow/nodes';
 import {
-    DataValueType,
     type IInstanceMetadataCategory,
     type IInstanceMetadataContent,
     type IInstanceObjectCollectionMetadata,
     type IInstanceValueMetadata,
 } from '~/types/data/integration';
-import type { HandleData } from '~/types/flow/edges';
 import { defaultPosition } from '~/utils/constants';
+import { DataValueTypeAPI } from '~/types/data/dataValueTypeAPI';
+import type { HandleData } from '~/types/handleTypes';
 
 export const initNodes: CustomNode[] = [];
 export const initEdges: Edge[] = [];
@@ -38,7 +38,7 @@ const getMetadataHandles = (
                     id: md.key,
                     label: md.displayName,
                     required: true,
-                    type: DataValueType.COLLECTION,
+                    type: DataValueTypeAPI.COLLECTION,
                 });
             }
         );

@@ -1,5 +1,6 @@
 import { HANDLE_INTERVAL, NODE_BASE_HEIGHT } from '~/utils/constants';
-import type { HandleData } from '~/types/flow/edges';
+
+import type { HandleData } from '~/types/handleTypes';
 
 export const countNumberOfMetadataHandleItems = (items?: HandleData[]): number => {
     if (!items) return 0;

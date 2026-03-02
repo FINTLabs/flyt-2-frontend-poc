@@ -2,10 +2,10 @@ import { Handle, Position } from '@xyflow/react';
 import React, { useEffect, useMemo } from 'react';
 import { Detail, HStack } from '@navikt/ds-react';
 import { calculateHandlePosition, measureTextWidthOld } from '~/demo/utils/nodeHandlers';
-import type { HandleData } from '~/types/flow/edges';
 import { getValueTypeSymbolWidth } from '~/utils/dataTypeUtils';
 import { TypeTag } from '~/components/customHandles/TypeTag';
 import { HANDLE_HEIGHT } from '~/utils/constants';
+import type { HandleData } from '~/types/handleTypes';
 
 export type MultipleHandlesWithLabelProps = {
     handles?: HandleData[];
@@ -90,6 +90,7 @@ const HandleWithLabel = ({
         <Handle
             key={handle.id}
             id={handle.id}
+            className={'custom-handle'}
             type={type}
             position={type === 'target' ? Position.Left : Position.Right}
             isConnectable={isConnectable}
@@ -97,17 +98,9 @@ const HandleWithLabel = ({
                 top: handlePosition,
                 width: memorizedHandleWidth,
                 height: HANDLE_HEIGHT,
-                padding: '2px',
-                zIndex: 2,
-                backgroundColor: 'var(--a-bg-default)',
-                borderWidth: '1px',
-                borderRadius: '4px',
-                borderColor: 'var(--a-border-subtle)',
                 right: type === 'source' ? '-5px' : undefined,
                 left: type === 'target' ? '-5px' : undefined,
                 transform: transform,
-                textAlign: 'left',
-                alignContent: 'center',
             }}
         >
             <HStack

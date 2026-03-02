@@ -9,23 +9,20 @@ import {
     useReactFlow,
 } from '@xyflow/react';
 import { Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
-import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
 import { getNodeMinHeight, getNodeIcon } from '~/demo/utils/nodeHandlers';
-import type { BaseNodeData, CustomNodeOld } from '~/types/nodeTypes';
-import { BaseNodeWrapperOld } from '~/demo/components/BaseNodeWrapperOld';
+import type { BaseNodeData, CustomNodeDemo } from '~/types/nodeTypes';
 import { MinusIcon, PlusIcon } from '@navikt/aksel-icons';
-import { DataTypeOld } from '~/demo/types/datatypes';
-import { useFlow } from '~/context/flowContext';
+import { DataTypeDefinition } from '~/types/data/datatypes';
+import type { DynamicStringNodeType } from '~/types/flow/nodes';
+import { NodeContainer } from '~/components/customNodes/nodeLayout/NodeContainer';
+import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 
-type JoinTextOperationNodeType = Node<BaseNodeData, 'operationJoinText'>;
-
-export const JoinTextOperationNode = memo(
-    ({ id, data, isConnectable }: NodeProps<JoinTextOperationNodeType>) => {
+export const DynamicStringNode = memo(
+    ({ id, data, isConnectable }: NodeProps<DynamicStringNodeType>) => {
         const minHeight = getNodeMinHeight({
             sources: data.sourceHandles?.length,
             targets: data.targetHandles?.length,
         });
-        const { flowProgress, currentFlow } = useFlow();
         const reactFlow = useReactFlow();
 
         const [outputText, setOutputText] = useState<{ inputType: string; text: string }[]>([]);
@@ -42,12 +39,12 @@ export const JoinTextOperationNode = memo(
                     .filter(Boolean),
             [connections]
         );
-        const connectedNodesData = useNodesData<CustomNodeOld>(connectionsNodeIds);
+        const connectedNodesData = useNodesData<CustomNodeDemo>(connectionsNodeIds);
 
         const handleAddHandle = useCallback(() => {
             const newHandle = {
                 id: `handle-${data.targetHandles?.length || 0}`,
-                type: DataTypeOld.Text,
+                type: DataTypeDefinition.Text,
             };
             reactFlow.updateNodeData(id, {
                 targetHandles: [...(data.targetHandles || []), newHandle],
@@ -59,6 +56,10 @@ export const JoinTextOperationNode = memo(
         }, [data.targetHandles]);
 
         useEffect(() => {
+            setOutputText([{ inputType: 'variableInput', text: data.textString || '' }]);
+        }, []);
+
+        /*        useEffect(() => {
             if (connectedNodesData && connectionsNodeIds.length > 0) {
                 const newOutputText = connections
                     .sort((a, b) => (a?.targetHandle || '').localeCompare(b?.targetHandle || ''))
@@ -78,13 +79,18 @@ export const JoinTextOperationNode = memo(
             } else {
                 setOutputText([]);
             }
-        }, [connectedNodesData, connectionsNodeIds]);
+        }, [connectedNodesData, connectionsNodeIds]);*/
+
+        useEffect(() => {
+            console.log('DynamicstringNode', data);
+        }, []);
 
         return (
-            <BaseNodeWrapperOld
+            <NodeContainer
+                id={id}
                 label={data.label}
-                minHeight={minHeight.cssString}
-                currentStep={currentFlow?.id === 'demo' ? 3 : undefined}
+                sourceHandleAmount={data.sourceHandles?.length}
+                targetHandleAmount={data.targetHandles?.length}
             >
                 <NodeToolbar position={Position.Bottom} align={'start'}>
                     <HStack gap="2">
@@ -123,7 +129,7 @@ export const JoinTextOperationNode = memo(
                         </Detail>
                     </Box>
                 </NodeToolbar>
-                <HandlesWithLabelOld
+                <HandlesWithLabel
                     handles={data.targetHandles}
                     type={'target'}
                     isConnectable={isConnectable}
@@ -137,12 +143,12 @@ export const JoinTextOperationNode = memo(
                 >
                     {data.iconType && getNodeIcon(data.iconType)}
                 </VStack>
-                <HandlesWithLabelOld
+                <HandlesWithLabel
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
                 />
-            </BaseNodeWrapperOld>
+            </NodeContainer>
         );
     }
 );

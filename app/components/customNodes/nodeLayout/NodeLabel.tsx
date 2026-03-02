@@ -5,9 +5,15 @@ interface NodeLabelProps {
     label: string;
     size?: 'small' | 'medium' | 'large';
     italic?: boolean;
+    sublabel?: string;
 }
 
-export const NodeLabel: React.FC<NodeLabelProps> = ({ label, italic = false, size = 'small' }) => {
+export const NodeLabel: React.FC<NodeLabelProps> = ({
+    label,
+    italic = false,
+    size = 'small',
+    sublabel,
+}) => {
     if (italic) {
         return (
             <VStack
@@ -28,17 +34,34 @@ export const NodeLabel: React.FC<NodeLabelProps> = ({ label, italic = false, siz
         );
     }
     return (
-        <BodyShort
-            size={size}
-            style={{
-                position: 'absolute',
-                top: -35,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                textWrap: 'nowrap',
-            }}
-        >
-            {label}
-        </BodyShort>
+        <VStack>
+            <BodyShort
+                size={size}
+                style={{
+                    position: 'absolute',
+                    top: sublabel ? -50 : -30,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    textWrap: 'nowrap',
+                }}
+            >
+                {label}
+            </BodyShort>
+            {sublabel && (
+                <BodyShort
+                    size={'small'}
+                    style={{
+                        fontSize: 'var(--a-font-size-small)',
+                        position: 'absolute',
+                        top: -30,
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        textWrap: 'nowrap',
+                    }}
+                >
+                    {sublabel}
+                </BodyShort>
+            )}
+        </VStack>
     );
 };

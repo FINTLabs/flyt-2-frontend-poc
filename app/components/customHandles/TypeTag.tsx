@@ -1,19 +1,18 @@
 import { Box, HStack, Tag } from '@navikt/ds-react';
-import type { DataTypeValue } from '~/demo/types/datatypes';
+import { DataTypeDefinition, type DataTypeValue } from '~/types/data/datatypes';
 import React from 'react';
 import DataTypeText from '~/components/icons/DataTypeText';
 import {
     BulletListIcon,
     FileIcon,
-    QuestionmarkDiamondIcon,
     LinkIcon,
+    QuestionmarkDiamondIcon,
     QuestionmarkIcon,
 } from '@navikt/aksel-icons';
-import { DataValueType, type ValueTypeValue } from '~/types/data/integration';
 import { getValueTypeFromCollection } from '~/utils/dataTypeUtils';
 
 type TypeProps = {
-    type: ValueTypeValue;
+    type: DataTypeValue;
     typeName?: string;
     className?: string;
     size?: 'small' | 'medium' | 'large';
@@ -31,7 +30,7 @@ export const TypeTag = ({
 }: TypeProps) => {
     if (size === 'medium') {
         return (
-            <Tag variant="neutral" size="small">
+            <Tag className={'type-tag'} variant="neutral" size="small">
                 <TypeSymbol type={type} typeName={typeName} size="medium" />
             </Tag>
         );
@@ -39,9 +38,9 @@ export const TypeTag = ({
         return (
             <Box
                 borderWidth={inner ? '0 0 0 1' : '1'}
+                className={'type-tag'}
                 borderRadius={inner ? '0' : '2'}
                 borderColor="border-default"
-                background="surface-subtle"
                 style={{
                     borderStyle: required ? 'solid' : 'dashed',
                 }}
@@ -54,7 +53,7 @@ export const TypeTag = ({
 
 const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
     if (!type) return typeName ?? undefined;
-    if (type === DataValueType.DATA_OBJECT) {
+    if (type === DataTypeDefinition.Object) {
         return (
             <p
                 style={{
@@ -68,25 +67,14 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
             </p>
         );
     }
-    /*    if (isCollectionType(type)) {
-        const innertype = getTypeFromCollection(type);
-        return (
-            <HStack wrap={false} gap={'space-1'} align="center">
-                <BulletListIcon fontSize="0.9rem" />
-                <TypeTag type={innertype} typeName={typeName} size={size} inner={true} />
-            </HStack>
-        );
-    }
-    if (type === 'text' || type === 'input') return <DataTypeText />;
-    if (type === 'reference') return <LinkIcon fontSize="0.95rem" />;
-    if (type === 'undefined') return <QuestionmarkIcon fontSize="0.9rem" />;
-    if (type === 'file') return <FileIcon fontSize="0.9rem" />;
-    if (type === 'boolean') return <QuestionmarkDiamondIcon fontSize="0.9rem" />;*/
-
-    if (type === DataValueType.STRING) {
+    if (type === DataTypeDefinition.Text) {
         return <DataTypeText />;
     }
-    if (type === DataValueType.COLLECTION) {
+    if (type === DataTypeDefinition.Reference) return <LinkIcon fontSize="0.95rem" />;
+    if (type === DataTypeDefinition.Undefined) return <QuestionmarkIcon fontSize="0.9rem" />;
+    if (type === DataTypeDefinition.Boolean) return <QuestionmarkDiamondIcon fontSize="0.9rem" />;
+
+    if (type.startsWith('Collection')) {
         const innertype = getValueTypeFromCollection(type);
 
         return (
@@ -96,7 +84,7 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
             </HStack>
         );
     }
-    if (type === DataValueType.FILE) {
+    if (type === DataTypeDefinition.File) {
         return <FileIcon fontSize="0.9rem" />;
     }
     return typeName;
