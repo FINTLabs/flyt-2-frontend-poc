@@ -14,7 +14,7 @@ import {
     acosUploadFile,
     acosDocToDocDesc,
     operationEditText,
-} from '~/demo/mockData/nodes';
+} from '~/mockData/nodes/general';
 import { useParams } from 'react-router';
 import { elev, fravaer, person } from '~/demo/mockData/fintNodes';
 

@@ -1,0 +1,13 @@
+export enum DataValueTypeAPI {
+    STRING = 'STRING',
+    BOOLEAN = 'BOOLEAN',
+    INTEGER = 'INTEGER',
+    EMAIL = 'EMAIL',
+    URL = 'URL',
+    DATE = 'DATE',
+    PHONE = 'PHONE',
+    FILE = 'FILE',
+    COLLECTION = 'COLLECTION',
+    VALUE_CONVERTING = 'VALUE_CONVERTING',
+    DATA_OBJECT = 'DATA_OBJECT',
+}

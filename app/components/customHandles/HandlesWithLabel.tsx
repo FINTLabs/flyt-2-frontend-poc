@@ -1,11 +1,11 @@
 import { Handle, Position } from '@xyflow/react';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Detail, HStack } from '@navikt/ds-react';
 import { calculateHandlePosition, measureTextWidthOld } from '~/demo/utils/nodeHandlers';
-import type { HandleData } from '~/types/flow/edges';
 import { getValueTypeSymbolWidth } from '~/utils/dataTypeUtils';
-import { TypeTag } from '~/components/macros/TypeTag';
+import { TypeTag } from '~/components/customHandles/TypeTag';
 import { HANDLE_HEIGHT } from '~/utils/constants';
+import type { HandleData } from '~/types/handleTypes';
 
 export type MultipleHandlesWithLabelProps = {
     handles?: HandleData[];
@@ -82,6 +82,7 @@ const HandleWithLabel = ({
     const memorizedHandleWidth = useMemo(() => {
         const typeTagWidth = getValueTypeSymbolWidth(handle.type, handle.typeName);
         const labelWidth = handle.label ? Math.max(10, measureTextWidthOld(handle.label)) : 0;
+
         return Math.max(16, typeTagWidth + (handle.label ? labelWidth + 16 : 8));
     }, [handle.label, handle.typeName, handle.type]);
 
@@ -89,6 +90,7 @@ const HandleWithLabel = ({
         <Handle
             key={handle.id}
             id={handle.id}
+            className={'custom-handle'}
             type={type}
             position={type === 'target' ? Position.Left : Position.Right}
             isConnectable={isConnectable}
@@ -96,17 +98,9 @@ const HandleWithLabel = ({
                 top: handlePosition,
                 width: memorizedHandleWidth,
                 height: HANDLE_HEIGHT,
-                padding: '2px',
-                zIndex: 2,
-                backgroundColor: 'var(--a-bg-default)',
-                borderWidth: '1px',
-                borderRadius: '4px',
-                borderColor: 'var(--a-border-subtle)',
                 right: type === 'source' ? '-5px' : undefined,
                 left: type === 'target' ? '-5px' : undefined,
                 transform: transform,
-                textAlign: 'left',
-                alignContent: 'center',
             }}
         >
             <HStack
@@ -117,7 +111,7 @@ const HandleWithLabel = ({
             >
                 <TypeTag
                     type={handle.type}
-                    typeName={handle.id}
+                    typeName={handle.typeName}
                     required={handle.required}
                     size="small"
                 />

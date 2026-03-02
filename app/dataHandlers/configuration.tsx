@@ -1,4 +1,3 @@
-import { getUserSourceApplications } from '~/api/authorizationRepository';
 import { getMetadataForSourceApplications } from '~/api/sourceApplicationRepository';
 import type { IIntegration, IIntegrationMetadata } from '~/types/data/integration';
 import { getConfigurationById } from '~/api/configurationRepository';

@@ -1,4 +1,4 @@
-export enum MetadataType {
+export enum DataTypeDefinition {
     Text = 'text',
     Input = 'input',
     Boolean = 'boolean',
@@ -15,3 +15,6 @@ export enum MetadataType {
     CollectionFile = 'collectionFile',
     CollectionReference = 'collectionReference',
 }
+
+// Type definition for DataType values
+export type DataTypeValue = `${DataTypeDefinition}`;

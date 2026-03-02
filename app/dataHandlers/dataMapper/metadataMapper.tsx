@@ -5,10 +5,10 @@ import {
     type IInstanceMetadataContent,
     type IInstanceObjectCollectionMetadata,
     type IInstanceValueMetadata,
-    ValueType,
 } from '~/types/data/integration';
-import type { HandleData } from '~/types/flow/edges';
-export const defaultPosition = { x: 0, y: 0 };
+import { defaultPosition } from '~/utils/constants';
+import { DataValueTypeAPI } from '~/types/data/dataValueTypeAPI';
+import type { HandleData } from '~/types/handleTypes';
 
 export const initNodes: CustomNode[] = [];
 export const initEdges: Edge[] = [];
@@ -32,15 +32,13 @@ const getMetadataHandles = (
     }
 
     if (metadataContent?.instanceObjectCollectionMetadata) {
-        // TODO: finn eksempel med dette
-
         metadataContent?.instanceObjectCollectionMetadata.forEach(
             (md: IInstanceObjectCollectionMetadata) => {
                 sourceHandles.push({
                     id: md.key,
                     label: md.displayName,
                     required: true,
-                    type: ValueType.COLLECTION,
+                    type: DataValueTypeAPI.COLLECTION,
                 });
             }
         );
@@ -59,7 +57,6 @@ const getMetadataHandles = (
 export const mapMetaDataToNode = (
     metadataContent?: IInstanceMetadataContent
 ): Node<MetadataNodeData> => {
-    console.log('mapMetaDataToNode', metadataContent);
     const sourceHandles = getMetadataHandles(metadataContent);
 
     return {

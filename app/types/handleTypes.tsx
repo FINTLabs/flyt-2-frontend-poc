@@ -1,11 +1,10 @@
-import type { DataTypeValue } from '../demo/types/datatypes';
+import type { DataTypeDefinition } from '~/types/data/datatypes';
 
-export type HandleDataOld = {
+export type HandleData = {
     id: string;
     label?: string;
-    type: DataTypeValue;
+    type: DataTypeDefinition;
     typeName?: string;
     required: boolean;
+    categoryName?: string;
 };
-
-// TODO: only require the required field in the handle is a targetHandle

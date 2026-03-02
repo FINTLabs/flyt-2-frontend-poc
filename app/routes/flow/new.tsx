@@ -2,8 +2,11 @@ import { useNavigate } from 'react-router';
 import React, { useCallback, useState } from 'react';
 import { useFlow } from '~/context/flowContext';
 import { Button, Heading, HStack, Page, Select, TextField, VStack } from '@navikt/ds-react';
-import { allIntegrationsInputNodes, arkivInstanceOutput } from '~/demo/mockData/nodes';
 import { ArrowRightIcon } from '@navikt/aksel-icons';
+import { allIntegrationsInputNodes, arkivInstanceOutput } from '~/mockData/nodes/instances';
+import getInitialNodesOnCreateNew from '~/mockData/getInitialNodesOnCreateNew';
+import type { CustomNodeDemo } from '~/types/nodeTypes';
+import type { Edge } from '@xyflow/react';
 
 const NewFlowPage = () => {
     const { saveNewFlow } = useFlow();
@@ -14,10 +17,17 @@ const NewFlowPage = () => {
     const [outputIntegration, setOutputIntegration] = useState('instanceOutputArkivsak');
 
     const handleSaveNewFlow = useCallback(() => {
-        const inputNode = allIntegrationsInputNodes.find((node) => node.id === inputIntegration);
-        console.log('handleSaveNewFlow', inputNode);
-        if (!inputNode) return;
-        const newFlowId = saveNewFlow(name, [inputNode, arkivInstanceOutput], []);
+        const initialFlow = getInitialNodesOnCreateNew(inputIntegration);
+        console.log('handleSaveNewFlow', initialFlow);
+        if (!initialFlow?.instanceNode) return;
+
+        const nodes: CustomNodeDemo[] = [initialFlow.instanceNode, arkivInstanceOutput];
+
+        if (initialFlow.metadataNode) {
+            nodes.push(initialFlow.metadataNode);
+        }
+
+        const newFlowId = saveNewFlow(name, nodes, initialFlow.edge ? [initialFlow.edge] : []);
         navigate(`/flow/edit/${newFlowId}`);
     }, [name, inputIntegration, outputIntegration]);
 

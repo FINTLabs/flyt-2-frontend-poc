@@ -27,10 +27,10 @@ import { getMinimapNodeColor, getMinimapNodeStrokeColor } from '~/demo/utils/nod
 import { useFlow } from '~/context/flowContext';
 import { Button, HStack } from '@navikt/ds-react';
 import { useNavigate, useParams } from 'react-router';
-import { IGNORED_CHANGES_DEMO, NODE_BASE_HEIGHT_DEMO } from '~/demo/mockData/constants';
-import { allIntegrationsNodes } from '~/demo/mockData/nodes';
-import { nodeTypes } from '~/demo/components/functionalNodes/nodetypes';
-import type { CustomNodeOld } from '~/types/nodeTypes';
+import { nodeTypes } from '~/components/customNodes/nodetypes';
+import type { CustomNodeDemo } from '~/types/nodeTypes';
+import { IGNORED_CHANGES, NODE_BASE_HEIGHT } from '~/utils/constants';
+import { allIntegrationsNodes } from '~/mockData/nodes/instances';
 
 const Flow = () => {
     const {
@@ -44,7 +44,7 @@ const Flow = () => {
     } = useFlow();
     let navigate = useNavigate();
 
-    const [nodes, setNodes, onNodesChange] = useNodesState<CustomNodeOld>(initNodes);
+    const [nodes, setNodes, onNodesChange] = useNodesState<CustomNodeDemo>(initNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initEdges);
     const { screenToFlowPosition, getNode } = useReactFlow();
     const [hasChanged, setHasChanged] = useState(false);
@@ -58,11 +58,9 @@ const Flow = () => {
     }, [initNodes, initEdges]);
 
     const handleNodePosition = useCallback(
-        (node: CustomNodeOld, position?: XYPosition): CustomNodeOld => {
+        (node: CustomNodeDemo, position?: XYPosition): CustomNodeDemo => {
             const intersections = getIntersectingNodes(
-                position
-                    ? { ...position, width: NODE_BASE_HEIGHT_DEMO, height: NODE_BASE_HEIGHT_DEMO }
-                    : node
+                position ? { ...position, width: NODE_BASE_HEIGHT, height: NODE_BASE_HEIGHT } : node
             );
 
             if (intersections.some((n) => n.type === 'listOperation')) {
@@ -160,19 +158,17 @@ const Flow = () => {
         return false;
     }, []);
 
-    const handleNodesChange = useCallback((changes: NodeChange<CustomNodeOld>[]) => {
+    const handleNodesChange = useCallback((changes: NodeChange<CustomNodeDemo>[]) => {
         const filteredChanges = changes.filter(
             (change) =>
                 change.type !== 'remove' || !allIntegrationsNodes.some((n) => n.id === change.id)
         );
-        setHasChanged(
-            filteredChanges.some((change) => !IGNORED_CHANGES_DEMO.includes(change.type))
-        );
+        setHasChanged(filteredChanges.some((change) => !IGNORED_CHANGES.includes(change.type)));
         onNodesChange(filteredChanges);
     }, []);
 
     const handleEdgesChange = useCallback((changes: EdgeChange[]) => {
-        setHasChanged(changes.some((change) => !IGNORED_CHANGES_DEMO.includes(change.type)));
+        setHasChanged(changes.some((change) => !IGNORED_CHANGES.includes(change.type)));
         onEdgesChange(changes);
     }, []);
 

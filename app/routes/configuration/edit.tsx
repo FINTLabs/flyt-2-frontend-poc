@@ -125,7 +125,9 @@ export default function EditConfiguration({ loaderData }: Route.ComponentProps) 
                         </HStack>
                         <HStack gap={'8'} wrap={false}>
                             <ConfigurationFlow
+                                dataName={integrationMetadata.integrationDisplayName}
                                 metadataContent={integrationMetadata.instanceMetadata}
+                                configuration={configuration}
                             />
                         </HStack>
                     </VStack>

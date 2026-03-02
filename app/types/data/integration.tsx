@@ -1,3 +1,5 @@
+import { DataValueTypeAPI } from '~/types/data/dataValueTypeAPI';
+
 export interface IIntegration {
     id?: string;
     sourceApplicationId?: string;
@@ -30,7 +32,7 @@ export interface IInstanceMetadataContent {
 
 export interface IInstanceValueMetadata {
     displayName: string;
-    type: ValueType;
+    type: DataValueTypeAPI;
     key: string;
 }
 
@@ -45,17 +47,4 @@ export interface IInstanceMetadataCategory {
     content: IInstanceMetadataContent;
 }
 
-export enum ValueType {
-    STRING = 'STRING',
-    BOOLEAN = 'BOOLEAN',
-    INTEGER = 'INTEGER',
-    EMAIL = 'EMAIL',
-    URL = 'URL',
-    DATE = 'DATE',
-    PHONE = 'PHONE',
-    FILE = 'FILE',
-    COLLECTION = 'COLLECTION',
-    VALUE_CONVERTING = 'VALUE_CONVERTING',
-}
-
-export type ValueTypeValue = `${ValueType}`;
+export type ValueTypeValue = `${DataValueTypeAPI}`;

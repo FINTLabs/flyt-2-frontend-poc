@@ -1,5 +1,5 @@
-import { DataTypeOld } from '~/demo/types/datatypes';
-import type { HandleDataOld } from '~/types/handleTypes';
+import { DataTypeDefinition } from '~/types/data/datatypes';
+import type { HandleData } from '~/types/handleTypes';
 import type {
     AcosDocumentType,
     AcosInstanceElementType,
@@ -14,51 +14,76 @@ import type {
 export const mockFetchDataContentHandles = (
     dataType: string,
     dataLabel?: string
-): HandleDataOld[] | undefined => {
+): HandleData[] | undefined => {
     console.log('mockFetchDataContentHandles', dataType, dataLabel);
     switch (dataType.toLowerCase()) {
         case 'egrv sak':
             return [
-                { id: 'a', label: 'Kommunenavn', type: DataTypeOld.Text, required: true },
-                { id: 'b', label: 'Prosjektnavn', type: DataTypeOld.Text, required: true },
-                { id: 'c', label: 'Gårdsnummer', type: DataTypeOld.Text, required: true },
-                { id: 'd', label: 'Bruksnummer', type: DataTypeOld.Text, required: true },
-                { id: 'e', label: 'Seksjonsnummer', type: DataTypeOld.Text, required: true },
-                { id: 'f', label: 'Tittel', type: DataTypeOld.Text, required: true },
-                { id: 'g', label: 'Adresse', type: DataTypeOld.Text, required: true },
-                { id: 'h', label: 'Saksansvarlig e-post', type: DataTypeOld.Text, required: true },
+                { id: 'a', label: 'Kommunenavn', type: DataTypeDefinition.Text, required: true },
+                { id: 'b', label: 'Prosjektnavn', type: DataTypeDefinition.Text, required: true },
+                { id: 'c', label: 'Gårdsnummer', type: DataTypeDefinition.Text, required: true },
+                { id: 'd', label: 'Bruksnummer', type: DataTypeDefinition.Text, required: true },
+                { id: 'e', label: 'Seksjonsnummer', type: DataTypeDefinition.Text, required: true },
+                { id: 'f', label: 'Tittel', type: DataTypeDefinition.Text, required: true },
+                { id: 'g', label: 'Adresse', type: DataTypeDefinition.Text, required: true },
+                {
+                    id: 'h',
+                    label: 'Saksansvarlig e-post',
+                    type: DataTypeDefinition.Text,
+                    required: true,
+                },
                 {
                     id: 'i',
                     label: 'Sakspartner',
-                    type: DataTypeOld.Object,
+                    type: DataTypeDefinition.Object,
                     typeName: 'eGrv Sakspart',
                     required: true,
                 },
             ];
         case 'arkiv sak':
             return [
-                { id: 'a', type: DataTypeOld.Text, label: 'Tittel', required: true },
-                { id: 'b', type: DataTypeOld.Text, label: 'Offentlig tittel', required: false },
-                { id: 'c', type: DataTypeOld.Reference, label: 'Saksmappetype', required: false },
+                { id: 'a', type: DataTypeDefinition.Text, label: 'Tittel', required: true },
+                {
+                    id: 'b',
+                    type: DataTypeDefinition.Text,
+                    label: 'Offentlig tittel',
+                    required: false,
+                },
+                {
+                    id: 'c',
+                    type: DataTypeDefinition.Reference,
+                    label: 'Saksmappetype',
+                    required: false,
+                },
                 {
                     id: 'd',
-                    type: DataTypeOld.Reference,
+                    type: DataTypeDefinition.Reference,
                     label: 'Administrativ enhet',
                     required: false,
                 },
-                { id: 'e', type: DataTypeOld.Reference, label: 'Saksansvarlig', required: false },
+                {
+                    id: 'e',
+                    type: DataTypeDefinition.Reference,
+                    label: 'Saksansvarlig',
+                    required: false,
+                },
                 {
                     id: 'f',
-                    type: DataTypeOld.Object,
+                    type: DataTypeDefinition.Object,
                     typeName: 'Arkiv Skjerming',
                     label: 'Skjerming',
                     required: true,
                 },
-                { id: 'g', type: DataTypeOld.Reference, label: 'Arkivdel', required: false },
-                { id: 'h', type: DataTypeOld.Reference, label: 'Saksstatus', required: false },
+                { id: 'g', type: DataTypeDefinition.Reference, label: 'Arkivdel', required: false },
+                {
+                    id: 'h',
+                    type: DataTypeDefinition.Reference,
+                    label: 'Saksstatus',
+                    required: false,
+                },
                 {
                     id: 'i',
-                    type: DataTypeOld.CollectionObject,
+                    type: DataTypeDefinition.CollectionObject,
                     typeName: 'Arkiv Part',
                     label: 'Parter',
                     required: false,
@@ -66,35 +91,40 @@ export const mockFetchDataContentHandles = (
             ];
         case 'egrv sakspart':
             return [
-                { id: 'a', label: 'Navn', type: DataTypeOld.Text, required: true },
-                { id: 'b', label: 'Organisasjonsnummer', type: DataTypeOld.Text, required: true },
-                { id: 'c', label: 'E-post', type: DataTypeOld.Text, required: true },
-                { id: 'd', label: 'Telefon', type: DataTypeOld.Text, required: true },
-                { id: 'e', label: 'Postadresse', type: DataTypeOld.Text, required: true },
-                { id: 'f', label: 'Postnummer', type: DataTypeOld.Text, required: true },
-                { id: 'g', label: 'Poststed', type: DataTypeOld.Text, required: true },
+                { id: 'a', label: 'Navn', type: DataTypeDefinition.Text, required: true },
+                {
+                    id: 'b',
+                    label: 'Organisasjonsnummer',
+                    type: DataTypeDefinition.Text,
+                    required: true,
+                },
+                { id: 'c', label: 'E-post', type: DataTypeDefinition.Text, required: true },
+                { id: 'd', label: 'Telefon', type: DataTypeDefinition.Text, required: true },
+                { id: 'e', label: 'Postadresse', type: DataTypeDefinition.Text, required: true },
+                { id: 'f', label: 'Postnummer', type: DataTypeDefinition.Text, required: true },
+                { id: 'g', label: 'Poststed', type: DataTypeDefinition.Text, required: true },
             ];
         case 'acos':
             // AcosInstance
             return [
                 {
                     id: 'a',
-                    type: DataTypeOld.Object,
+                    type: DataTypeDefinition.Object,
                     typeName: 'AcosInstanceMetadata',
                     label: 'metadata',
                     required: true,
                 },
-                { id: 'b', type: DataTypeOld.Text, label: 'formPdfBase64', required: true },
+                { id: 'b', type: DataTypeDefinition.Text, label: 'formPdfBase64', required: true },
                 {
                     id: 'c',
-                    type: DataTypeOld.CollectionObject,
+                    type: DataTypeDefinition.CollectionObject,
                     typeName: 'AcosInstanceElement',
                     label: 'elements',
                     required: true,
                 },
                 {
                     id: 'd',
-                    type: DataTypeOld.CollectionObject,
+                    type: DataTypeDefinition.CollectionObject,
                     typeName: 'AcosDocument',
                     label: 'documents',
                     required: true,
@@ -104,27 +134,27 @@ export const mockFetchDataContentHandles = (
             return [
                 {
                     id: 'a',
-                    type: DataTypeOld.File,
+                    type: DataTypeDefinition.File,
                     label: 'Skjema-PDF',
                     required: true,
                 },
                 {
                     id: 'b',
-                    type: DataTypeOld.CollectionObject,
+                    type: DataTypeDefinition.CollectionObject,
                     typeName: 'Vedlegg',
                     label: 'Vedlegg',
                     required: true,
                 },
                 {
                     id: 'c',
-                    type: DataTypeOld.Object,
+                    type: DataTypeDefinition.Object,
                     typeName: 'Innledning',
                     label: 'Innledning',
                     required: true,
                 },
                 {
                     id: 'd',
-                    type: DataTypeOld.Object,
+                    type: DataTypeDefinition.Object,
                     typeName: 'Ref',
                     label: 'Ref',
                     required: true,
@@ -134,74 +164,74 @@ export const mockFetchDataContentHandles = (
             return [
                 {
                     id: 'a',
-                    type: DataTypeOld.Object,
+                    type: DataTypeDefinition.Object,
                     typeName: 'Soeker',
                     label: 'Om søkeren',
                     required: true,
                 },
                 {
                     id: 'b',
-                    type: DataTypeOld.Object,
+                    type: DataTypeDefinition.Object,
                     label: 'Om flyttingen',
                     required: true,
                 },
                 {
                     id: 'c',
-                    type: DataTypeOld.Object,
+                    type: DataTypeDefinition.Object,
                     label: 'Ny adresse',
                     required: true,
                 },
             ];
         case 'ref':
-            return [{ id: 'a', type: DataTypeOld.Text, label: 'Ref', required: true }];
+            return [{ id: 'a', type: DataTypeDefinition.Text, label: 'Ref', required: true }];
         case 'soeker':
             return [
-                { id: 'a', type: DataTypeOld.Text, label: 'Fødselsnummer', required: true },
+                { id: 'a', type: DataTypeDefinition.Text, label: 'Fødselsnummer', required: true },
                 {
                     id: 'b',
-                    type: DataTypeOld.Text,
+                    type: DataTypeDefinition.Text,
                     label: 'Fnr til avlevering',
                     required: true,
                 },
                 {
                     id: 'c',
-                    type: DataTypeOld.Text,
+                    type: DataTypeDefinition.Text,
                     label: 'Fødselsdato',
                     required: true,
                 },
-                { id: 'd', type: DataTypeOld.Text, label: 'Fødsel', required: true },
-                { id: 'e', type: DataTypeOld.Text, label: 'Fornavn', required: true },
-                { id: 'f', type: DataTypeOld.Text, label: 'Etternavn', required: true },
-                { id: 'g', type: DataTypeOld.Text, label: 'Adresse', required: true },
-                { id: 'h', type: DataTypeOld.Text, label: 'Postnr', required: true },
-                { id: 'i', type: DataTypeOld.Text, label: 'Telefonnr', required: true },
-                { id: 'j', type: DataTypeOld.Text, label: 'E-post', required: true },
+                { id: 'd', type: DataTypeDefinition.Text, label: 'Fødsel', required: true },
+                { id: 'e', type: DataTypeDefinition.Text, label: 'Fornavn', required: true },
+                { id: 'f', type: DataTypeDefinition.Text, label: 'Etternavn', required: true },
+                { id: 'g', type: DataTypeDefinition.Text, label: 'Adresse', required: true },
+                { id: 'h', type: DataTypeDefinition.Text, label: 'Postnr', required: true },
+                { id: 'i', type: DataTypeDefinition.Text, label: 'Telefonnr', required: true },
+                { id: 'j', type: DataTypeDefinition.Text, label: 'E-post', required: true },
             ];
         case 'acosinstancemetadata':
             return [
-                { id: 'a', type: DataTypeOld.Text, label: 'formId', required: true },
-                { id: 'b', type: DataTypeOld.Text, label: 'instanceId', required: true },
-                { id: 'c', type: DataTypeOld.Text, label: 'instanceUri', required: false },
+                { id: 'a', type: DataTypeDefinition.Text, label: 'formId', required: true },
+                { id: 'b', type: DataTypeDefinition.Text, label: 'instanceId', required: true },
+                { id: 'c', type: DataTypeDefinition.Text, label: 'instanceUri', required: false },
             ];
         case 'acosinstanceelement':
             return [
-                { id: 'a', type: DataTypeOld.Text, label: 'id', required: true },
-                { id: 'b', type: DataTypeOld.Text, label: 'value', required: false },
-                { id: 'c', type: DataTypeOld.Number, label: 'hashCode', required: false },
+                { id: 'a', type: DataTypeDefinition.Text, label: 'id', required: true },
+                { id: 'b', type: DataTypeDefinition.Text, label: 'value', required: false },
+                { id: 'c', type: DataTypeDefinition.Number, label: 'hashCode', required: false },
             ];
         case 'acosdocument':
             return [
-                { id: 'a', type: DataTypeOld.Text, label: 'name', required: true },
-                { id: 'b', type: DataTypeOld.Text, label: 'encoding', required: true },
-                { id: 'c', type: DataTypeOld.File, label: 'filinnhold', required: false },
-                { id: 'd', type: DataTypeOld.Reference, label: 'mediatype', required: true },
+                { id: 'a', type: DataTypeDefinition.Text, label: 'name', required: true },
+                { id: 'b', type: DataTypeDefinition.Text, label: 'encoding', required: true },
+                { id: 'c', type: DataTypeDefinition.File, label: 'filinnhold', required: false },
+                { id: 'd', type: DataTypeDefinition.Reference, label: 'mediatype', required: true },
             ];
         case 'object':
         default:
             return [
                 {
                     id: 'a',
-                    type: DataTypeOld.Object,
+                    type: DataTypeDefinition.Object,
                     typeName: dataType,
                     label: dataLabel ?? dataType,
                     required: true,

@@ -1,17 +1,18 @@
 import React, { memo } from 'react';
 import { type NodeProps, type Node, useReactFlow } from '@xyflow/react';
 import { HStack, TextField } from '@navikt/ds-react';
-import { HandlesWithLabelOld } from '~/demo/components/HandlesWithLabelOld';
-import { TypeTagOld } from '~/components/macros/TypeTagOld';
-import { BaseNodeWrapperOld } from '../BaseNodeWrapperOld';
-import type { HandleDataOld } from '~/types/handleTypes';
+import { NodeContainerWithProgress } from './nodeLayout/NodeContainerWithProgress';
+import type { HandleData } from '~/types/handleTypes';
 import { useFlow } from '~/context/flowContext';
+import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+import { TypeTag } from '~/components/customHandles/TypeTag';
+import type { DataTypeValue } from '~/types/data/datatypes';
 
 type VariableInputData = {
     label: string;
     typeName: string;
-    type: string;
-    sourceHandles?: HandleDataOld[];
+    type: DataTypeValue;
+    sourceHandles?: HandleData[];
     text?: string;
 };
 
@@ -23,9 +24,9 @@ export const InputVariableNode = memo(
         const { isEditable } = useFlow();
 
         return (
-            <BaseNodeWrapperOld>
+            <NodeContainerWithProgress>
                 <HStack align={'center'} justify={'center'} gap="1">
-                    <TypeTagOld type={data.type} typeName={data.typeName} size="small" />
+                    <TypeTag type={data.type} typeName={data.typeName} size="small" />
                     <TextField
                         size={'small'}
                         label={'Variable Name'}
@@ -35,12 +36,12 @@ export const InputVariableNode = memo(
                         onChange={(evt) => updateNodeData(id, { text: evt.target.value })}
                     />
                 </HStack>
-                <HandlesWithLabelOld
+                <HandlesWithLabel
                     handles={data.sourceHandles}
                     type={'source'}
                     isConnectable={isConnectable}
                 />
-            </BaseNodeWrapperOld>
+            </NodeContainerWithProgress>
         );
     }
 );

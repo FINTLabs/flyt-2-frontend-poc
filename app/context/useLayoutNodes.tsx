@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import ELK from 'elkjs/lib/elk.bundled.js';
 import { type Edge, type Node, useNodesInitialized, useReactFlow } from '@xyflow/react';
 import type { CustomNode } from '~/types/flow/nodes';
@@ -8,9 +8,12 @@ import type { CustomNode } from '~/types/flow/nodes';
 const layoutOptions = {
     'elk.algorithm': 'layered',
     'elk.direction': 'RIGHT',
-    'elk.layered.spacing.edgeNodeBetweenLayers': '40',
-    'elk.spacing.nodeNode': '40',
+    'elk.layered.spacing.edgeNodeBetweenLayers': '50',
+    'elk.layered.spacing.nodeNodeBetweenLayers': '300',
+    'elk.spacing.nodeNode': '50',
     'elk.layered.nodePlacement.strategy': 'SIMPLE',
+    // 'org.eclipse.elk.spacing.portPort': '100',
+    // 'org.eclipse.elk.spacing.labelPortHorizontal': 10,
 };
 
 const elk = new ELK();
@@ -40,14 +43,14 @@ export const getLayoutedNodes = async (nodes: CustomNode[], edges: Edge[]) => {
 
             return {
                 id: n.id,
-                width: n.width ?? 150,
-                height: n.height ?? 50,
+                width: n.measured?.width ?? 150,
+                height: n.measured?.height ?? 50,
                 // ⚠️ we need to tell elk that the ports are fixed, in order to reduce edge crossings
                 properties: {
                     'org.eclipse.elk.portConstraints': 'FIXED_ORDER',
                 },
                 // we are also passing the id, so we can also handle edges without a sourceHandle or targetHandle option
-                ports: [{ id: n.id }, ...targetPorts, ...sourcePorts],
+                ports: [{ id: n.id }, ...(targetPorts ?? []), ...(sourcePorts ?? [])],
             };
         }),
         edges: edges.map((e) => ({
@@ -58,7 +61,6 @@ export const getLayoutedNodes = async (nodes: CustomNode[], edges: Edge[]) => {
     };
 
     const layoutedGraph = await elk.layout(graph);
-
     const layoutedNodes = nodes.map((node) => {
         const layoutedNode = layoutedGraph.children?.find((lgNode) => lgNode.id === node.id);
 
@@ -78,6 +80,19 @@ export default function useLayoutNodes() {
     const nodesInitialized = useNodesInitialized();
     const { getNodes, getEdges, setNodes, fitView } = useReactFlow<CustomNode>();
 
+    const resetLayout = useCallback(() => {
+        if (nodesInitialized) {
+            const layoutNodes = async () => {
+                const layoutedNodes = await getLayoutedNodes(getNodes(), getEdges());
+
+                setNodes(layoutedNodes);
+                fitView();
+            };
+
+            layoutNodes();
+        }
+    }, [nodesInitialized]);
+
     useEffect(() => {
         if (nodesInitialized) {
             const layoutNodes = async () => {
@@ -91,5 +106,7 @@ export default function useLayoutNodes() {
         }
     }, [nodesInitialized, getNodes, getEdges, setNodes, fitView]);
 
-    return null;
+    return {
+        resetLayout,
+    };
 }
