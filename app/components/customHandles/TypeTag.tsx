@@ -9,7 +9,8 @@ import {
     QuestionmarkDiamondIcon,
     QuestionmarkIcon,
 } from '@navikt/aksel-icons';
-import { getValueTypeFromCollection } from '~/utils/dataTypeUtils';
+import { TAG_HEIGHT } from '~/utils/constants';
+import { getValueTypeFromCollection } from '~/utils/handleUtils';
 
 type TypeProps = {
     type: DataTypeValue;
@@ -39,10 +40,15 @@ export const TypeTag = ({
             <Box
                 borderWidth={inner ? '0 0 0 1' : '1'}
                 className={'type-tag'}
+                margin={'0'}
                 borderRadius={inner ? '0' : '2'}
                 borderColor="border-default"
+                height={inner ? undefined : `${TAG_HEIGHT}px`}
                 style={{
                     borderStyle: required ? 'solid' : 'dashed',
+                    alignItems: `center`,
+                    alignContent: 'center',
+                    boxSizing: 'border-box',
                 }}
             >
                 <TypeSymbol type={type} typeName={typeName} size="small" />
@@ -58,7 +64,6 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
             <p
                 style={{
                     textWrap: 'nowrap',
-                    lineHeight: '0.9rem',
                     margin: '0 2px',
                     fontSize: '0.7rem',
                 }}
@@ -74,12 +79,12 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
     if (type === DataTypeDefinition.Undefined) return <QuestionmarkIcon fontSize="0.9rem" />;
     if (type === DataTypeDefinition.Boolean) return <QuestionmarkDiamondIcon fontSize="0.9rem" />;
 
-    if (type.startsWith('Collection')) {
+    if (type.startsWith('collection')) {
         const innertype = getValueTypeFromCollection(type);
 
         return (
             <HStack wrap={false} gap={'space-1'} align="center">
-                <BulletListIcon fontSize="0.9rem" />
+                <BulletListIcon fontSize="0.85rem" />
                 <TypeTag type={innertype} typeName={typeName} size={size} inner={true} />
             </HStack>
         );

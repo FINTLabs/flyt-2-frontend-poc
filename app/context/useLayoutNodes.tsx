@@ -10,7 +10,7 @@ const layoutOptions = {
     'elk.direction': 'RIGHT',
     'elk.layered.spacing.edgeNodeBetweenLayers': '50',
     'elk.layered.spacing.nodeNodeBetweenLayers': '300',
-    'elk.spacing.nodeNode': '50',
+    'elk.spacing.nodeNode': '100',
     'elk.layered.nodePlacement.strategy': 'SIMPLE',
     // 'org.eclipse.elk.spacing.portPort': '100',
     // 'org.eclipse.elk.spacing.labelPortHorizontal': 10,
@@ -86,7 +86,7 @@ export default function useLayoutNodes() {
                 const layoutedNodes = await getLayoutedNodes(getNodes(), getEdges());
 
                 setNodes(layoutedNodes);
-                fitView();
+                // fitView();
             };
 
             layoutNodes();

@@ -1,10 +1,12 @@
 import React, { memo } from 'react';
 import { type Node, type NodeProps } from '@xyflow/react';
 import { VStack } from '@navikt/ds-react';
-import { getNodeMinHeight, getNodeIcon } from '~/demo/utils/nodeHandlers';
+import { getNodeIcon } from '~/demo/utils/nodeHandlers';
 import type { BaseNodeData } from '~/types/nodeTypes';
 import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+
+import { getNodeMinHeight } from '~/utils/nodeSizeUtils';
 
 type JoinTextOperationNodeType = Node<BaseNodeData, 'operationJoinText'>;
 

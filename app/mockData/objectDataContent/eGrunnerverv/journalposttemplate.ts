@@ -1,4 +1,4 @@
-const journalpost = {
+const journalposttemplate = {
     instanceValueMetadata: [
         { displayName: 'Saksnummer', type: 'STRING', key: 'saksnummer' },
         { displayName: 'Tittel', type: 'STRING', key: 'tittel' },

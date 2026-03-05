@@ -1,11 +1,12 @@
 import React, { memo, useMemo } from 'react';
 import { type NodeProps, type Node } from '@xyflow/react';
 import { VStack } from '@navikt/ds-react';
-import { getNodeIcon, getNodeMinHeightCss } from '~/demo/utils/nodeHandlers';
+import { getNodeIcon } from '~/demo/utils/nodeHandlers';
 import { NodeContainerWithProgress } from './nodeLayout/NodeContainerWithProgress';
 import type { HandleData } from '~/types/handleTypes';
 import { useFlow } from '~/context/flowContext';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+import { getNodeMinHeight } from '~/utils/nodeSizeUtils';
 
 type OperationNodeData = {
     label: string;
@@ -18,7 +19,7 @@ type OperationNodeType = Node<OperationNodeData, 'operation' | 'externalFunction
 
 export const OperationNode = memo(
     ({ id, data, isConnectable, type }: NodeProps<OperationNodeType>) => {
-        const minHeight = getNodeMinHeightCss({
+        const minHeight = getNodeMinHeight({
             sources: data.sourceHandles?.length,
             targets: data.targetHandles?.length,
         });
@@ -35,7 +36,11 @@ export const OperationNode = memo(
         }, [currentFlow]);
 
         return (
-            <NodeContainerWithProgress label={data.label} minHeight={minHeight} currentStep={step}>
+            <NodeContainerWithProgress
+                label={data.label}
+                minHeight={minHeight.cssString}
+                currentStep={step}
+            >
                 <HandlesWithLabel
                     handles={data.targetHandles}
                     type={'target'}
@@ -45,7 +50,7 @@ export const OperationNode = memo(
                     align={'center'}
                     justify={'center'}
                     gap="1"
-                    style={{ minHeight }}
+                    style={{ minHeight: minHeight.cssString }}
                     padding={'1'}
                 >
                     {data.iconType && getNodeIcon(data.iconType)}

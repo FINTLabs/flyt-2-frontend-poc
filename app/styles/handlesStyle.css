@@ -13,7 +13,7 @@
 }
 
 .react-flow__handle.custom-handle {
-    background: var(--a-bg-default) !important;
+    background: var(--theme-node-beige) !important;
     border-color: var(--a-border-subtle) !important;
     border-radius: 4px;
     border-width: 1px;
@@ -23,20 +23,13 @@
     align-content: center;
 
     &:hover {
-        border-color: var(--a-gray-500) !important;
+        /*border-color: var(--a-gray-500) !important;*/
+        border-color: var(--xy-theme-hover) !important;
+        background: var(--theme-node-beige-hover) !important;
     }
-    &.metadata-handle {
-        background: var(--theme-node-beige) !important;
+    .type-tag {
         border-color: var(--a-border-subtle) !important;
-
-        &:hover {
-            border-color: var(--xy-theme-hover) !important;
-        }
-
-        .type-tag {
-            border-color: var(--a-border-subtle) !important;
-            background: var(--a-bg-default) !important;
-        }
+        background: var(--a-bg-default) !important;
     }
 }
 .type-tag {

@@ -1,4 +1,7 @@
 import React, { useEffect, useCallback, useState, type DragEventHandler } from 'react';
+import { Button, HStack } from '@navikt/ds-react';
+import { useNavigate, useParams } from 'react-router';
+import '@xyflow/react/dist/style.css';
 import {
     ReactFlow,
     useNodesState,
@@ -22,14 +25,12 @@ import {
     type EdgeChange,
 } from '@xyflow/react';
 
-import '@xyflow/react/dist/style.css';
-import { getMinimapNodeColor, getMinimapNodeStrokeColor } from '~/demo/utils/nodeHandlers';
 import { useFlow } from '~/context/flowContext';
-import { Button, HStack } from '@navikt/ds-react';
-import { useNavigate, useParams } from 'react-router';
-import { nodeTypes } from '~/components/customNodes/nodetypes';
+import useLayoutNodes from '~/context/useLayoutNodes';
 import type { CustomNodeDemo } from '~/types/nodeTypes';
 import { IGNORED_CHANGES, NODE_BASE_HEIGHT } from '~/utils/constants';
+import { getMinimapNodeColor, getMinimapNodeStrokeColor } from '~/utils/minimapUtils';
+import { nodeTypes } from '~/components/customNodes/nodetypes';
 import { allIntegrationsNodes } from '~/mockData/nodes/instances';
 
 const Flow = () => {
@@ -51,11 +52,16 @@ const Flow = () => {
     const { mode } = useParams();
     const updateNodeInternals = useUpdateNodeInternals();
     const { getIntersectingNodes } = useReactFlow();
+    const { resetLayout } = useLayoutNodes();
 
     useEffect(() => {
         setNodes(initNodes);
         setEdges(initEdges);
     }, [initNodes, initEdges]);
+
+    const onRedoLayout = useCallback(() => {
+        resetLayout();
+    }, [nodes, edges]);
 
     const handleNodePosition = useCallback(
         (node: CustomNodeDemo, position?: XYPosition): CustomNodeDemo => {
@@ -199,8 +205,8 @@ const Flow = () => {
             <Panel position="top-right">
                 {currentFlow?.id !== 'demo' && mode === 'edit' && (
                     <HStack gap={'2'} wrap={false}>
-                        <Button variant="secondary" disabled={!hasChanged} size="small">
-                            Avbryt
+                        <Button variant="secondary" size="small" onClick={() => onRedoLayout()}>
+                            Tilbakestill plassering
                         </Button>
                         <Button disabled={!hasChanged} size="small" onClick={handleSave}>
                             Lagre

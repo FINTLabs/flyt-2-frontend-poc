@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Box } from '@navikt/ds-react';
 import { NodeLabel } from './NodeLabel';
-import { getNodeMinHeight } from '~/utils/nodePositionUtils';
 import { NODE_BASE_WIDTH } from '~/utils/constants';
+import { getNodeMinHeight } from '~/utils/nodeSizeUtils';
 
 interface NodeContainerProps {
     id: string;
