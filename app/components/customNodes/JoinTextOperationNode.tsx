@@ -9,13 +9,15 @@ import {
     useReactFlow,
 } from '@xyflow/react';
 import { Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
-import { getNodeMinHeight, getNodeIcon } from '~/demo/utils/nodeHandlers';
+import { getNodeIcon } from '~/demo/utils/nodeHandlers';
 import type { BaseNodeData, CustomNodeDemo } from '~/types/nodeTypes';
 import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
 import { MinusIcon, PlusIcon } from '@navikt/aksel-icons';
 import { DataTypeDefinition } from '~/types/data/datatypes';
 import { useFlow } from '~/context/flowContext';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+
+import { getNodeMinHeight } from '~/utils/nodeSizeUtils';
 
 type JoinTextOperationNodeType = Node<BaseNodeData, 'operationJoinText'>;
 

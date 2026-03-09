@@ -8,12 +8,10 @@ import { InnerFlowListOperation } from '~/components/customNodes/OperationListIn
 import { InnerFlowDataNode } from '~/components/customNodes/InnerFlowDataNode';
 import { DataSourceNode } from '~/components/customNodes/DataSourceNode';
 import { EditTextNode } from '~/components/customNodes/EditTextNode';
-import { MetadataNode } from '~/components/customNodes/MetadataNode';
 
 export const nodeTypes: NodeTypes = {
     flowInput: IntegrationNode,
     flowOutput: IntegrationNode,
-    inputMetadata: MetadataNode,
     operation: OperationNode,
     externalFunction: OperationNode,
     variableInput: InputVariableNode,

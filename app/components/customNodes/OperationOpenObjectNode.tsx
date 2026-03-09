@@ -8,13 +8,15 @@ import {
     type NodeConnection,
 } from '@xyflow/react';
 import { VStack } from '@navikt/ds-react';
-import { getNodeIcon, getNodeMinHeight } from '~/demo/utils/nodeHandlers';
+import { getNodeIcon } from '~/demo/utils/nodeHandlers';
 import type { HandleData } from '~/types/handleTypes';
 import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
-import { mockFetchDataContentHandles } from '~/demo/mockData/dataObjects';
 import { DataTypeDefinition } from '~/types/data/datatypes';
 import { useFlow } from '~/context/flowContext';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+import { mockFetchDataContentHandles } from '~/mockData/getObjectDataContentHandles';
+
+import { getNodeMinHeight } from '~/utils/nodeSizeUtils';
 
 type OperationObjectNodeData = {
     label: string;
@@ -51,9 +53,12 @@ export const OperationOpenObjectNode = memo(
 
         useEffect(() => {
             if (edge) {
+                console.log('Edge', edge);
                 const objectDefinitionNode = getNode(
                     isOpenObject ? edge.source : edge.target
                 )?.data;
+
+                console.log('Object Definition Node', objectDefinitionNode);
                 if (objectDefinitionNode) {
                     const incomingObjectHandle = objectDefinitionNode.sourceHandles
                         ? Object.values(objectDefinitionNode.sourceHandles).find(
@@ -61,11 +66,14 @@ export const OperationOpenObjectNode = memo(
                           )
                         : undefined;
 
+                    console.log('incomingObjectHandle', incomingObjectHandle);
+
                     const outgoingObjectHandle = objectDefinitionNode.targetHandles
                         ? Object.values(objectDefinitionNode.targetHandles).find(
                               (h) => h.id === edge.targetHandle
                           )
                         : undefined;
+                    console.log('outgoingObjectHandle', outgoingObjectHandle);
 
                     const objectHandle = {
                         id: 'a',

@@ -3,10 +3,8 @@ import React, { useCallback, useState } from 'react';
 import { useFlow } from '~/context/flowContext';
 import { Button, Heading, HStack, Page, Select, TextField, VStack } from '@navikt/ds-react';
 import { ArrowRightIcon } from '@navikt/aksel-icons';
-import { allIntegrationsInputNodes, arkivInstanceOutput } from '~/mockData/nodes/instances';
+import { allIntegrationsInputNodes } from '~/mockData/nodes/instances';
 import getInitialNodesOnCreateNew from '~/mockData/getInitialNodesOnCreateNew';
-import type { CustomNodeDemo } from '~/types/nodeTypes';
-import type { Edge } from '@xyflow/react';
 
 const NewFlowPage = () => {
     const { saveNewFlow } = useFlow();
@@ -19,15 +17,8 @@ const NewFlowPage = () => {
     const handleSaveNewFlow = useCallback(() => {
         const initialFlow = getInitialNodesOnCreateNew(inputIntegration);
         console.log('handleSaveNewFlow', initialFlow);
-        if (!initialFlow?.instanceNode) return;
-
-        const nodes: CustomNodeDemo[] = [initialFlow.instanceNode, arkivInstanceOutput];
-
-        if (initialFlow.metadataNode) {
-            nodes.push(initialFlow.metadataNode);
-        }
-
-        const newFlowId = saveNewFlow(name, nodes, initialFlow.edge ? [initialFlow.edge] : []);
+        if (!initialFlow || initialFlow?.nodes.length === 0) return;
+        const newFlowId = saveNewFlow(name, initialFlow.nodes, initialFlow.edges);
         navigate(`/flow/edit/${newFlowId}`);
     }, [name, inputIntegration, outputIntegration]);
 

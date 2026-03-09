@@ -9,7 +9,7 @@ import {
     NodeResizeControl,
 } from '@xyflow/react';
 import { VStack } from '@navikt/ds-react';
-import { getNodeIcon, getNodeMinHeight } from '~/demo/utils/nodeHandlers';
+import { getNodeIcon } from '~/demo/utils/nodeHandlers';
 import type { HandleData } from '~/types/handleTypes';
 import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
 import { DataTypeDefinition } from '~/types/data/datatypes';
@@ -17,6 +17,8 @@ import { useFlow } from '~/context/flowContext';
 import { innerFlowInput, innerFlowOutput } from '~/mockData/nodes/general';
 import { createAlmostRandomId } from '~/demo/utils/generalUtils';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+
+import { getNodeMinHeight } from '~/utils/nodeSizeUtils';
 
 function ResizeIcon() {
     return (

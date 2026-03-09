@@ -1,5 +1,8 @@
 export const HANDLE_HEIGHT = 23;
 export const HANDLE_INTERVAL = 30;
+
+export const TAG_HEIGHT = 17;
+
 export const NODE_BASE_HEIGHT = 60;
 export const NODE_BASE_WIDTH = 60;
 

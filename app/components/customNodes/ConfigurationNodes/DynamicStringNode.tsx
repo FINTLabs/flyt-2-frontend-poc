@@ -9,13 +9,15 @@ import {
     useReactFlow,
 } from '@xyflow/react';
 import { Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
-import { getNodeMinHeight, getNodeIcon } from '~/demo/utils/nodeHandlers';
+import { getNodeIcon } from '~/demo/utils/nodeHandlers';
 import type { BaseNodeData, CustomNodeDemo } from '~/types/nodeTypes';
 import { MinusIcon, PlusIcon } from '@navikt/aksel-icons';
 import { DataTypeDefinition } from '~/types/data/datatypes';
 import type { DynamicStringNodeType } from '~/types/flow/nodes';
 import { NodeContainer } from '~/components/customNodes/nodeLayout/NodeContainer';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
+
+import { getNodeMinHeight } from '~/utils/nodeSizeUtils';
 
 export const DynamicStringNode = memo(
     ({ id, data, isConnectable }: NodeProps<DynamicStringNodeType>) => {

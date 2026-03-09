@@ -2,20 +2,21 @@ import type { Node } from '@xyflow/react';
 import React, { type ChangeEvent } from 'react';
 import NodeOperationConversionIcon from '~/components/icons/NodeOperationConversionIcon';
 import {
-    FolderFileFillIcon,
+    ArrowsSquarepathIcon,
+    CogIcon,
+    EnvelopeClosedIcon,
+    EnvelopeOpenIcon,
     FileExportFillIcon,
     FileImportFillIcon,
-    CogIcon,
+    FolderFileFillIcon,
+    InboxDownFillIcon,
+    InboxUpFillIcon,
     PencilWritingFillIcon,
     SquareFillIcon,
-    EnvelopeOpenIcon,
-    EnvelopeClosedIcon,
-    InboxUpFillIcon,
-    InboxDownFillIcon,
-    ArrowsSquarepathIcon,
 } from '@navikt/aksel-icons';
 import { DataTypeDefinition, type DataTypeValue } from '~/types/data/datatypes';
-import { HANDLE_HEIGHT, HANDLE_INTERVAL, NODE_BASE_HEIGHT } from '~/utils/constants';
+
+import { measureTextWidth } from '~/utils/handleUtils';
 
 export const onChangeNodeColor = (
     event: ChangeEvent<HTMLInputElement>,
@@ -31,36 +32,20 @@ export const onChangeNodeColor = (
     return { newColor: event.target.value, newNodes };
 };
 
-export const getMinimapNodeStrokeColor = (node: Node): string => {
-    if (node && node.type) {
-        if (node.type === 'flowInput' || node.type === 'flowOutput') return '#718f9f';
-        if (node.type === 'variableInput') return '#006373';
-        if (node.type === 'externalFunction') return '#816f55';
-    }
-    return '#000';
-};
-
-export const getMinimapNodeColor = (node: Node): string => {
-    if (node.type === 'flowInput' || node.type === 'flowOutput') return 'var(--theme-node-blue)';
-    if (node.type === 'variableInput') return 'var(--theme-node-green)';
-    if (node.type === 'externalFunction') return 'var(--theme-node-beige)';
-    return 'var(--theme-node-gray)';
-};
-
 export const getTypeSymbolWidth = (type?: DataTypeValue, typeText?: string): number => {
     if (!type) {
-        return typeText ? measureTextWidthOld(typeText) : 0;
+        return typeText ? measureTextWidth(typeText) : 0;
     }
 
     if (type === 'object') {
         const text = `{${typeText}}`;
-        return measureTextWidthOld(text, '0.7rem');
+        return measureTextWidth(text, '0.7rem');
     }
 
     if (isCollectionType(type)) {
         if (type === DataTypeDefinition.CollectionObject) {
             const text = `{${typeText}}`;
-            const textWidth = measureTextWidthOld(text, '0.7rem');
+            const textWidth = measureTextWidth(text, '0.7rem');
             return textWidth + 15;
         } else {
             return 30;
@@ -78,22 +63,7 @@ export const getTypeSymbolWidth = (type?: DataTypeValue, typeText?: string): num
         return 15;
     }
 
-    return typeText ? measureTextWidthOld(typeText) : 0;
-};
-
-export const measureTextWidthOld = (
-    text: string,
-    fontSize: string = '0.875rem',
-    fontFamily: string = '"Source Sans 3", "Source Sans Pro", Arial, sans-serif'
-): number => {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    if (context) {
-        context.font = `${fontSize} ${fontFamily}`;
-        const metrics = context.measureText(text);
-        return metrics.width + 4;
-    }
-    return text.length * 8 + 8;
+    return typeText ? measureTextWidth(typeText) : 0;
 };
 
 export const getNodeIcon = (iconType: string | undefined, isSmall?: true) => {
@@ -109,7 +79,7 @@ export const getNodeIcon = (iconType: string | undefined, isSmall?: true) => {
         case 'openData':
             return <FileExportFillIcon height={isSmall ? 15 : 45} width={isSmall ? 15 : 45} />;
         case 'openData2':
-            return <EnvelopeOpenIcon height={isSmall ? 15 : 45} width={isSmall ? 15 : 45} />;
+            return <EnvelopeOpenIcon height={isSmall ? 15 : 40} width={isSmall ? 15 : 40} />;
         case 'packData':
             return <FileImportFillIcon height={isSmall ? 15 : 45} width={isSmall ? 15 : 45} />;
         case 'packData2':
@@ -125,63 +95,6 @@ export const getNodeIcon = (iconType: string | undefined, isSmall?: true) => {
         default:
             return <SquareFillIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 35} />;
     }
-};
-
-export const calculateHandlePosition = (
-    index: number,
-    totalHandles: number,
-    interval: number = HANDLE_INTERVAL
-): string => {
-    if (totalHandles === 1) {
-        return '50%';
-    }
-    const isEven = totalHandles % 2 === 0;
-    const middleIndex = isEven ? totalHandles / 2 - 1 : Math.floor(totalHandles / 2);
-    const offsetFromMiddle = index - middleIndex;
-    return `calc(50% + ${(offsetFromMiddle - (isEven ? 0.5 : 0)) * interval - HANDLE_HEIGHT / 2}px)`;
-};
-
-export const getNodeMinHeight = ({
-    targets,
-    sources,
-    handleInterval = HANDLE_INTERVAL,
-    baseHeight = NODE_BASE_HEIGHT,
-}: {
-    targets?: number | undefined;
-    sources?: number | undefined;
-    handleInterval?: number;
-    baseHeight?: number;
-}): { number: number; cssString: string } => {
-    const leftHandles = targets || 0;
-    const rightHandles = sources || 0;
-    const maxHandles = Math.max(leftHandles, rightHandles);
-
-    const height = (maxHandles - 1) * handleInterval + baseHeight;
-
-    return {
-        number: height,
-        cssString: height > 1 ? `${height}px` : 'auto',
-    };
-};
-
-/**
- * @deprecated Use getNodeMinHeight instead
- */
-export const getNodeMinHeightCss = ({
-    targets,
-    sources,
-    handleInterval = HANDLE_INTERVAL,
-    baseHeight = NODE_BASE_HEIGHT,
-}: {
-    targets?: number | undefined;
-    sources?: number | undefined;
-    handleInterval?: number;
-    baseHeight?: number;
-}): string => {
-    const leftHandles = targets || 0;
-    const rightHandles = sources || 0;
-    const maxHandles = Math.max(leftHandles, rightHandles);
-    return maxHandles > 1 ? `${(maxHandles - 1) * handleInterval + baseHeight}px` : 'auto';
 };
 
 export const getCollectionTypeFromType = (

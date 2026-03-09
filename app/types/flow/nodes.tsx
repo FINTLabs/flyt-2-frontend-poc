@@ -1,5 +1,4 @@
 import type { Node, NodeTypes } from '@xyflow/react';
-import { MetadataNode } from '~/components/customNodes/MetadataNode';
 import { ConfigurationNode } from '~/components/customNodes/ConfigurationNodes/ConfigurationNode';
 import { SakslogikkNode } from '~/components/customNodes/SakslogikkNode';
 import { IncomingDataNode } from '~/components/customNodes/ConfigurationNodes/IncomingDataNode';
@@ -47,7 +46,6 @@ export type ElkNode = Node<ElkNodeData, 'elk'>;
 
 export const allNodeTypes: NodeTypes = {
     incomingData: IncomingDataNode,
-    metadataNode: MetadataNode,
     configNode: ConfigurationNode,
     sakslogikkNode: SakslogikkNode,
     dynamicString: DynamicStringNode,

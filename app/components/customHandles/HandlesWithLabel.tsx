@@ -1,11 +1,14 @@
 import { Handle, Position } from '@xyflow/react';
 import React, { useEffect, useMemo } from 'react';
 import { Detail, HStack } from '@navikt/ds-react';
-import { calculateHandlePosition, measureTextWidthOld } from '~/demo/utils/nodeHandlers';
-import { getValueTypeSymbolWidth } from '~/utils/dataTypeUtils';
 import { TypeTag } from '~/components/customHandles/TypeTag';
 import { HANDLE_HEIGHT } from '~/utils/constants';
 import type { HandleData } from '~/types/handleTypes';
+import {
+    calculateHandlePosition,
+    getValueTypeSymbolWidth,
+    measureTextWidth,
+} from '~/utils/handleUtils';
 
 export type MultipleHandlesWithLabelProps = {
     handles?: HandleData[];
@@ -24,18 +27,18 @@ export const HandlesWithLabel = ({
 }: MultipleHandlesWithLabelProps) => {
     if (!handles?.length) return null;
 
+    const transform =
+        type === 'target'
+            ? handles.length > 1
+                ? 'translateX(-100%)'
+                : 'translate(-100%, -50%)'
+            : handles.length > 1
+              ? 'translateX(100%)'
+              : 'translate(100%, -50%)';
+
     return (
         <>
             {handles.map((handle, index) => {
-                const transform =
-                    type === 'target'
-                        ? handles.length > 1
-                            ? 'translateX(-100%)'
-                            : 'translate(-100%, -50%)'
-                        : handles.length > 1
-                          ? 'translateX(100%)'
-                          : 'translate(100%, -50%)';
-
                 const handlePosition = calculateHandlePosition(index, handles.length);
 
                 if (hideLabels) {
@@ -81,8 +84,7 @@ const HandleWithLabel = ({
 }: HandleWithLabelProps) => {
     const memorizedHandleWidth = useMemo(() => {
         const typeTagWidth = getValueTypeSymbolWidth(handle.type, handle.typeName);
-        const labelWidth = handle.label ? Math.max(10, measureTextWidthOld(handle.label)) : 0;
-
+        const labelWidth = handle.label ? Math.max(10, measureTextWidth(handle.label)) : 0;
         return Math.max(16, typeTagWidth + (handle.label ? labelWidth + 16 : 8));
     }, [handle.label, handle.typeName, handle.type]);
 

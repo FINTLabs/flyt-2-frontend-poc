@@ -40,10 +40,6 @@
     background-color: var(--theme-node-blue);
 }
 
-.react-flow__node-inputMetadata {
-    background-color: var(--theme-node-beige);
-}
-
 .react-flow__node-innerFlowInput,
 .menu-node-innerFlowInput {
     background-color: var(--theme-node-lightblue);
@@ -61,7 +57,7 @@
 
 .react-flow__node-operation,
 .menu-node-operation {
-    background-color: var(--theme-node-gray);
+    background-color: var(--theme-node-beige);
 }
 
 .react-flow__node-variableInput,

@@ -6,5 +6,4 @@ export type HandleData = {
     type: DataTypeDefinition;
     typeName?: string;
     required: boolean;
-    categoryName?: string;
 };
