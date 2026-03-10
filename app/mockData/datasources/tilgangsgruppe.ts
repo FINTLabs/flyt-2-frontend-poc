@@ -1,1 +1,1 @@
-const tilgangsgruppe = [];
+export const tilgangsgruppeOptions = [];

@@ -206,7 +206,7 @@ const Flow = () => {
                 {currentFlow?.id !== 'demo' && mode === 'edit' && (
                     <HStack gap={'2'} wrap={false}>
                         <Button variant="secondary" size="small" onClick={() => onRedoLayout()}>
-                            Tilbakestill plassering
+                            Autolayout
                         </Button>
                         <Button disabled={!hasChanged} size="small" onClick={handleSave}>
                             Lagre

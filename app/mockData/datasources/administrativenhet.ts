@@ -1,4 +1,4 @@
-const administrativenhet = [
+export const administrativenhetOptions = [
     {
         id: 'https://beta.felleskomponent.no/arkiv/noark/administrativenhet/systemid/198',
         displayName: 'OPK-KV - Diverse #198',

@@ -1,5 +1,5 @@
 import { DataTypeDefinition } from '~/types/data/datatypes';
-import type { BaseNodeData, InputNodeData, SelectNodeData } from '~/types/nodeTypes';
+import type { BaseNodeData, InputNodeData } from '~/types/nodeTypes';
 import { type Node } from '@xyflow/react';
 import { allFintNodes } from '~/demo/mockData/fintNodes';
 import {
@@ -8,6 +8,7 @@ import {
     egrunnervervSakInstance,
 } from '~/mockData/nodes/instances';
 import { defaultPosition } from '~/utils/constants';
+import { allDataSources } from '~/mockData/nodes/datasources';
 
 export const innerFlowInput: Node<BaseNodeData> = {
     id: 'innerFlowInput',
@@ -35,27 +36,14 @@ export const innerFlowOutput: Node<BaseNodeData> = {
 };
 
 // GENERIC NODES
-export const variableInputNode: Node<InputNodeData> = {
-    id: 'variableInputNode',
-    type: 'variableInput',
+export const InputTextNode: Node<InputNodeData> = {
+    id: 'inputTextNode',
+    type: 'inputText',
     data: {
-        label: 'Variabel input',
+        label: 'Fritekst',
         text: '',
         type: DataTypeDefinition.Text,
         sourceHandles: [{ id: 'a', type: DataTypeDefinition.Text, required: true }],
-    },
-    position: defaultPosition,
-};
-
-export const dataSourceNode: Node<SelectNodeData> = {
-    id: 'dataSource',
-    type: 'dataSource',
-    data: {
-        label: 'Fylkesråd: Dokumentstatus',
-        value: '',
-        options: [],
-        type: DataTypeDefinition.Reference,
-        sourceHandles: [{ id: 'a', type: DataTypeDefinition.Reference, required: true }],
     },
     position: defaultPosition,
 };
@@ -310,7 +298,7 @@ export const allFunctionalNodes = [
     operationExternalGetSaksansvarlig,
     operationCreateObjectAkrivsak,
     arkivInstanceOutput,
-    variableInputNode,
+    InputTextNode,
     operationCreateObject,
     acosDocToDocDesc,
     operationOpenObject,
@@ -318,7 +306,7 @@ export const allFunctionalNodes = [
     operationEditText,
     innerFlowInput,
     innerFlowOutput,
-    dataSourceNode,
     acosUploadFile,
     ...allFintNodes,
+    ...allDataSources,
 ];

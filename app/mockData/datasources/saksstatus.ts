@@ -1,4 +1,4 @@
-const saksstatus = [
+export const saksstatusOption = [
     {
         id: 'https://beta.felleskomponent.no/arkiv/kodeverk/saksstatus/systemid/S',
         displayName: '[S] Avsluttet av saksbehandler #S',

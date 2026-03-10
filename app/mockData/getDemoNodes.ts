@@ -6,7 +6,7 @@ import {
     operationExternalGetSaksansvarlig,
     operationJoinText,
     operationOpenEGrvSak,
-    variableInputNode,
+    InputTextNode,
 } from '~/mockData/nodes/general';
 
 export const getDemoNodes = (
@@ -43,10 +43,10 @@ export const getDemoNodes = (
             position: { x: 1110, y: 210 },
         },
         {
-            ...variableInputNode,
+            ...InputTextNode,
             id: 'n5-kommuneInput',
             data: {
-                ...variableInputNode.data,
+                ...InputTextNode.data,
                 text: ' kommune - ',
             },
             position: { x: 808, y: -457.8 },
@@ -57,28 +57,28 @@ export const getDemoNodes = (
             position: { x: 1560, y: -165 },
         },
         {
-            ...variableInputNode,
+            ...InputTextNode,
             id: 'n7-gbnrInput',
             data: {
-                ...variableInputNode.data,
+                ...InputTextNode.data,
                 text: ' - gbnr ',
             },
             position: { x: 808, y: -398 },
         },
         {
-            ...variableInputNode,
+            ...InputTextNode,
             id: 'n8-skraastrekInput',
             data: {
-                ...variableInputNode.data,
+                ...InputTextNode.data,
                 text: '/',
             },
             position: { x: 808, y: -338 },
         },
         {
-            ...variableInputNode,
+            ...InputTextNode,
             id: 'n9-grunnervervInput',
             data: {
-                ...variableInputNode.data,
+                ...InputTextNode.data,
                 text: '- Grunnerverv',
             },
             position: { x: 808, y: -277.8 },

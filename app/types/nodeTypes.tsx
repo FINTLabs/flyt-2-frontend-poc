@@ -7,7 +7,7 @@ export type CustomNodeType =
     | 'flowOutput'
     | 'operation'
     | 'externalFunction'
-    | 'variableInput'
+    | 'inputText'
     | 'operationJoinText';
 
 export type CustomNodeTypeValue = `${CustomNodeType}`;
@@ -26,7 +26,7 @@ export type InputNodeData = BaseNodeData & {
 };
 
 export type SelectNodeData = BaseNodeData & {
-    options: string[];
+    options: { id: string; displayName: string }[];
     value: string;
 };
 

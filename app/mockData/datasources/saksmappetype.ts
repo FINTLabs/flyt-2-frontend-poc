@@ -1,4 +1,4 @@
-const saksmappetype = [
+export const saksmappetypeOptions = [
     {
         id: 'https://beta.felleskomponent.no/arkiv/kodeverk/saksmappetype/systemid/PM',
         displayName: '[PM] Private mappe #PM',

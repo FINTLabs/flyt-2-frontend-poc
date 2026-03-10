@@ -1,4 +1,4 @@
-const arkivdel = [
+export const arkivdelOptions = [
     {
         id: 'https://beta.felleskomponent.no/arkiv/noark/arkivdel/systemid/CIM',
         displayName: 'INV beredskapshandtering #CIM',

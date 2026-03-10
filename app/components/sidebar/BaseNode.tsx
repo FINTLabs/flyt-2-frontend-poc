@@ -24,7 +24,7 @@ export const BaseNode = ({ label, node }: { label: string; node: Node<BaseNodeDa
         >
             <HStack wrap={false} justify={'space-between'} align={'center'} gap={'2'}>
                 {getNodeIcon(node.data.iconType, true)}
-                <Detail truncate>{label}</Detail>
+                <Detail truncate>{label ?? node.data.label}</Detail>
                 <DragVerticalIcon title="a11y-title" fontSize="1.5rem" />
             </HStack>
         </Box>

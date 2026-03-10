@@ -18,14 +18,14 @@ export const layoutOptions: LayoutOptions = {
     'elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF', // BRANDES_KOEPF er default
 
     // Disse kommer ann på BRANDES_KOEPF som nodePlacement.strategy
-    'elk.layered.nodePlacement.bk.fixedAlignment': 'BALANCED', // https://eclipse.dev/elk/reference/options/org-eclipse-elk-layered-nodePlacement-bk-fixedAlignment.html)
-    'elk.layered.nodePlacement.bk.edgeStraightening': 'IMPROVE_STRAIGHTNESS', // (https://eclipse.dev/elk/reference/options/org-eclipse-elk-layered-nodePlacement-bk-edgeStraightening.html)
+    'elk.layered.nodePlacement.bk.fixedAlignment': 'BALANCED', // https://eclipse.dev/elk/reference/options/org-eclipse-elk-layered-nodePlacement-bk-fixedAlignment.html
+    'elk.layered.nodePlacement.bk.edgeStraightening': 'IMPROVE_STRAIGHTNESS', // https://eclipse.dev/elk/reference/options/org-eclipse-elk-layered-nodePlacement-bk-edgeStraightening.html
 
-    'elk.layered.nodePlacement.favorStraightEdges': 'true', // sant spesielt for orthogonal routing (https://eclipse.dev/elk/reference/options/org-eclipse-elk-layered-nodePlacement-favorStraightEdges.html)
-    'elk.edgeRouting': 'ORTHOGONAL', //(https://github.com/kieler/elkjs/issues/327)
+    'elk.layered.nodePlacement.favorStraightEdges': 'true', // sant spesielt for orthogonal routing https://eclipse.dev/elk/reference/options/org-eclipse-elk-layered-nodePlacement-favorStraightEdges.html
+    // 'elk.edgeRouting': 'ORTHOGONAL', // https://github.com/kieler/elkjs/issues/327
 
     // Rydd bort unødvendige bendpoints
-    'elk.layered.unnecessaryBendpoints': 'false', //(https://eclipse.dev/elk/reference/options.html)
+    'elk.layered.unnecessaryBendpoints': 'false', // https://eclipse.dev/elk/reference/options.html
 
     // Spacing:
     'elk.layered.spacing.nodeNodeBetweenLayers': '220', // mellom lag (https://eclipse.dev/elk/reference/algorithms/org-eclipse-elk-layered.html)
@@ -38,7 +38,7 @@ export const layoutOptions: LayoutOptions = {
     'elk.layered.considerModelOrder.portModelOrder': 'true', // respekter portrekkefølge i modellen (https://eclipse.dev/elk/reference/options/org-eclipse-elk-layered-considerModelOrder-portModelOrder.html)
 
     // Stabilitet/feilsøking
-    'elk.randomSeed': '3',
+    'elk.randomSeed': '42',
     'elk.separateConnectedComponents': 'false',
 };
 
