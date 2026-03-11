@@ -1,4 +1,6 @@
-const saksmappetype = [
+// https://flyt.vigoiks.no/beta/vlfk-no/api/intern/arkiv/kodeverk/saksmappetype
+
+export const saksmappetypeOptions = [
     {
         id: 'https://beta.felleskomponent.no/arkiv/kodeverk/saksmappetype/systemid/PM',
         displayName: '[PM] Private mappe #PM',

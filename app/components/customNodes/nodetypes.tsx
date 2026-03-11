@@ -1,7 +1,7 @@
 import type { NodeTypes } from '@xyflow/react';
 import { IntegrationNode } from '~/components/customNodes/IntegrationNode';
 import { OperationNode } from '~/components/customNodes/OperationNode';
-import { InputVariableNode } from '~/components/customNodes/InputVariableNode';
+import { InputTextNode } from '~/components/customNodes/InputTextNode';
 import { JoinTextOperationNode } from '~/components/customNodes/JoinTextOperationNode';
 import { OperationOpenObjectNode } from '~/components/customNodes/OperationOpenObjectNode';
 import { InnerFlowListOperation } from '~/components/customNodes/OperationListInnerFlowNode';
@@ -14,7 +14,7 @@ export const nodeTypes: NodeTypes = {
     flowOutput: IntegrationNode,
     operation: OperationNode,
     externalFunction: OperationNode,
-    variableInput: InputVariableNode,
+    inputText: InputTextNode,
     operationJoinText: JoinTextOperationNode,
     openObject: OperationOpenObjectNode,
     createObject: OperationOpenObjectNode,

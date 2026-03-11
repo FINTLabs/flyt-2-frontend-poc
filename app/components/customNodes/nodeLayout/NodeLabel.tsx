@@ -39,7 +39,7 @@ export const NodeLabel: React.FC<NodeLabelProps> = ({
                 size={size}
                 style={{
                     position: 'absolute',
-                    top: sublabel ? -50 : -30,
+                    top: sublabel ? -45 : -25,
                     left: '50%',
                     transform: 'translateX(-50%)',
                     textWrap: 'nowrap',
@@ -53,7 +53,7 @@ export const NodeLabel: React.FC<NodeLabelProps> = ({
                     style={{
                         fontSize: 'var(--a-font-size-small)',
                         position: 'absolute',
-                        top: -30,
+                        top: -25,
                         left: '50%',
                         transform: 'translateX(-50%)',
                         textWrap: 'nowrap',

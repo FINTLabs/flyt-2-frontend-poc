@@ -59,7 +59,7 @@ const createIncomingDataNode = (dataName: string): Node<IncomingDataNodeData> =>
             iconType: 'dataInstanceIn',
             sourceHandles: [
                 {
-                    id: 'a',
+                    id: 'dataName-incomingData:s:a',
                     label: dataName,
                     type: DataValueTypeAPI.DATA_OBJECT,
                     typeName: dataName,

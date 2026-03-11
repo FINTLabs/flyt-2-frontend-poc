@@ -9,7 +9,7 @@
     padding: 5px;
     flex-direction: column;
     border: var(--theme-node-border-default);
-    color: var(--xy-node-color-default)
+    color: var(--xy-node-color-default);
 }
 
 .react-flow__node.selectable:focus {
@@ -60,21 +60,39 @@
     background-color: var(--theme-node-beige);
 }
 
-.react-flow__node-variableInput,
+.react-flow__node-inputText {
+    .navds-text-field__input {
+        input {
+            width: 100%;
+        }
+    }
+}
+
+.react-flow__node-inputText,
 .react-flow__node-dataSource {
     background-color: var(--theme-node-green);
     padding: 2px 5px;
-    .navds-form-field--small .navds-text-field__input,
-    .navds-form-field--small .navds-select__input {
-        min-height: 0.5rem;
+    .navds-form-field {
+        width: 100%;
     }
     .navds-text-field__input:focus-visible,
     select:focus-visible {
         box-shadow: 0 0 0 1px var(--theme-node-input-selected);
     }
+
+    .navds-combobox--focused,
+    .navds-combobox__wrapper-inner:has(.navds-combobox__input:focus-visible) {
+        box-shadow: 0 0 0 1px var(--theme-node-input-selected);
+    }
+
+    .navds-text-field__input {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
 }
 
-.menu-node-variableInput,
+.menu-node-inputText,
 .menu-node-dataSource {
     background-color: var(--theme-node-green);
 }

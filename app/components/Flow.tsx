@@ -24,6 +24,7 @@ import {
     type NodeChange,
     type EdgeChange,
 } from '@xyflow/react';
+import { SmartStepEdge } from '@tisoap/react-flow-smart-edge';
 
 import { useFlow } from '~/context/flowContext';
 import useLayoutNodes from '~/context/useLayoutNodes';
@@ -32,6 +33,10 @@ import { IGNORED_CHANGES, NODE_BASE_HEIGHT } from '~/utils/constants';
 import { getMinimapNodeColor, getMinimapNodeStrokeColor } from '~/utils/minimapUtils';
 import { nodeTypes } from '~/components/customNodes/nodetypes';
 import { allIntegrationsNodes } from '~/mockData/nodes/instances';
+
+const edgeTypes = {
+    smart: SmartStepEdge,
+};
 
 const Flow = () => {
     const {
@@ -192,8 +197,9 @@ const Flow = () => {
             isValidConnection={isValidDatatypeConnection}
             onDragOver={onDragOver}
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
             fitView
-            defaultEdgeOptions={{ type: 'step' }}
+            defaultEdgeOptions={{ type: 'smoothstep' }}
             selectNodesOnDrag={false}
             attributionPosition="bottom-left"
         >
@@ -206,7 +212,7 @@ const Flow = () => {
                 {currentFlow?.id !== 'demo' && mode === 'edit' && (
                     <HStack gap={'2'} wrap={false}>
                         <Button variant="secondary" size="small" onClick={() => onRedoLayout()}>
-                            Tilbakestill plassering
+                            Autolayout
                         </Button>
                         <Button disabled={!hasChanged} size="small" onClick={handleSave}>
                             Lagre

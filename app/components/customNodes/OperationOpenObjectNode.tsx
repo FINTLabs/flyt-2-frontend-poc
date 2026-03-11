@@ -75,8 +75,10 @@ export const OperationOpenObjectNode = memo(
                         : undefined;
                     console.log('outgoingObjectHandle', outgoingObjectHandle);
 
+                    const handleID = `${id}:${isOpenObject ? 't' : 's'}:a`;
+
                     const objectHandle = {
-                        id: 'a',
+                        id: handleID,
                         label: isOpenObject
                             ? incomingObjectHandle.label
                             : (outgoingObjectHandle.label ?? objectDefinitionNode.label),
@@ -87,6 +89,8 @@ export const OperationOpenObjectNode = memo(
                         required: true,
                     };
                     const objectDefinitionHandles = mockFetchDataContentHandles(
+                        id,
+                        isOpenObject ? 's' : 't',
                         objectHandle.typeName || 'Object',
                         objectHandle.label
                     );
@@ -96,10 +100,12 @@ export const OperationOpenObjectNode = memo(
                         sourceHandles: isOpenObject ? objectDefinitionHandles : [objectHandle],
                     });
 
-                    const handleID = isOpenObject ? { targetHandle: 'a' } : { sourceHandle: 'a' };
+                    const newHandle = isOpenObject
+                        ? { targetHandle: handleID }
+                        : { sourceHandle: handleID };
                     updateEdge(edge.edgeId, {
                         ...edge,
-                        ...handleID,
+                        ...newHandle,
                     });
                     updateNodeInternals(id);
                 }

@@ -13,7 +13,7 @@ export const egrunnervervSakInstance: Node<BaseNodeData> = {
         iconType: 'dataInstanceIn',
         sourceHandles: [
             {
-                id: 'a',
+                id: 'instanceEGrunnervervSak:s:a',
                 label: 'eGrunnerverv sak',
                 type: DataTypeDefinition.Object,
                 typeName: 'eGrv Sak',
@@ -33,7 +33,7 @@ export const acosInstance: Node<BaseNodeData> = {
         iconType: 'dataInstanceIn',
         sourceHandles: [
             {
-                id: 'a',
+                id: 'acosInstance:s:a',
                 label: 'ACOS instans',
                 type: DataTypeDefinition.Object,
                 typeName: 'ACOS',
@@ -53,7 +53,7 @@ export const acosInstanceVIK304: Node<BaseNodeData> = {
         iconType: 'dataInstanceIn',
         sourceHandles: [
             {
-                id: 'a',
+                id: 'acosInstanceVIK304:s:a',
                 label: 'ACOS VIK304',
                 type: DataTypeDefinition.Object,
                 typeName: 'ACOS VIK304',
@@ -72,7 +72,12 @@ export const arkivInstanceOutput: Node<BaseNodeData> = {
         typeName: 'Arkiv Sak',
         iconType: 'dataInstanceOut',
         targetHandles: [
-            { id: 'a', type: DataTypeDefinition.Object, typeName: 'Arkiv Sak', required: true },
+            {
+                id: 'instanceOutputArkivsak:t:a',
+                type: DataTypeDefinition.Object,
+                typeName: 'Arkiv Sak',
+                required: true,
+            },
         ],
     },
     position: defaultOutputPosition,

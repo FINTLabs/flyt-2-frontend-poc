@@ -58,7 +58,7 @@ export const DynamicStringNode = memo(
         }, [data.targetHandles]);
 
         useEffect(() => {
-            setOutputText([{ inputType: 'variableInput', text: data.textString || '' }]);
+            setOutputText([{ inputType: 'inputText', text: data.textString || '' }]);
         }, []);
 
         /*        useEffect(() => {
@@ -68,7 +68,7 @@ export const DynamicStringNode = memo(
                     .map((edge) => {
                         const nodeData = connectedNodesData.find((node) => node.id === edge.source);
                         if (!nodeData) return null;
-                        if (nodeData.type === 'variableInput') {
+                        if (nodeData.type === 'inputText') {
                             return { inputType: nodeData.type, text: nodeData.data.text || '' };
                         }
                         const handleLabel = nodeData.data.sourceHandles?.find(
@@ -120,7 +120,7 @@ export const DynamicStringNode = memo(
                     >
                         <Detail size={'small'}>
                             {outputText.map((text, index) =>
-                                text.inputType === 'variableInput' ? (
+                                text.inputType === 'inputText' ? (
                                     <span key={index}>{text.text}</span>
                                 ) : (
                                     <span key={index}>

@@ -9,4 +9,4 @@ export const NODE_BASE_WIDTH = 60;
 export const defaultPosition = { x: 0, y: 0 };
 export const defaultOutputPosition = { x: 800, y: 0 };
 
-export const IGNORED_CHANGES = ['select', 'replace'];
+export const IGNORED_CHANGES = ['select'];

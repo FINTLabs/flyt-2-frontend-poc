@@ -1,13 +1,13 @@
 import { DataTypeDefinition } from '~/types/data/datatypes';
-import type { BaseNodeData, InputNodeData, SelectNodeData } from '~/types/nodeTypes';
+import type { BaseNodeData, InputNodeData } from '~/types/nodeTypes';
 import { type Node } from '@xyflow/react';
-import { allFintNodes } from '~/demo/mockData/fintNodes';
 import {
     acosInstance,
     arkivInstanceOutput,
     egrunnervervSakInstance,
 } from '~/mockData/nodes/instances';
 import { defaultPosition } from '~/utils/constants';
+import { allDataSources } from '~/mockData/nodes/datasources';
 
 export const innerFlowInput: Node<BaseNodeData> = {
     id: 'innerFlowInput',
@@ -28,34 +28,26 @@ export const innerFlowOutput: Node<BaseNodeData> = {
         typeName: '?',
         type: DataTypeDefinition.Undefined,
         targetHandles: [
-            { id: 'a', type: DataTypeDefinition.Undefined, required: true, typeName: '?' },
+            {
+                id: 'innerFlowOutput:t:a',
+                type: DataTypeDefinition.Undefined,
+                required: true,
+                typeName: '?',
+            },
         ],
     },
     position: defaultPosition,
 };
 
 // GENERIC NODES
-export const variableInputNode: Node<InputNodeData> = {
-    id: 'variableInputNode',
-    type: 'variableInput',
+export const InputTextNode: Node<InputNodeData> = {
+    id: 'inputTextNode',
+    type: 'inputText',
     data: {
-        label: 'Variabel input',
+        label: 'Fritekst',
         text: '',
         type: DataTypeDefinition.Text,
-        sourceHandles: [{ id: 'a', type: DataTypeDefinition.Text, required: true }],
-    },
-    position: defaultPosition,
-};
-
-export const dataSourceNode: Node<SelectNodeData> = {
-    id: 'dataSource',
-    type: 'dataSource',
-    data: {
-        label: 'Fylkesråd: Dokumentstatus',
-        value: '',
-        options: [],
-        type: DataTypeDefinition.Reference,
-        sourceHandles: [{ id: 'a', type: DataTypeDefinition.Reference, required: true }],
+        sourceHandles: [{ id: 'inputTextNode:s:a', type: DataTypeDefinition.Text, required: true }],
     },
     position: defaultPosition,
 };
@@ -67,7 +59,12 @@ export const operationOpenObject: Node<BaseNodeData> = {
         label: 'Åpne objekt',
         iconType: 'openData2',
         targetHandles: [
-            { id: 'a', type: DataTypeDefinition.Object, required: true, typeName: '?' },
+            {
+                id: 'operationOpenObject:t:a',
+                type: DataTypeDefinition.Object,
+                required: true,
+                typeName: '?',
+            },
         ],
         sourceHandles: [],
     },
@@ -82,7 +79,12 @@ export const operationCreateObject: Node<BaseNodeData> = {
         iconType: 'packData2',
         targetHandles: [],
         sourceHandles: [
-            { id: 'a', type: DataTypeDefinition.Object, required: true, typeName: '?' },
+            {
+                id: 'operationCreateObject:s:a',
+                type: DataTypeDefinition.Object,
+                required: true,
+                typeName: '?',
+            },
         ],
     },
     position: defaultPosition,
@@ -95,11 +97,13 @@ export const operationJoinText: Node<BaseNodeData> = {
         label: 'Slå sammen tekst',
         iconType: 'textEdit',
         targetHandles: [
-            { id: 'a', type: DataTypeDefinition.Text, required: true },
-            { id: 'b', type: DataTypeDefinition.Text, required: true },
-            { id: 'c', type: DataTypeDefinition.Text, required: false },
+            { id: 'operationJoinText:t:a', type: DataTypeDefinition.Text, required: true },
+            { id: 'operationJoinText:t:b', type: DataTypeDefinition.Text, required: true },
+            { id: 'operationJoinText:t:c', type: DataTypeDefinition.Text, required: false },
         ],
-        sourceHandles: [{ id: 'a', type: DataTypeDefinition.Text, required: true }],
+        sourceHandles: [
+            { id: 'operationJoinText:s:a', type: DataTypeDefinition.Text, required: true },
+        ],
     },
     position: defaultPosition,
 };
@@ -110,8 +114,12 @@ export const operationEditText: Node<BaseNodeData> = {
     data: {
         label: 'Endre tekst',
         iconType: 'textEdit',
-        targetHandles: [{ id: 'a', type: DataTypeDefinition.Text, required: true }],
-        sourceHandles: [{ id: 'a', type: DataTypeDefinition.Text, required: true }],
+        targetHandles: [
+            { id: 'operationEditText:t:a', type: DataTypeDefinition.Text, required: true },
+        ],
+        sourceHandles: [
+            { id: 'operationEditText:s:a', type: DataTypeDefinition.Text, required: true },
+        ],
     },
     position: defaultPosition,
 };
@@ -123,11 +131,16 @@ export const innerFlowListOperation: Node<BaseNodeData> = {
         label: 'For hvert element i listen',
         iconType: 'listOperation',
         targetHandles: [
-            { id: 'a', type: DataTypeDefinition.CollectionObject, required: true, typeName: '?' },
+            {
+                id: 'operationListInnerFlow:t:a',
+                type: DataTypeDefinition.CollectionObject,
+                required: true,
+                typeName: '?',
+            },
         ],
         sourceHandles: [
             {
-                id: 'a',
+                id: 'operationListInnerFlow:s:a',
                 type: DataTypeDefinition.CollectionUndefined,
                 required: true,
                 typeName: '?',
@@ -147,7 +160,7 @@ export const operationOpenEGrvSak: Node<BaseNodeData> = {
         iconType: 'openData',
         targetHandles: [
             {
-                id: 'a',
+                id: 'operationOpenEGrvSak:t:a',
                 label: 'eGrunnerverv sak',
                 type: DataTypeDefinition.Object,
                 typeName: 'eGrv Sak',
@@ -155,21 +168,56 @@ export const operationOpenEGrvSak: Node<BaseNodeData> = {
             },
         ],
         sourceHandles: [
-            { id: 'a', label: 'Kommunenavn', type: DataTypeDefinition.Text, required: true },
-            { id: 'b', label: 'Prosjektnavn', type: DataTypeDefinition.Text, required: true },
-            { id: 'c', label: 'Gårdsnummer', type: DataTypeDefinition.Text, required: true },
-            { id: 'd', label: 'Bruksnummer', type: DataTypeDefinition.Text, required: true },
-            { id: 'e', label: 'Seksjonsnummer', type: DataTypeDefinition.Text, required: true },
-            { id: 'f', label: 'Tittel', type: DataTypeDefinition.Text, required: true },
-            { id: 'g', label: 'Adresse', type: DataTypeDefinition.Text, required: true },
             {
-                id: 'h',
+                id: 'operationOpenEGrvSak:s:a',
+                label: 'Kommunenavn',
+                type: DataTypeDefinition.Text,
+                required: true,
+            },
+            {
+                id: 'operationOpenEGrvSak:s:b',
+                label: 'Prosjektnavn',
+                type: DataTypeDefinition.Text,
+                required: true,
+            },
+            {
+                id: 'operationOpenEGrvSak:s:c',
+                label: 'Gårdsnummer',
+                type: DataTypeDefinition.Text,
+                required: true,
+            },
+            {
+                id: 'operationOpenEGrvSak:s:d',
+                label: 'Bruksnummer',
+                type: DataTypeDefinition.Text,
+                required: true,
+            },
+            {
+                id: 'operationOpenEGrvSak:s:e',
+                label: 'Seksjonsnummer',
+                type: DataTypeDefinition.Text,
+                required: true,
+            },
+            {
+                id: 'operationOpenEGrvSak:s:f',
+                label: 'Tittel',
+                type: DataTypeDefinition.Text,
+                required: true,
+            },
+            {
+                id: 'operationOpenEGrvSak:s:g',
+                label: 'Adresse',
+                type: DataTypeDefinition.Text,
+                required: true,
+            },
+            {
+                id: 'operationOpenEGrvSak:s:h',
                 label: 'Saksansvarlig e-post',
                 type: DataTypeDefinition.Text,
                 required: true,
             },
             {
-                id: 'i',
+                id: 'operationOpenEGrvSak:s:i',
                 label: 'Sakspartner',
                 type: DataTypeDefinition.CollectionObject,
                 typeName: 'eGrv Sakspart',
@@ -187,11 +235,16 @@ export const operationExternalGetSaksansvarlig: Node<BaseNodeData> = {
         label: 'Finn saksansvalig ref. med e-post',
         iconType: 'lookup',
         targetHandles: [
-            { id: 'a', type: DataTypeDefinition.Text, label: 'E-post', required: true },
+            {
+                id: 'operationExternalGetSaksansvarlig:t:a',
+                type: DataTypeDefinition.Text,
+                label: 'E-post',
+                required: true,
+            },
         ],
         sourceHandles: [
             {
-                id: 'a',
+                id: 'operationExternalGetSaksansvarlig:s:a',
                 label: 'Saksannsvarlig ref.',
                 type: DataTypeDefinition.Reference,
                 required: true,
@@ -208,37 +261,57 @@ export const operationCreateObjectAkrivsak: Node<BaseNodeData> = {
         label: 'Opprett arkivsak',
         iconType: 'packData',
         targetHandles: [
-            { id: 'a', type: DataTypeDefinition.Text, label: 'Tittel', required: true },
-            { id: 'b', type: DataTypeDefinition.Text, label: 'Offentlig tittel', required: false },
             {
-                id: 'c',
+                id: 'operationCreateObjectAkrivsak:t:a',
+                type: DataTypeDefinition.Text,
+                label: 'Tittel',
+                required: true,
+            },
+            {
+                id: 'operationCreateObjectAkrivsak:t:b',
+                type: DataTypeDefinition.Text,
+                label: 'Offentlig tittel',
+                required: false,
+            },
+            {
+                id: 'operationCreateObjectAkrivsak:t:c',
                 type: DataTypeDefinition.Reference,
                 label: 'Saksmappetype',
                 required: false,
             },
             {
-                id: 'd',
+                id: 'operationCreateObjectAkrivsak:t:d',
                 type: DataTypeDefinition.Reference,
                 label: 'Administrativ enhet',
                 required: false,
             },
             {
-                id: 'e',
+                id: 'operationCreateObjectAkrivsak:t:e',
                 type: DataTypeDefinition.Reference,
                 label: 'Saksansvarlig',
                 required: false,
             },
             {
-                id: 'f',
+                id: 'operationCreateObjectAkrivsak:t:f',
                 type: DataTypeDefinition.Object,
                 typeName: 'Arkiv Skjerming',
                 label: 'Skjerming',
                 required: true,
             },
-            { id: 'g', type: DataTypeDefinition.Reference, label: 'Arkivdel', required: false },
-            { id: 'h', type: DataTypeDefinition.Reference, label: 'Saksstatus', required: false },
             {
-                id: 'i',
+                id: 'operationCreateObjectAkrivsak:t:g',
+                type: DataTypeDefinition.Reference,
+                label: 'Arkivdel',
+                required: false,
+            },
+            {
+                id: 'operationCreateObjectAkrivsak:t:h',
+                type: DataTypeDefinition.Reference,
+                label: 'Saksstatus',
+                required: false,
+            },
+            {
+                id: 'operationCreateObjectAkrivsak:t:i',
                 type: DataTypeDefinition.CollectionObject,
                 typeName: 'Arkiv Part',
                 label: 'Parter',
@@ -246,7 +319,12 @@ export const operationCreateObjectAkrivsak: Node<BaseNodeData> = {
             },
         ],
         sourceHandles: [
-            { id: 'a', type: DataTypeDefinition.Object, typeName: 'Arkiv Sak', required: true },
+            {
+                id: 'operationCreateObjectAkrivsak:s:a',
+                type: DataTypeDefinition.Object,
+                typeName: 'Arkiv Sak',
+                required: true,
+            },
         ],
     },
     position: defaultPosition,
@@ -259,9 +337,14 @@ export const acosDocToDocDesc: Node<BaseNodeData> = {
         label: 'ACOS dokument til dokumentbeskrivelser',
         iconType: 'conversion',
         targetHandles: [
-            { id: 'a', type: DataTypeDefinition.Text, label: 'Tittel', required: false },
             {
-                id: 'b',
+                id: 'acosDocToDocDesc:t:a',
+                type: DataTypeDefinition.Text,
+                label: 'Tittel',
+                required: false,
+            },
+            {
+                id: 'acosDocToDocDesc:t:b',
                 type: DataTypeDefinition.CollectionObject,
                 typeName: 'AcosDocument',
                 label: 'ACOS Dokumenter',
@@ -270,7 +353,7 @@ export const acosDocToDocDesc: Node<BaseNodeData> = {
         ],
         sourceHandles: [
             {
-                id: 'a',
+                id: 'acosDocToDocDesc:s:a',
                 label: 'Dokumentbeskrivelse',
                 typeName: 'Document',
                 type: DataTypeDefinition.CollectionObject,
@@ -288,11 +371,16 @@ export const acosUploadFile: Node<BaseNodeData> = {
         label: 'Fylkesård: Last opp fil',
         iconType: 'lookup',
         targetHandles: [
-            { id: 'a', type: DataTypeDefinition.File, label: 'Filinnhold', required: true },
+            {
+                id: 'acosUploadFile:t:a',
+                type: DataTypeDefinition.File,
+                label: 'Filinnhold',
+                required: true,
+            },
         ],
         sourceHandles: [
             {
-                id: 'a',
+                id: 'acosUploadFile:s:a',
                 label: 'Dokumentfil',
                 type: DataTypeDefinition.Reference,
                 required: true,
@@ -310,7 +398,7 @@ export const allFunctionalNodes = [
     operationExternalGetSaksansvarlig,
     operationCreateObjectAkrivsak,
     arkivInstanceOutput,
-    variableInputNode,
+    InputTextNode,
     operationCreateObject,
     acosDocToDocDesc,
     operationOpenObject,
@@ -318,7 +406,6 @@ export const allFunctionalNodes = [
     operationEditText,
     innerFlowInput,
     innerFlowOutput,
-    dataSourceNode,
     acosUploadFile,
-    ...allFintNodes,
+    ...allDataSources,
 ];

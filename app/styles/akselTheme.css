@@ -1,7 +1,7 @@
 @import '../../node_modules/tailwindcss';
 @import '@navikt/ds-css';
 @import '@xyflow/react/dist/style.css';
-@import "tailwindcss";
+@import 'tailwindcss';
 
 [data-theme='novari'] {
     /* Color Palette */
@@ -163,7 +163,6 @@ h6 {
             overflow-wrap: break-word;
         }
 
-
         pre {
             font-size: 0.7rem;
             line-height: 1rem;
@@ -182,4 +181,22 @@ h6 {
 
 .progress-rotation {
     animation: spin 2s linear infinite;
+}
+
+.node-combobox {
+    width: 100%;
+    .navds-combobox__list-options {
+        li {
+            text-align: left;
+        }
+    }
+
+    .navds-text-field__input {
+        .navds-combobox__selected-options--no-bg {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 300px;
+        }
+    }
 }
