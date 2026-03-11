@@ -1,3 +1,5 @@
+// https://flyt.vigoiks.no/beta/vlfk-no/api/intern/arkiv/kodeverk/administrativenhet
+
 export const administrativenhetOptions = [
     {
         id: 'https://beta.felleskomponent.no/arkiv/noark/administrativenhet/systemid/198',

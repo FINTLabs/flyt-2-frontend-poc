@@ -1,3 +1,5 @@
+// https://flyt.vigoiks.no/beta/vlfk-no/api/intern/arkiv/kodeverk/arkivressurs
+
 export const arkivressursOptions = [
     {
         id: 'https://beta.felleskomponent.no/arkiv/noark/arkivressurs/systemid/18695',

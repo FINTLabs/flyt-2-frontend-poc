@@ -19,8 +19,6 @@ type IntegrationNodeType = Node<IntegrationNodeData, 'flowOutput' | 'flowInput'>
 
 export const IntegrationNode = memo(
     ({ data, isConnectable, type }: NodeProps<IntegrationNodeType>) => {
-        const isInput = type === 'flowInput';
-        const handleType = isInput ? 'source' : 'target';
         return (
             <NodeContainerWithProgress>
                 <HStack align={'center'} gap="1">
@@ -30,7 +28,7 @@ export const IntegrationNode = memo(
                 {data.sourceHandles?.length && (
                     <HandlesWithLabel
                         handles={data.sourceHandles}
-                        type={handleType}
+                        type={'source'}
                         isConnectable={isConnectable}
                         hideLabels={true}
                     />
@@ -38,7 +36,7 @@ export const IntegrationNode = memo(
                 {data.targetHandles?.length && (
                     <HandlesWithLabel
                         handles={data.targetHandles}
-                        type={handleType}
+                        type={'target'}
                         isConnectable={isConnectable}
                         hideLabels={true}
                     />

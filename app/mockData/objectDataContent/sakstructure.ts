@@ -1,12 +1,12 @@
 type SaksstructureData = {
     tittel: string;
     offentlig_tittel: string;
-    saksmappetype: string; // datasource
-    administrativ_enhet: string; // datasource
-    saksansvarlig: string; // datasource
-    arkivdel: string; // datasource
-    saksstatus: string; // datasource
-    tilgangsgruppe: string; // datasource
+    saksmappetype: string; // datasource saksmappetypeOptions
+    administrativ_enhet: string; // datasource administrativenhetOptions
+    saksansvarlig: string; // datasource arkivressursOptions
+    arkivdel: string; // datasource arkivdelOptions
+    saksstatus: string; // datasource saksstatusOption
+    tilgangsgruppe: string; // datasource tilgangsgruppeOptions
     parter: {
         faste_elementer: Part[];
         generert_fra_samling: Part[];
@@ -34,8 +34,8 @@ type Part = {
 
 type Klassering = {
     rekkefølge: string;
-    klassifikasjonssystem: string; // datasource
-    klasse_id: string; // datasource
+    klassifikasjonssystem: string; // datasource klassifikasjonssystemOptions
+    klasse_id: string; // datasource klasseidOptions
     tittel: string;
     skjerming: Skjerming;
 };
@@ -43,11 +43,11 @@ type Klassering = {
 type Journalpost = {
     tittel: string;
     offentlig_tittel: string;
-    journalposttype: string; // datasource
-    administrativ_enhet: string; // datasource
-    saksbehandler: string; // datasource
-    journalstatus: string; // datasource
-    tilgangsbruppe: string; // datasource
+    journalposttype: string; // datasource journalposttypeOptions
+    administrativ_enhet: string; // datasource administrativenhetOptions
+    saksbehandler: string; // datasource arkivressursOptions
+    journalstatus: string; // datasource journalstatusOptions
+    tilgangsbruppe: string; // datasource tilgangsgruppeOptions
     skjerming: Skjerming;
     korrespondanseparter: {
         faste_elementer: Korrespondansepart[];
@@ -60,7 +60,7 @@ type Journalpost = {
 };
 
 type Korrespondansepart = {
-    korrespondanseparttype: string; // datasource
+    korrespondanseparttype: string; // datasource korrespondanseparttypeOptions
     organisasjonsnummer: string;
     fødselsnummer: string;
     navn: string;
@@ -72,16 +72,16 @@ type Korrespondansepart = {
 
 type Dokumentbeskrivelse = {
     tittel: string;
-    dokumentstatus: string; // datasource
-    dokumenttype: string; // datasource
-    tilknyttet_gregistrering_som: string; // datasource
+    dokumentstatus: string; // datasource dokumentstatusOptions
+    dokumenttype: string; // datasource dokumenttypeOptions
+    tilknyttet_gregistrering_som: string; // datasource tilknyttetregistreringsomOptions
     dokumentobjekter: { faste_elementer: Dokumentobjekt[]; generert_fra_samling: Dokumentobjekt[] };
     skjerming: Skjerming;
 };
 
 type Dokumentobjekt = {
-    variantformat: string; // datasource
-    filformat: string; // datasource
+    variantformat: string; // datasource variantformatOptions
+    filformat: string; // datasource formatOptions
     fil: string;
 };
 

@@ -1,3 +1,5 @@
+// https://flyt.vigoiks.no/beta/vlfk-no/api/intern/arkiv/kodeverk/arkivdel
+
 export const arkivdelOptions = [
     {
         id: 'https://beta.felleskomponent.no/arkiv/noark/arkivdel/systemid/CIM',

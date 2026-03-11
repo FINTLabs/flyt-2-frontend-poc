@@ -10,7 +10,7 @@ import {
 } from '@xyflow/react';
 import { Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
 import { getNodeIcon } from '~/demo/utils/nodeHandlers';
-import type { BaseNodeData, CustomNodeDemo } from '~/types/nodeTypes';
+import type { BaseNodeData, CustomNodeDemo, InputNodeData } from '~/types/nodeTypes';
 import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
 import { MinusIcon, PlusIcon } from '@navikt/aksel-icons';
 import { DataTypeDefinition } from '~/types/data/datatypes';
@@ -19,7 +19,7 @@ import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 
 import { getNodeMinHeight } from '~/utils/nodeSizeUtils';
 
-type JoinTextOperationNodeType = Node<BaseNodeData, 'operationJoinText'>;
+type JoinTextOperationNodeType = Node<InputNodeData, 'operationJoinText'>;
 
 export const JoinTextOperationNode = memo(
     ({ id, data, isConnectable }: NodeProps<JoinTextOperationNodeType>) => {
@@ -27,7 +27,7 @@ export const JoinTextOperationNode = memo(
             sources: data.sourceHandles?.length,
             targets: data.targetHandles?.length,
         });
-        const { flowProgress, currentFlow } = useFlow();
+        const { currentFlow } = useFlow();
         const reactFlow = useReactFlow();
 
         const [outputText, setOutputText] = useState<{ inputType: string; text: string }[]>([]);
@@ -48,7 +48,7 @@ export const JoinTextOperationNode = memo(
 
         const handleAddHandle = useCallback(() => {
             const newHandle = {
-                id: `handle-${data.targetHandles?.length || 0}`,
+                id: `${id}:t:${data.targetHandles?.length || 0}`,
                 type: DataTypeDefinition.Text,
             };
             reactFlow.updateNodeData(id, {
@@ -68,7 +68,10 @@ export const JoinTextOperationNode = memo(
                         const nodeData = connectedNodesData.find((node) => node.id === edge.source);
                         if (!nodeData) return null;
                         if (nodeData.type === 'inputText') {
-                            return { inputType: nodeData.type, text: nodeData.data.text || '' };
+                            return {
+                                inputType: nodeData.type,
+                                text: (nodeData.data as InputNodeData)?.text || '',
+                            };
                         }
                         const handleLabel = nodeData.data.sourceHandles?.find(
                             (handle) => handle.id === edge?.sourceHandle

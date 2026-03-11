@@ -1,5 +1,6 @@
 import type { Edge } from '@xyflow/react';
 
+// TODO: fix edge ids
 export const initDemoEdges: Edge[] = [
     {
         id: 'e-n1-n2a',

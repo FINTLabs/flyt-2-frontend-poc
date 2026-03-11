@@ -24,11 +24,13 @@ export const getInitialNodesOnCreateNew = (
             const metadataNode = egrunnervervMetadata;
             nodes.push(metadataNode);
 
-            const metadataEdge = {
+            const metadataEdge: Edge = {
                 id: `e-${inputNode.id}-${metadataNode.id}`,
                 source: inputNode.id,
+                sourceHandle: `${inputNode.id}:s:a`,
                 target: metadataNode.id,
-                type: 'step',
+                targetHandle: `${metadataNode.id}:t:a`,
+                type: 'smoothstep',
             };
             edges.push(metadataEdge);
 
@@ -38,8 +40,10 @@ export const getInitialNodesOnCreateNew = (
             const archiveSakEdge = {
                 id: `e-${archiveSakNode.id}-${outPut.id}`,
                 source: archiveSakNode.id,
+                sourceHandle: `${archiveSakNode.id}:s:a`,
                 target: outPut.id,
-                type: 'step',
+                targetHandle: `${outPut.id}:t:a`,
+                type: 'smoothstep',
             };
             edges.push(archiveSakEdge);
         }

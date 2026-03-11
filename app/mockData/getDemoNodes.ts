@@ -25,14 +25,46 @@ export const getDemoNodes = (
             data: {
                 ...operationJoinText.data,
                 targetHandles: [
-                    { id: 'a', type: DataTypeDefinition.Text, required: true },
-                    { id: 'b', type: DataTypeDefinition.Text, required: true },
-                    { id: 'c', type: DataTypeDefinition.Text, required: true },
-                    { id: 'd', type: DataTypeDefinition.Text, required: true },
-                    { id: 'e', type: DataTypeDefinition.Text, required: true },
-                    { id: 'f', type: DataTypeDefinition.Text, required: true },
-                    { id: 'g', type: DataTypeDefinition.Text, required: true },
-                    { id: 'h', type: DataTypeDefinition.Text, required: true },
+                    {
+                        id: 'n3-mergeTextOperation:t:a',
+                        type: DataTypeDefinition.Text,
+                        required: true,
+                    },
+                    {
+                        id: 'n3-mergeTextOperation:t:b',
+                        type: DataTypeDefinition.Text,
+                        required: true,
+                    },
+                    {
+                        id: 'n3-mergeTextOperation:t:c',
+                        type: DataTypeDefinition.Text,
+                        required: true,
+                    },
+                    {
+                        id: 'n3-mergeTextOperation:t:d',
+                        type: DataTypeDefinition.Text,
+                        required: true,
+                    },
+                    {
+                        id: 'n3-mergeTextOperation:t:e',
+                        type: DataTypeDefinition.Text,
+                        required: true,
+                    },
+                    {
+                        id: 'n3-mergeTextOperation:t:f',
+                        type: DataTypeDefinition.Text,
+                        required: true,
+                    },
+                    {
+                        id: 'n3-mergeTextOperation:t:g',
+                        type: DataTypeDefinition.Text,
+                        required: true,
+                    },
+                    {
+                        id: 'n3-mergeTextOperation:t:h',
+                        type: DataTypeDefinition.Text,
+                        required: true,
+                    },
                 ],
             },
             position: { x: 1110, y: -510 },

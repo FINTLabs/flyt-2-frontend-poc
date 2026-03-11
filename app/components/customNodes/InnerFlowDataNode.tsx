@@ -63,7 +63,7 @@ export const InnerFlowDataNode = memo(
                     console.log('incomingObjectHandle: ', incomingObjectHandle);
 
                     const objectHandle = {
-                        id: 'a',
+                        id: `${id}:t:a`,
                         label: incomingObjectHandle.label,
                         type: incomingObjectHandle.type,
                         typeName: incomingObjectHandle.typeName,

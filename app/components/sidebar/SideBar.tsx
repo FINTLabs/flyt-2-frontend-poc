@@ -6,7 +6,6 @@ import {
     operationCreateObjectAkrivsak,
     operationExternalGetSaksansvarlig,
     operationJoinText,
-    operationOpenEGrvSak,
     operationOpenObject,
     InputTextNode,
     innerFlowListOperation,
@@ -15,23 +14,13 @@ import {
     operationEditText,
 } from '~/mockData/nodes/general';
 import { useParams } from 'react-router';
-import { elev, fravaer, person } from '~/demo/mockData/fintNodes';
-import {
-    allDataSources,
-    dataSourceAdminEnhet,
-    dataSourceArkivdel,
-    dataSourceBaseNode,
-    dataSourceSaksansvarlig,
-    dataSourceSaksmappe,
-    dataSourceSaksstatus,
-    dataSourceTilgangsgruppe,
-} from '~/mockData/nodes/datasources';
+import { allDataSources } from '~/mockData/nodes/datasources';
 
 export const Sidebar = () => {
     const { currentFlow } = useFlow();
     const { mode } = useParams();
     return (
-        <aside className={'sidebar-flow'}>
+        <aside className={'sidebar-flow'} style={{ overflowY: 'auto' }}>
             <VStack paddingInline={'4'}>
                 <Heading size="xsmall" spacing>
                     Flow: {currentFlow?.name ? currentFlow.name : 'Ny flyt'}
@@ -115,16 +104,6 @@ export const Sidebar = () => {
                                 {allDataSources.map((ds, index) => (
                                     <BaseNode key={index} label={ds.data.label} node={ds} />
                                 ))}
-                            </VStack>
-                        </Accordion.Content>
-                    </Accordion.Item>
-                    <Accordion.Item>
-                        <Accordion.Header>FINT Informasjonsmodell</Accordion.Header>
-                        <Accordion.Content>
-                            <VStack gap={'2'}>
-                                <BaseNode label={'Elev'} node={elev} />
-                                <BaseNode label={'Person'} node={person} />
-                                <BaseNode label={'Fravær'} node={fravaer} />
                             </VStack>
                         </Accordion.Content>
                     </Accordion.Item>

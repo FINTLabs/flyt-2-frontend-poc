@@ -94,7 +94,7 @@ export const InnerFlowListOperation = memo(
                         : undefined;
 
                     const objectHandle = {
-                        id: 'a',
+                        id: `${id}:t:a`,
                         label: incomingObjectHandle.label,
                         type: DataTypeDefinition.Object,
                         typeName: incomingObjectHandle.typeName,
@@ -140,7 +140,7 @@ export const InnerFlowListOperation = memo(
                         },
                     ]);
                 }
-                const handleID = { targetHandle: 'a' };
+                const handleID = { targetHandle: `${id}:t:a` };
                 updateEdge(targetEdge.edgeId, {
                     ...targetEdge,
                     ...handleID,

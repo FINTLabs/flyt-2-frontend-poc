@@ -16,7 +16,7 @@ export const egrunnervervMetadata: Node<BaseNodeData> = {
         sourceHandles: eGrunnervervHandles,
         targetHandles: [
             {
-                id: 'a',
+                id: 'eGrunnervervMetadata:t:a',
                 type: DataTypeDefinition.Object,
                 required: true,
                 typeName: 'eGrv',
@@ -38,7 +38,7 @@ export const archiveSakMetadata: Node<BaseNodeData> = {
         targetHandles: archiveSak,
         sourceHandles: [
             {
-                id: 'a',
+                id: 'arkivsak:s:a',
                 type: DataTypeDefinition.Object,
                 required: true,
                 typeName: 'sak',
