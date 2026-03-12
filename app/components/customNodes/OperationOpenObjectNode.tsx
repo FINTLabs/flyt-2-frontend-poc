@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import {
     type NodeProps,
     type Node,
@@ -51,63 +51,113 @@ export const OperationOpenObjectNode = memo(
             }
         }, [connections]);
 
-        useEffect(() => {
-            if (edge) {
-                console.log('Edge', edge);
-                const objectDefinitionNode = getNode(
-                    isOpenObject ? edge.source : edge.target
-                )?.data;
+        const handleOpenObject = useCallback(
+            (newEdge: NodeConnection) => {
+                console.log('handleOpenObject');
+                const sourceNodeData = getNode(newEdge.source)?.data;
 
-                console.log('Object Definition Node', objectDefinitionNode);
-                if (objectDefinitionNode) {
-                    const incomingObjectHandle = objectDefinitionNode.sourceHandles
-                        ? Object.values(objectDefinitionNode.sourceHandles).find(
-                              (h) => h.id === edge.sourceHandle
-                          )
-                        : undefined;
+                console.log('sourceNodeData', sourceNodeData);
 
-                    console.log('incomingObjectHandle', incomingObjectHandle);
+                if (sourceNodeData && sourceNodeData.sourceHandles) {
+                    const sourceHandle = Object.values(sourceNodeData.sourceHandles).find(
+                        (h) => h.id === newEdge.sourceHandle
+                    );
 
-                    const outgoingObjectHandle = objectDefinitionNode.targetHandles
-                        ? Object.values(objectDefinitionNode.targetHandles).find(
-                              (h) => h.id === edge.targetHandle
-                          )
-                        : undefined;
-                    console.log('outgoingObjectHandle', outgoingObjectHandle);
+                    console.log('sourceHandle', sourceHandle);
 
-                    const handleID = `${id}:${isOpenObject ? 't' : 's'}:a`;
+                    const handleID = `${id}:t:a`;
 
-                    const objectHandle = {
+                    const incomingObjectTargetHandle = {
                         id: handleID,
-                        label: isOpenObject
-                            ? incomingObjectHandle.label
-                            : (outgoingObjectHandle.label ?? objectDefinitionNode.label),
+                        label: sourceHandle.label,
                         type: DataTypeDefinition.Object,
-                        typeName: isOpenObject
-                            ? incomingObjectHandle.typeName
-                            : (outgoingObjectHandle.typeName ?? objectDefinitionNode.typeName),
+                        typeName: sourceHandle.typeName,
                         required: true,
                     };
+
                     const objectDefinitionHandles = mockFetchDataContentHandles(
                         id,
-                        isOpenObject ? 's' : 't',
-                        objectHandle.typeName || 'Object',
-                        objectHandle.label
+                        's',
+                        incomingObjectTargetHandle.typeName || 'Object',
+                        incomingObjectTargetHandle.label
                     );
 
                     updateNodeData(id, {
-                        targetHandles: isOpenObject ? [objectHandle] : objectDefinitionHandles,
-                        sourceHandles: isOpenObject ? objectDefinitionHandles : [objectHandle],
+                        label: `Pakk ut ${sourceHandle.label}`,
+                        targetHandles: [incomingObjectTargetHandle],
+                        sourceHandles: objectDefinitionHandles,
                     });
 
                     const newHandle = isOpenObject
                         ? { targetHandle: handleID }
                         : { sourceHandle: handleID };
-                    updateEdge(edge.edgeId, {
-                        ...edge,
+                    updateEdge(newEdge.edgeId, {
+                        ...newEdge,
                         ...newHandle,
                     });
                     updateNodeInternals(id);
+                }
+            },
+            [id]
+        );
+
+        const handleCreateObject = useCallback(
+            (newEdge: NodeConnection) => {
+                console.log('handleCreateObject');
+
+                const targetNodeData = getNode(newEdge.target)?.data;
+
+                console.log('targetNodeData', targetNodeData);
+
+                if (targetNodeData && targetNodeData.targetHandles) {
+                    const targetHandle = Object.values(targetNodeData.targetHandles).find(
+                        (h) => h.id === newEdge.targetHandle
+                    );
+                    console.log('targetHandle', targetHandle);
+
+                    const handleID = `${id}:s:a`;
+
+                    const outgoingObjectSourceHandle = {
+                        id: handleID,
+                        label: targetHandle.label ?? targetNodeData.label,
+                        type: DataTypeDefinition.Object,
+                        typeName: targetHandle.typeName ?? targetNodeData.typeName,
+                        required: true,
+                    };
+
+                    const objectDefinitionHandles = mockFetchDataContentHandles(
+                        id,
+                        't',
+                        outgoingObjectSourceHandle.typeName || 'Object',
+                        outgoingObjectSourceHandle.label
+                    );
+
+                    updateNodeData(id, {
+                        label: `Opprett ${targetHandle.label.toLowerCase() ?? targetNodeData.label}`, // TODO: Håndter flertall hvis det er en liste
+                        targetHandles: objectDefinitionHandles,
+                        sourceHandles: [outgoingObjectSourceHandle],
+                    });
+
+                    const newHandle = isOpenObject
+                        ? { targetHandle: handleID }
+                        : { sourceHandle: handleID };
+                    updateEdge(newEdge.edgeId, {
+                        ...newEdge,
+                        ...newHandle,
+                    });
+                    updateNodeInternals(id);
+                }
+            },
+            [id]
+        );
+
+        useEffect(() => {
+            if (edge) {
+                console.log('==== NEW Edge', edge);
+                if (isOpenObject) {
+                    handleOpenObject(edge);
+                } else {
+                    handleCreateObject(edge);
                 }
             }
         }, [edge]);

@@ -1,5 +1,3 @@
-
-
 export const tableSortComperator = <T,>(a: T, b: T, orderBy: keyof T): number => {
     if (b[orderBy] == null || b[orderBy] < a[orderBy]) {
         return -1;
@@ -11,4 +9,7 @@ export const tableSortComperator = <T,>(a: T, b: T, orderBy: keyof T): number =>
 };
 
 export const createAlmostRandomId = (prefix: string, baseId?: string): string =>
-    `${prefix}${baseId ? '-'+baseId+'-' : '-' }${Math.random().toString(16).slice(2)}`;
+    `${prefix}${baseId ? ':' + baseId + ':' : ':'}${Math.random().toString(16).slice(2)}`;
+
+export const createHandleId = (nodeId: string, handleType: 't' | 's'): string =>
+    createAlmostRandomId(nodeId, handleType);

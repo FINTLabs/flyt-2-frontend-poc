@@ -1,28 +1,28 @@
-import React, { useEffect, useCallback, useState, type DragEventHandler } from 'react';
+import React, { type DragEventHandler, useCallback, useEffect, useState } from 'react';
 import { Button, HStack } from '@navikt/ds-react';
 import { useNavigate, useParams } from 'react-router';
 import '@xyflow/react/dist/style.css';
 import {
-    ReactFlow,
-    useNodesState,
-    useEdgesState,
     addEdge,
-    MiniMap,
-    Controls,
-    type Node,
-    type Edge,
-    type OnConnect,
-    BackgroundVariant,
     Background,
-    useReactFlow,
+    BackgroundVariant,
     type Connection,
-    Panel,
-    useUpdateNodeInternals,
-    type XYPosition,
+    Controls,
+    type Edge,
+    type EdgeChange,
+    MiniMap,
+    type Node,
+    type NodeChange,
+    type OnConnect,
     type OnDelete,
     type OnNodeDrag,
-    type NodeChange,
-    type EdgeChange,
+    Panel,
+    ReactFlow,
+    useEdgesState,
+    useNodesState,
+    useReactFlow,
+    useUpdateNodeInternals,
+    type XYPosition,
 } from '@xyflow/react';
 import { SmartStepEdge } from '@tisoap/react-flow-smart-edge';
 
@@ -31,8 +31,15 @@ import useLayoutNodes from '~/context/useLayoutNodes';
 import type { CustomNodeDemo } from '~/types/nodeTypes';
 import { IGNORED_CHANGES, NODE_BASE_HEIGHT } from '~/utils/constants';
 import { getMinimapNodeColor, getMinimapNodeStrokeColor } from '~/utils/minimapUtils';
+import {
+    isCollectionType,
+    isObjectMatchingDefinition,
+    isObjectSameAsCollection,
+} from '~/utils/datatypeUtils';
 import { nodeTypes } from '~/components/customNodes/nodetypes';
 import { allIntegrationsNodes } from '~/mockData/nodes/instances';
+import type { HandleData } from '~/types/handleTypes';
+import { DataTypeDefinition } from '~/types/data/datatypes';
 
 const edgeTypes = {
     smart: SmartStepEdge,
@@ -147,24 +154,44 @@ const Flow = () => {
 
     //TODO: handle type object by checking typeName
     const isValidDatatypeConnection = useCallback((edge: Edge | Connection): boolean => {
-        const sourceNodeData = getNode(edge.source)?.data;
+        const sourceNode = getNode(edge.source);
         const targetNode = getNode(edge.target);
-        if (targetNode && targetNode.type === 'innerFlowOutput') return true;
-        const targetNodeData = targetNode?.data;
+        if (!sourceNode || !targetNode) return false;
+
+        if (targetNode.type === 'innerFlowOutput') return true;
+
+        const sourceNodeData = sourceNode.data;
+        const targetNodeData = targetNode.data;
         if (!sourceNodeData || !targetNodeData) return false;
 
-        const sourceHandleType = sourceNodeData.sourceHandles
+        const sourceHandle: HandleData = sourceNodeData.sourceHandles
             ? Object.values(sourceNodeData.sourceHandles).find((h) => h.id === edge.sourceHandle)
-                  ?.type
-            : sourceNodeData.type;
+            : sourceNodeData;
 
-        const targetHandleType = targetNodeData.targetHandles
+        console.log('sourceHandle', sourceHandle);
+
+        const targetHandle: HandleData = targetNodeData.targetHandles
             ? Object.values(targetNodeData.targetHandles).find((h) => h.id === edge.targetHandle)
-                  ?.type
-            : targetNodeData.type;
+            : targetNodeData;
 
-        if (sourceHandleType && targetHandleType) {
-            return sourceHandleType === targetHandleType;
+        console.log('targetHandle', targetHandle);
+
+        if (
+            sourceNode.type &&
+            ['openObject', 'createObject'].includes(sourceNode.type) &&
+            (targetHandle.type === DataTypeDefinition.Object || isCollectionType(targetHandle.type))
+        ) {
+            return true;
+        }
+
+        if (sourceHandle.type && targetHandle.type) {
+            if (isCollectionType(sourceHandle.type) || isCollectionType(targetHandle.type)) {
+                return isObjectSameAsCollection(sourceHandle, targetHandle);
+            }
+            if (sourceHandle.type === DataTypeDefinition.Object) {
+                return isObjectMatchingDefinition(sourceHandle, targetHandle);
+            }
+            return sourceHandle.type === targetHandle.type;
         }
         return false;
     }, []);

@@ -8,6 +8,7 @@ import {
 } from '~/mockData/nodes/instances';
 import { defaultPosition } from '~/utils/constants';
 import { allDataSources } from '~/mockData/nodes/datasources';
+import { allCreateOpjectNodes } from '~/mockData/nodes/createSpesificObjects';
 
 export const innerFlowInput: Node<BaseNodeData> = {
     id: 'innerFlowInput',
@@ -408,4 +409,5 @@ export const allFunctionalNodes = [
     innerFlowOutput,
     acosUploadFile,
     ...allDataSources,
+    ...allCreateOpjectNodes,
 ];

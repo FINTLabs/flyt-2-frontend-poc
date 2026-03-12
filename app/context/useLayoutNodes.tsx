@@ -48,8 +48,10 @@ export const layoutOptions: LayoutOptions = {
     'elk.edgeRouting': 'ORTHOGONAL',
     'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES',
 
-    'elk.layered.spacing.nodeNodeBetweenLayers': '220',
     'elk.spacing.nodeNode': '90',
+    'elk.layered.spacing.nodeNodeBetweenLayers': '110',
+    'elk.layered.spacing.edgeEdgeBetweenLayers': '10',
+    'elk.layered.spacing.edgeNodeBetweenLayers': '110',
 };
 
 export const getLayoutedNodes = async (

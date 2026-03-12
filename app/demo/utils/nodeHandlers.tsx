@@ -7,6 +7,7 @@ import {
     EnvelopeClosedIcon,
     EnvelopeOpenIcon,
     FileExportFillIcon,
+    FileIcon,
     FileImportFillIcon,
     FolderFileFillIcon,
     InboxDownFillIcon,
@@ -17,6 +18,7 @@ import {
 import { DataTypeDefinition, type DataTypeValue } from '~/types/data/datatypes';
 
 import { measureTextWidth } from '~/utils/handleUtils';
+import { isCollectionType } from '~/utils/datatypeUtils';
 
 export const onChangeNodeColor = (
     event: ChangeEvent<HTMLInputElement>,
@@ -92,42 +94,9 @@ export const getNodeIcon = (iconType: string | undefined, isSmall?: true) => {
             return <InboxUpFillIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 35} />;
         case 'listOperation':
             return <ArrowsSquarepathIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 45} />;
+        case 'createOperation':
+            return <FileIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 45} />;
         default:
             return <SquareFillIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 35} />;
     }
-};
-
-export const getCollectionTypeFromType = (
-    type: DataTypeValue | string | undefined
-): DataTypeValue => {
-    if (!type) return DataTypeDefinition.Undefined;
-    if (type === DataTypeDefinition.Object) return DataTypeDefinition.CollectionObject;
-    if (type === DataTypeDefinition.Undefined) return DataTypeDefinition.CollectionUndefined;
-    if (type === DataTypeDefinition.Text) return DataTypeDefinition.CollectionText;
-    if (type === DataTypeDefinition.Number) return DataTypeDefinition.CollectionNumber;
-    if (type === DataTypeDefinition.Boolean) return DataTypeDefinition.CollectionBoolean;
-    if (type === DataTypeDefinition.File) return DataTypeDefinition.CollectionFile;
-    if (type === DataTypeDefinition.Reference) return DataTypeDefinition.CollectionReference;
-
-    return DataTypeDefinition.Undefined;
-};
-
-export const getTypeFromCollectionOld = (
-    type: DataTypeValue | string | undefined
-): DataTypeValue => {
-    if (!type) return DataTypeDefinition.CollectionUndefined;
-    if (type === DataTypeDefinition.CollectionObject) return DataTypeDefinition.Object;
-    if (type === DataTypeDefinition.CollectionUndefined) return DataTypeDefinition.Undefined;
-    if (type === DataTypeDefinition.CollectionText) return DataTypeDefinition.Text;
-    if (type === DataTypeDefinition.CollectionNumber) return DataTypeDefinition.Number;
-    if (type === DataTypeDefinition.CollectionBoolean) return DataTypeDefinition.Boolean;
-    if (type === DataTypeDefinition.CollectionFile) return DataTypeDefinition.File;
-    if (type === DataTypeDefinition.CollectionReference) return DataTypeDefinition.Reference;
-
-    return DataTypeDefinition.CollectionUndefined;
-};
-
-export const isCollectionType = (type: DataTypeValue | string | undefined): boolean => {
-    if (!type) return false;
-    return type.startsWith('collection');
 };

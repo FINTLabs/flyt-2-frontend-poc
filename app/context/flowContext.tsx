@@ -4,7 +4,7 @@ import { type Node, type Edge, useUpdateNodeInternals } from '@xyflow/react';
 import { allFunctionalNodes } from '~/mockData/nodes/general';
 import { initDemoEdges } from '~/demo/mockData/edges';
 import type { BaseNodeData, CustomNodeDemo } from '~/types/nodeTypes';
-import { createAlmostRandomId } from '~/demo/utils/generalUtils';
+import { createAlmostRandomId, createHandleId } from '~/demo/utils/generalUtils';
 import { useParams } from 'react-router';
 import type { ArkivSakType, EgrvSakType, MockDataTypes } from '~/types/mockedDataTypes';
 import type { RunlogType, RunStatusType } from '~/types/generalTypes';
@@ -158,10 +158,27 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
     const getCustomNodeDataById = (id: string): Node<BaseNodeData> => {
         let newNode = allFunctionalNodes.find((node) => node.id === id);
 
+        const newNodeID = createAlmostRandomId('node', id);
+
         if (newNode) {
             return {
                 ...newNode,
-                id: createAlmostRandomId('node-id', id),
+                id: newNodeID,
+                data: {
+                    ...newNode.data,
+                    sourceHandles: newNode.data.sourceHandles?.map((handle) => {
+                        return {
+                            ...handle,
+                            id: createHandleId(newNodeID, 's'),
+                        };
+                    }),
+                    targetHandles: newNode.data.targetHandles?.map((handle) => {
+                        return {
+                            ...handle,
+                            id: createHandleId(newNodeID, 't'),
+                        };
+                    }),
+                },
             };
         } else {
             return {

@@ -11,9 +11,9 @@ import React, { memo, useEffect, useState } from 'react';
 import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
 import { BodyShort, HStack } from '@navikt/ds-react';
 import { DataTypeDefinition, type DataTypeValue } from '~/types/data/datatypes';
-import { getCollectionTypeFromType } from '~/demo/utils/nodeHandlers';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 import { TypeTag } from '~/components/customHandles/TypeTag';
+import { getCollectionTypeFromType } from '~/utils/datatypeUtils';
 
 type InnerFlowDataNodeData = {
     label: string;

@@ -395,6 +395,144 @@ export const mockFetchDataContentHandles = (
                     required: true,
                 },
             ];
+        case 'part':
+            return [
+                {
+                    id: `${nodeID}:${handleType}:a`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Navn',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:b`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Rolle',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:c`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Kontaktperson',
+                    required: false,
+                },
+                {
+                    id: `${nodeID}:${handleType}:d`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Organisasjonsnummer',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:e`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Fødselsnummer',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:f`,
+                    type: DataTypeDefinition.Object,
+                    typeName: 'adresse',
+                    label: 'Adresse',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:g`,
+                    type: DataTypeDefinition.Object,
+                    typeName: 'kontaktinformasjon',
+                    label: 'Kontaktinformasjon',
+                    required: true,
+                },
+            ];
+        case 'klassering':
+            return [
+                {
+                    id: `${nodeID}:${handleType}:a`,
+                    type: DataTypeDefinition.Number,
+                    label: 'Rekkefølge',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:b`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Klassifikasjonssystem',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:c`,
+                    type: DataTypeDefinition.Text,
+                    label: 'KlasseID',
+                    required: false,
+                },
+                {
+                    id: `${nodeID}:${handleType}:d`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Tittel',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:e`,
+                    type: DataTypeDefinition.Object,
+                    typeName: 'skjerming',
+                    label: 'Skjerming',
+                    required: true,
+                },
+            ];
+        case 'adresse':
+            return [
+                {
+                    id: `${nodeID}:${handleType}:a`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Postnummer',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:b`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Poststed',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:c`,
+                    type: DataTypeDefinition.CollectionText,
+                    label: 'Adresselinjer',
+                    required: false,
+                },
+            ];
+        case 'kontaktinformasjon':
+            return [
+                {
+                    id: `${nodeID}:${handleType}:a`,
+                    type: DataTypeDefinition.Text,
+                    label: 'E-post',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:b`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Mobiltelefonnummer',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:c`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Telefonnummer',
+                    required: false,
+                },
+            ];
+        case 'skjerming':
+            return [
+                {
+                    id: `${nodeID}:${handleType}:a`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Tilgangsrestriksjon',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:b`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Skjermingshjemmel',
+                    required: true,
+                },
+            ];
         case 'object':
         default:
             return [
