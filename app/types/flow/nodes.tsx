@@ -2,7 +2,6 @@ import type { Node, NodeTypes } from '@xyflow/react';
 import { ConfigurationNode } from '~/components/customNodes/ConfigurationNodes/ConfigurationNode';
 import { SakslogikkNode } from '~/components/customNodes/SakslogikkNode';
 import { IncomingDataNode } from '~/components/customNodes/ConfigurationNodes/IncomingDataNode';
-import { DynamicStringNode } from '~/components/customNodes/ConfigurationNodes/DynamicStringNode';
 import type { HandleData } from '~/types/handleTypes';
 
 export type BaseNodeData = {
@@ -48,7 +47,6 @@ export const allNodeTypes: NodeTypes = {
     incomingData: IncomingDataNode,
     configNode: ConfigurationNode,
     sakslogikkNode: SakslogikkNode,
-    dynamicString: DynamicStringNode,
 };
 
 export type CustomNode = Node<MetadataNodeData | ConfigurationNodeData>;

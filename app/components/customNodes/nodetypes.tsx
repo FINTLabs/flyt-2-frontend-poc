@@ -1,8 +1,8 @@
 import type { NodeTypes } from '@xyflow/react';
 import { IntegrationNode } from '~/components/customNodes/IntegrationNode';
 import { OperationNode } from '~/components/customNodes/OperationNode';
-import { InputTextNode } from '~/components/customNodes/InputTextNode';
-import { JoinTextOperationNode } from '~/components/customNodes/JoinTextOperationNode';
+import { InputTextNode } from '~/components/customNodes/textEditingNodes/InputTextNode';
+import { JoinTextOperationNode } from '~/components/customNodes/textEditingNodes/JoinTextOperationNode';
 import { OperationOpenObjectNode } from '~/components/customNodes/OperationOpenObjectNode';
 import { InnerFlowListOperation } from '~/components/customNodes/OperationListInnerFlowNode';
 import { InnerFlowDataNode } from '~/components/customNodes/InnerFlowDataNode';

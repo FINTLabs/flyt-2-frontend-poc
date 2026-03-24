@@ -23,6 +23,28 @@ export const egrunnervervSakInstance: Node<BaseNodeData> = {
     },
     position: defaultPosition,
 };
+
+export const egrunnervervJournalpostInstance: Node<BaseNodeData> = {
+    id: 'instanceEGrunnervervJournalpost',
+    type: 'flowInput',
+    data: {
+        label: 'eGrunnerverv journalpost',
+        typeName: 'eGrv journalpost',
+        type: DataTypeDefinition.Object,
+        iconType: 'dataInstanceIn',
+        sourceHandles: [
+            {
+                id: 'instanceEGrunnervervJournalpost:s:a',
+                label: 'eGrunnerverv journalpost',
+                type: DataTypeDefinition.Object,
+                typeName: 'eGrv journalpost',
+                required: true,
+            },
+        ],
+    },
+    position: defaultPosition,
+};
+
 export const acosInstance: Node<BaseNodeData> = {
     id: 'acosInstance',
     type: 'flowInput',
@@ -69,13 +91,13 @@ export const arkivInstanceOutput: Node<BaseNodeData> = {
     data: {
         label: 'Arkivsak',
         type: DataTypeDefinition.Object,
-        typeName: 'Arkiv Sak',
+        typeName: 'arkivSak',
         iconType: 'dataInstanceOut',
         targetHandles: [
             {
                 id: 'instanceOutputArkivsak:t:a',
                 type: DataTypeDefinition.Object,
-                typeName: 'Arkiv Sak',
+                typeName: 'arkivSak',
                 required: true,
             },
         ],
@@ -84,6 +106,7 @@ export const arkivInstanceOutput: Node<BaseNodeData> = {
 };
 export const allIntegrationsInputNodes = [
     egrunnervervSakInstance,
+    egrunnervervJournalpostInstance,
     acosInstance,
     acosInstanceVIK304,
 ];

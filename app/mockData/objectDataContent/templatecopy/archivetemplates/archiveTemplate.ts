@@ -2,8 +2,8 @@ import type {
     IElementTemplate,
     IMappingTemplate,
     IObjectTemplate,
-} from '~/mockData/objectDataContent/archivetemplates/types';
-import { objectTemplateCaseNEW } from '~/mockData/objectDataContent/archivetemplates/newCaseTemplate';
+} from '~/mockData/objectDataContent/templatecopy/archivetemplates/types';
+import { objectTemplateCaseNEW } from '~/mockData/objectDataContent/templatecopy/archivetemplates/newCaseTemplate';
 
 const objectTemplateCaseBY_ID: IElementTemplate<IObjectTemplate> = {
     order: 4,

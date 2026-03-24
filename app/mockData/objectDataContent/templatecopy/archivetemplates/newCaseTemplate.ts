@@ -4,7 +4,7 @@ import type {
     IObjectTemplate,
     ISelectableValueTemplate,
     IValueTemplate,
-} from '~/mockData/objectDataContent/archivetemplates/types';
+} from '~/mockData/objectDataContent/templatecopy/archivetemplates/types';
 
 const title_valueTemplate: IElementTemplate<IValueTemplate> = {
     order: 0,

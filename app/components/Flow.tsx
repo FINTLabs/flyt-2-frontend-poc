@@ -31,15 +31,9 @@ import useLayoutNodes from '~/context/useLayoutNodes';
 import type { CustomNodeDemo } from '~/types/nodeTypes';
 import { IGNORED_CHANGES, NODE_BASE_HEIGHT } from '~/utils/constants';
 import { getMinimapNodeColor, getMinimapNodeStrokeColor } from '~/utils/minimapUtils';
-import {
-    isCollectionType,
-    isObjectMatchingDefinition,
-    isObjectSameAsCollection,
-} from '~/utils/datatypeUtils';
+import { isConnectionAllowed } from '~/utils/datatypeUtils';
 import { nodeTypes } from '~/components/customNodes/nodetypes';
 import { allIntegrationsNodes } from '~/mockData/nodes/instances';
-import type { HandleData } from '~/types/handleTypes';
-import { DataTypeDefinition } from '~/types/data/datatypes';
 
 const edgeTypes = {
     smart: SmartStepEdge,
@@ -152,48 +146,11 @@ const Flow = () => {
         }
     }, [nodes, edges]);
 
-    //TODO: handle type object by checking typeName
-    const isValidDatatypeConnection = useCallback((edge: Edge | Connection): boolean => {
+    const isValidConnection = useCallback((edge: Edge | Connection): boolean => {
         const sourceNode = getNode(edge.source);
         const targetNode = getNode(edge.target);
         if (!sourceNode || !targetNode) return false;
-
-        if (targetNode.type === 'innerFlowOutput') return true;
-
-        const sourceNodeData = sourceNode.data;
-        const targetNodeData = targetNode.data;
-        if (!sourceNodeData || !targetNodeData) return false;
-
-        const sourceHandle: HandleData = sourceNodeData.sourceHandles
-            ? Object.values(sourceNodeData.sourceHandles).find((h) => h.id === edge.sourceHandle)
-            : sourceNodeData;
-
-        console.log('sourceHandle', sourceHandle);
-
-        const targetHandle: HandleData = targetNodeData.targetHandles
-            ? Object.values(targetNodeData.targetHandles).find((h) => h.id === edge.targetHandle)
-            : targetNodeData;
-
-        console.log('targetHandle', targetHandle);
-
-        if (
-            sourceNode.type &&
-            ['openObject', 'createObject'].includes(sourceNode.type) &&
-            (targetHandle.type === DataTypeDefinition.Object || isCollectionType(targetHandle.type))
-        ) {
-            return true;
-        }
-
-        if (sourceHandle.type && targetHandle.type) {
-            if (isCollectionType(sourceHandle.type) || isCollectionType(targetHandle.type)) {
-                return isObjectSameAsCollection(sourceHandle, targetHandle);
-            }
-            if (sourceHandle.type === DataTypeDefinition.Object) {
-                return isObjectMatchingDefinition(sourceHandle, targetHandle);
-            }
-            return sourceHandle.type === targetHandle.type;
-        }
-        return false;
+        return isConnectionAllowed(edge, sourceNode, targetNode);
     }, []);
 
     const handleNodesChange = useCallback((changes: NodeChange<CustomNodeDemo>[]) => {
@@ -221,7 +178,7 @@ const Flow = () => {
             onDelete={onDelete}
             onNodeDrag={onNodeDrag}
             onDragStart={onDragStart}
-            isValidConnection={isValidDatatypeConnection}
+            isValidConnection={isValidConnection}
             onDragOver={onDragOver}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}

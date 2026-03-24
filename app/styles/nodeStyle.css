@@ -38,6 +38,15 @@
 .react-flow__node-flowInput,
 .menu-node-flowInput {
     background-color: var(--theme-node-blue);
+    border-radius: 20px var(--xy-node-border-radius-default) var(--xy-node-border-radius-default)
+        20px;
+}
+
+.react-flow__node-flowOutput,
+.menu-node-flowOutput {
+    background-color: var(--theme-node-red);
+    border-radius: var(--xy-node-border-radius-default) 20px 20px
+        var(--xy-node-border-radius-default);
 }
 
 .react-flow__node-innerFlowInput,
@@ -45,18 +54,15 @@
     background-color: var(--theme-node-lightblue);
 }
 
-.react-flow__node-flowOutput,
-.menu-node-flowOutput {
-    background-color: var(--theme-node-red);
-}
-
 .react-flow__node-innerFlowOutput,
 .menu-node-innerFlowOutput {
     background-color: var(--theme-node-lightred);
 }
 
-.react-flow__node-operation,
-.menu-node-operation {
+.react-flow__node-openObject,
+.menu-node-openObject,
+.react-flow__node-createObject,
+.menu-node-createObject {
     background-color: var(--theme-node-beige);
 }
 
@@ -70,7 +76,6 @@
 
 .react-flow__node-inputText,
 .react-flow__node-dataSource {
-    background-color: var(--theme-node-green);
     padding: 2px 5px;
     .navds-form-field {
         width: 100%;
@@ -92,9 +97,13 @@
     }
 }
 
-.menu-node-inputText,
-.menu-node-dataSource {
+.react-flow__node-inputText,
+.menu-node-inputText {
     background-color: var(--theme-node-green);
+}
+.react-flow__node-dataSource,
+.menu-node-dataSource {
+    background-color: var(--theme-node-blue);
 }
 
 .react-flow__node-externalFunction,
@@ -110,4 +119,25 @@
 .react-flow__node.highlight {
     background-color: #918fbe;
     color: white;
+}
+
+.node-combobox {
+    width: 100%;
+    ul {
+        max-width: 250px;
+    }
+    .navds-combobox__list-options {
+        li {
+            text-align: left;
+        }
+    }
+
+    .navds-text-field__input {
+        .navds-combobox__selected-options--no-bg {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 250px;
+        }
+    }
 }

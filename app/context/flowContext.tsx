@@ -94,6 +94,7 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
 
     useEffect(() => {
         if (paramsFlowId) {
+            console.log('useeffect paramsFlowId', paramsFlowId);
             if (paramsFlowId === 'demo') {
                 const nodes = getDemoNodes();
                 const demoFlow = getDemoFLow();

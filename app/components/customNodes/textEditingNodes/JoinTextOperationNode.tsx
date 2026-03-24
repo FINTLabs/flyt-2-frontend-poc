@@ -10,7 +10,7 @@ import {
 } from '@xyflow/react';
 import { Box, Button, Detail, HStack, VStack } from '@navikt/ds-react';
 import { getNodeIcon } from '~/demo/utils/nodeHandlers';
-import type { BaseNodeData, CustomNodeDemo, InputNodeData } from '~/types/nodeTypes';
+import type { CustomNodeDemo, InputNodeData } from '~/types/nodeTypes';
 import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
 import { MinusIcon, PlusIcon } from '@navikt/aksel-icons';
 import { DataTypeDefinition } from '~/types/data/datatypes';
@@ -18,6 +18,8 @@ import { useFlow } from '~/context/flowContext';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 
 import { getNodeMinHeight } from '~/utils/nodeSizeUtils';
+import { createHandleId } from '~/demo/utils/generalUtils';
+import type { HandleData } from '~/types/handleTypes';
 
 type JoinTextOperationNodeType = Node<InputNodeData, 'operationJoinText'>;
 
@@ -28,7 +30,7 @@ export const JoinTextOperationNode = memo(
             targets: data.targetHandles?.length,
         });
         const { currentFlow } = useFlow();
-        const reactFlow = useReactFlow();
+        const { updateNodeData, deleteElements } = useReactFlow();
 
         const [outputText, setOutputText] = useState<{ inputType: string; text: string }[]>([]);
 
@@ -47,36 +49,54 @@ export const JoinTextOperationNode = memo(
         const connectedNodesData = useNodesData<CustomNodeDemo>(connectionsNodeIds);
 
         const handleAddHandle = useCallback(() => {
-            const newHandle = {
-                id: `${id}:t:${data.targetHandles?.length || 0}`,
+            const newHandle: HandleData = {
+                id: createHandleId(id, 't'),
                 type: DataTypeDefinition.Text,
+                required: false,
             };
-            reactFlow.updateNodeData(id, {
+            updateNodeData(id, {
                 targetHandles: [...(data.targetHandles || []), newHandle],
             });
         }, [data.targetHandles]);
 
         const handleRemoveHandle = useCallback(() => {
-            console.log('Remove handle');
+            if (data.targetHandles && data.targetHandles.length > 2) {
+                const removedHandle = data.targetHandles?.pop();
+                if (removedHandle) {
+                    const edge = connections.find(
+                        (connection) => connection.targetHandle === removedHandle.id
+                    );
+                    updateNodeData(id, {
+                        targetHandles: [...(data.targetHandles || [])],
+                    });
+                    if (edge) {
+                        deleteElements({ edges: [{ id: edge.edgeId }] });
+                    }
+                }
+            }
         }, [data.targetHandles]);
 
         useEffect(() => {
             if (connectedNodesData && connectionsNodeIds.length > 0) {
-                const newOutputText = connections
-                    .sort((a, b) => (a?.targetHandle || '').localeCompare(b?.targetHandle || ''))
-                    .map((edge) => {
-                        const nodeData = connectedNodesData.find((node) => node.id === edge.source);
-                        if (!nodeData) return null;
-                        if (nodeData.type === 'inputText') {
+                const newOutputText = data.targetHandles
+                    ?.map((handle) => {
+                        const edge = connections.find(
+                            (connection) => connection.targetHandle === handle.id
+                        );
+                        const node = connectedNodesData.find((node) => node.id === edge?.source);
+
+                        if (!node) return null;
+
+                        if (node.type === 'inputText') {
                             return {
-                                inputType: nodeData.type,
-                                text: (nodeData.data as InputNodeData)?.text || '',
+                                inputType: node.type,
+                                text: (node.data as InputNodeData)?.text || '',
                             };
                         }
-                        const handleLabel = nodeData.data.sourceHandles?.find(
+                        const handleLabel = node.data.sourceHandles?.find(
                             (handle) => handle.id === edge?.sourceHandle
                         )?.label;
-                        return { inputType: nodeData.type, text: handleLabel || '?' };
+                        return { inputType: node.type, text: handleLabel || '?' };
                     })
                     .filter(Boolean) as { inputType: string; text: string }[];
                 setOutputText(newOutputText);
@@ -104,6 +124,7 @@ export const JoinTextOperationNode = memo(
                             variant="secondary-neutral"
                             size="small"
                             onClick={handleRemoveHandle}
+                            disabled={data.targetHandles && data.targetHandles.length < 3}
                         />
                     </HStack>
                 </NodeToolbar>
@@ -116,12 +137,12 @@ export const JoinTextOperationNode = memo(
                         borderColor={'border-subtle'}
                     >
                         <Detail size={'small'}>
-                            {outputText.map((text, index) =>
-                                text.inputType === 'inputText' ? (
-                                    <span key={index}>{text.text}</span>
+                            {outputText?.map((text, index) =>
+                                text?.inputType === 'inputText' ? (
+                                    <span key={index}>{text?.text}</span>
                                 ) : (
                                     <span key={index}>
-                                        <b>{`<${text.text}>`}</b>
+                                        <b>{`<${text?.text}>`}</b>
                                     </span>
                                 )
                             )}

@@ -53,17 +53,12 @@ export const OperationOpenObjectNode = memo(
 
         const handleOpenObject = useCallback(
             (newEdge: NodeConnection) => {
-                console.log('handleOpenObject');
                 const sourceNodeData = getNode(newEdge.source)?.data;
-
-                console.log('sourceNodeData', sourceNodeData);
 
                 if (sourceNodeData && sourceNodeData.sourceHandles) {
                     const sourceHandle = Object.values(sourceNodeData.sourceHandles).find(
                         (h) => h.id === newEdge.sourceHandle
                     );
-
-                    console.log('sourceHandle', sourceHandle);
 
                     const handleID = `${id}:t:a`;
 
@@ -83,7 +78,7 @@ export const OperationOpenObjectNode = memo(
                     );
 
                     updateNodeData(id, {
-                        label: `Pakk ut ${sourceHandle.label}`,
+                        label: `Åpne ${sourceHandle.label}`,
                         targetHandles: [incomingObjectTargetHandle],
                         sourceHandles: objectDefinitionHandles,
                     });
@@ -103,24 +98,29 @@ export const OperationOpenObjectNode = memo(
 
         const handleCreateObject = useCallback(
             (newEdge: NodeConnection) => {
-                console.log('handleCreateObject');
-
                 const targetNodeData = getNode(newEdge.target)?.data;
 
-                console.log('targetNodeData', targetNodeData);
+                console.log('=== targetNodeData', targetNodeData);
 
                 if (targetNodeData && targetNodeData.targetHandles) {
                     const targetHandle = Object.values(targetNodeData.targetHandles).find(
                         (h) => h.id === newEdge.targetHandle
                     );
-                    console.log('targetHandle', targetHandle);
+
+                    console.log('=== targetHandle', targetHandle);
 
                     const handleID = `${id}:s:a`;
+                    let type = DataTypeDefinition.Object;
+                    let typeName = targetHandle.typeName ?? targetNodeData.typeName;
+
+                    if (targetHandle.type === DataTypeDefinition.CollectionText) {
+                        type = DataTypeDefinition.Text;
+                    }
 
                     const outgoingObjectSourceHandle = {
                         id: handleID,
                         label: targetHandle.label ?? targetNodeData.label,
-                        type: DataTypeDefinition.Object,
+                        type: type,
                         typeName: targetHandle.typeName ?? targetNodeData.typeName,
                         required: true,
                     };
@@ -128,12 +128,12 @@ export const OperationOpenObjectNode = memo(
                     const objectDefinitionHandles = mockFetchDataContentHandles(
                         id,
                         't',
-                        outgoingObjectSourceHandle.typeName || 'Object',
+                        outgoingObjectSourceHandle.typeName || outgoingObjectSourceHandle.type,
                         outgoingObjectSourceHandle.label
                     );
 
                     updateNodeData(id, {
-                        label: `Opprett ${targetHandle.label.toLowerCase() ?? targetNodeData.label}`, // TODO: Håndter flertall hvis det er en liste
+                        label: `Opprett ${targetHandle?.label?.toLowerCase() ?? (targetNodeData.label as string)?.toLowerCase()}`, // TODO: Håndter flertall hvis det er en liste
                         targetHandles: objectDefinitionHandles,
                         sourceHandles: [outgoingObjectSourceHandle],
                     });
@@ -153,7 +153,6 @@ export const OperationOpenObjectNode = memo(
 
         useEffect(() => {
             if (edge) {
-                console.log('==== NEW Edge', edge);
                 if (isOpenObject) {
                     handleOpenObject(edge);
                 } else {

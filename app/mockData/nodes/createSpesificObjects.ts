@@ -101,4 +101,4 @@ export const createPart: Node<BaseNodeData> = {
     position: defaultPosition,
 };
 
-export const allCreateOpjectNodes = [createSkjerming, createPart];
+export const allCreatePredefinedObjectNodes = [createSkjerming, createPart];
