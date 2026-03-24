@@ -3,10 +3,10 @@ import { arkivInstanceOutput, egrunnervervSakInstance } from '~/mockData/nodes/i
 import { DataTypeDefinition } from '~/types/data/datatypes';
 import {
     operationCreateObjectAkrivsak,
-    operationExternalGetSaksansvarlig,
     operationJoinText,
     operationOpenEGrvSak,
     InputTextNode,
+    operationExternalGetSaksansvarlig,
 } from '~/mockData/nodes/general';
 
 export const getDemoNodes = (

@@ -1,13 +1,10 @@
 import { DataTypeDefinition } from '~/types/data/datatypes';
 import type { BaseNodeData, InputNodeData } from '~/types/nodeTypes';
 import { type Node } from '@xyflow/react';
-import {
-    acosInstance,
-    arkivInstanceOutput,
-    egrunnervervSakInstance,
-} from '~/mockData/nodes/instances';
+import { allIntegrationsNodes, arkivInstanceOutput } from '~/mockData/nodes/instances';
 import { defaultPosition } from '~/utils/constants';
 import { allDataSources } from '~/mockData/nodes/datasources';
+import { allCreatePredefinedObjectNodes } from '~/mockData/nodes/createSpesificObjects';
 
 export const innerFlowInput: Node<BaseNodeData> = {
     id: 'innerFlowInput',
@@ -57,7 +54,7 @@ export const operationOpenObject: Node<BaseNodeData> = {
     type: 'openObject',
     data: {
         label: 'Åpne objekt',
-        iconType: 'openData2',
+        iconType: 'openObject',
         targetHandles: [
             {
                 id: 'operationOpenObject:t:a',
@@ -76,7 +73,7 @@ export const operationCreateObject: Node<BaseNodeData> = {
     type: 'createObject',
     data: {
         label: 'Opprett objekt',
-        iconType: 'packData2',
+        iconType: 'createObject',
         targetHandles: [],
         sourceHandles: [
             {
@@ -157,7 +154,7 @@ export const operationOpenEGrvSak: Node<BaseNodeData> = {
     type: 'operation',
     data: {
         label: 'Hent ut data',
-        iconType: 'openData',
+        iconType: 'openObject',
         targetHandles: [
             {
                 id: 'operationOpenEGrvSak:t:a',
@@ -220,7 +217,7 @@ export const operationOpenEGrvSak: Node<BaseNodeData> = {
                 id: 'operationOpenEGrvSak:s:i',
                 label: 'Sakspartner',
                 type: DataTypeDefinition.CollectionObject,
-                typeName: 'eGrv Sakspart',
+                typeName: 'sakspart',
                 required: true,
             },
         ],
@@ -259,7 +256,7 @@ export const operationCreateObjectAkrivsak: Node<BaseNodeData> = {
     type: 'operation',
     data: {
         label: 'Opprett arkivsak',
-        iconType: 'packData',
+        iconType: 'createObject',
         targetHandles: [
             {
                 id: 'operationCreateObjectAkrivsak:t:a',
@@ -322,7 +319,7 @@ export const operationCreateObjectAkrivsak: Node<BaseNodeData> = {
             {
                 id: 'operationCreateObjectAkrivsak:s:a',
                 type: DataTypeDefinition.Object,
-                typeName: 'Arkiv Sak',
+                typeName: 'arkivSak',
                 required: true,
             },
         ],
@@ -391,13 +388,11 @@ export const acosUploadFile: Node<BaseNodeData> = {
 };
 
 export const allFunctionalNodes = [
-    egrunnervervSakInstance,
-    acosInstance,
+    ...allIntegrationsNodes,
     operationOpenEGrvSak,
     operationJoinText,
     operationExternalGetSaksansvarlig,
     operationCreateObjectAkrivsak,
-    arkivInstanceOutput,
     InputTextNode,
     operationCreateObject,
     acosDocToDocDesc,
@@ -408,4 +403,5 @@ export const allFunctionalNodes = [
     innerFlowOutput,
     acosUploadFile,
     ...allDataSources,
+    ...allCreatePredefinedObjectNodes,
 ];

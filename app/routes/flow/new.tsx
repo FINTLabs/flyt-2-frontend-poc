@@ -16,7 +16,6 @@ const NewFlowPage = () => {
 
     const handleSaveNewFlow = useCallback(() => {
         const initialFlow = getInitialNodesOnCreateNew(inputIntegration);
-        console.log('handleSaveNewFlow', initialFlow);
         if (!initialFlow || initialFlow?.nodes.length === 0) return;
         const newFlowId = saveNewFlow(name, initialFlow.nodes, initialFlow.edges);
         navigate(`/flow/edit/${newFlowId}`);

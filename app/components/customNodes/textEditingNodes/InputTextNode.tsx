@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { type NodeProps, type Node, useReactFlow } from '@xyflow/react';
 import { HStack, TextField } from '@navikt/ds-react';
-import { NodeContainerWithProgress } from './nodeLayout/NodeContainerWithProgress';
+import { NodeContainerWithProgress } from '../nodeLayout/NodeContainerWithProgress';
 import type { HandleData } from '~/types/handleTypes';
 import { useFlow } from '~/context/flowContext';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';

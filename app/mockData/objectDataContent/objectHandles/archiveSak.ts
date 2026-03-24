@@ -1,90 +1,89 @@
 import { DataTypeDefinition } from '~/types/data/datatypes';
+import type { HandleData } from '~/types/handleTypes';
 
-const archiveSak = [
+export const archiveSakHandles = (nodeID: string, handleType: 's' | 't'): HandleData[] => [
     {
-        id: 'arkivsak:t:01-title',
+        id: `${nodeID}:${handleType}:tittel`,
         type: DataTypeDefinition.Text,
         required: true,
         label: 'Tittel',
         typeName: 'tittel',
     },
     {
-        id: 'arkivsak:t:02-offentligTittel',
+        id: `${nodeID}:${handleType}:offentligTittel`,
         type: DataTypeDefinition.Text,
         required: true,
         label: 'Offentlig tittel',
         typeName: 'offentligTittel',
     },
     {
-        id: 'arkivsak:t:03-saksmappetype',
+        id: `${nodeID}:${handleType}:saksmappetype`,
         type: DataTypeDefinition.Text,
         required: true,
         label: 'Saksmappetype',
         typeName: 'saksmappetype',
     },
     {
-        id: 'arkivsak:t:04-administrativEnhet',
+        id: `${nodeID}:${handleType}:administrativEnhet`,
         type: DataTypeDefinition.Text,
         required: true,
         label: 'Administrativ enhet',
         typeName: 'administrativEnhet',
     },
     {
-        id: 'arkivsak:t:05-saksansvarlig',
+        id: `${nodeID}:${handleType}:saksansvarlig`,
         type: DataTypeDefinition.Text,
         required: true,
         label: 'Saksansvarlig',
         typeName: 'saksansvarlig',
     },
     {
-        id: 'arkivsak:t:06-arkivdel',
+        id: `${nodeID}:${handleType}:arkivdel`,
         type: DataTypeDefinition.Text,
         required: true,
         label: 'Arkivdel',
         typeName: 'arkivdel',
     },
     {
-        id: 'arkivsak:t:07-saksstatus',
+        id: `${nodeID}:${handleType}:saksstatus`,
         type: DataTypeDefinition.Text,
         required: true,
         label: 'Saksstatus',
         typeName: 'saksstatus',
     },
     {
-        id: 'arkivsak:t:08-tilgangsgruppe',
+        id: `${nodeID}:${handleType}:tilgangsgruppe`,
         type: DataTypeDefinition.Text,
         required: true,
         label: 'Tilgangsgruppe',
         typeName: 'tilgangsgruppe',
     },
     {
-        id: 'arkivsak:t:09-part',
+        id: `${nodeID}:${handleType}:part`,
         type: DataTypeDefinition.CollectionObject,
         required: true,
         label: 'Parter',
         typeName: 'part',
     },
     {
-        id: 'arkivsak:t:10-skjerming',
+        id: `${nodeID}:${handleType}:skjerming`,
         type: DataTypeDefinition.Object,
         required: true,
         label: 'Skjerming',
         typeName: 'skjerming',
     },
     {
-        id: 'arkivsak:t:11-klasse',
+        id: `${nodeID}:${handleType}:klasse`,
         type: DataTypeDefinition.CollectionObject,
         required: true,
         label: 'Klassering',
         typeName: 'klasse',
     },
     {
-        id: 'arkivsak:t:12-journalpost',
+        id: `${nodeID}:${handleType}:journalpost`,
         type: DataTypeDefinition.CollectionObject,
         required: true,
         label: 'Journalposter',
         typeName: 'journalpost',
     },
 ];
-
-export default archiveSak;

@@ -48,8 +48,10 @@ export const layoutOptions: LayoutOptions = {
     'elk.edgeRouting': 'ORTHOGONAL',
     'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES',
 
-    'elk.layered.spacing.nodeNodeBetweenLayers': '220',
-    'elk.spacing.nodeNode': '90',
+    'elk.spacing.nodeNode': '150',
+    'elk.layered.spacing.nodeNodeBetweenLayers': '150',
+    'elk.layered.spacing.edgeEdgeBetweenLayers': '50',
+    'elk.layered.spacing.edgeNodeBetweenLayers': '150',
 };
 
 export const getLayoutedNodes = async (
@@ -172,7 +174,7 @@ export default function useLayoutNodes() {
         }
     }, [nodesInitialized]);
 
-    useEffect(() => {
+    /*    useEffect(() => {
         if (nodesInitialized) {
             const layoutNodes = async () => {
                 const { layoutedNodes, layeredEdges } = await getLayoutedNodes(
@@ -187,7 +189,7 @@ export default function useLayoutNodes() {
 
             layoutNodes();
         }
-    }, [nodesInitialized, getNodes, getEdges, setNodes, fitView]);
+    }, [nodesInitialized, getNodes, getEdges, setNodes, fitView]);*/
 
     return {
         resetLayout,

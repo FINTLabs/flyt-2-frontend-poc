@@ -4,7 +4,6 @@ import { BaseNode } from '~/components/sidebar/BaseNode';
 import {
     operationCreateObject,
     operationCreateObjectAkrivsak,
-    operationExternalGetSaksansvarlig,
     operationJoinText,
     operationOpenObject,
     InputTextNode,
@@ -12,9 +11,11 @@ import {
     acosUploadFile,
     acosDocToDocDesc,
     operationEditText,
+    operationExternalGetSaksansvarlig,
 } from '~/mockData/nodes/general';
 import { useParams } from 'react-router';
 import { allDataSources } from '~/mockData/nodes/datasources';
+import { createPart, createSkjerming } from '~/mockData/nodes/createSpesificObjects';
 
 export const Sidebar = () => {
     const { currentFlow } = useFlow();
@@ -78,10 +79,8 @@ export const Sidebar = () => {
                                     label={'Finn saksansvarlig ref.'}
                                     node={operationExternalGetSaksansvarlig}
                                 />
-                                <BaseNode
-                                    label={'Opprett skjerming'}
-                                    node={operationExternalGetSaksansvarlig} // TODO:
-                                />
+                                <BaseNode label={'Opprett skjerming'} node={createSkjerming} />
+                                <BaseNode label={'Opprett part'} node={createPart} />
                             </VStack>
                         </Accordion.Content>
                     </Accordion.Item>
@@ -135,6 +134,8 @@ export const Sidebar = () => {
                                 <BaseNode label={'Hent ut data'} node={operationOpenObject} />
                                 <BaseNode label={'Samle data'} node={operationCreateObject} />
                                 <BaseNode label={'Listehåndtering'} node={innerFlowListOperation} />
+                                <BaseNode label={'Opprett samling'} node={innerFlowListOperation} />
+                                {/* TODO: opprett samling node*/}
                             </VStack>
                         </Accordion.Content>
                     </Accordion.Item>

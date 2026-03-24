@@ -49,12 +49,25 @@ export const getValueTypeSymbolWidth = (type?: DataTypeValue, typeText?: string)
     }
     return typeText ? measureTextWidth(typeText) : 0;
 };
+
 export const getValueTypeFromCollection = (type: string): DataTypeValue => {
-    if (type === DataTypeDefinition.CollectionObject) {
-        return DataTypeDefinition.Object;
+    switch (type) {
+        case DataTypeDefinition.CollectionObject:
+            return DataTypeDefinition.Object;
+        case DataTypeDefinition.CollectionText:
+            return DataTypeDefinition.Text;
+        case DataTypeDefinition.CollectionReference:
+            return DataTypeDefinition.Reference;
+        case DataTypeDefinition.CollectionBoolean:
+            return DataTypeDefinition.Boolean;
+        case DataTypeDefinition.CollectionFile:
+            return DataTypeDefinition.File;
+        case DataTypeDefinition.CollectionUndefined:
+        default:
+            return DataTypeDefinition.Undefined;
     }
-    return DataTypeDefinition.File;
 };
+
 export const calculateHandlePosition = (
     index: number,
     totalHandles: number,

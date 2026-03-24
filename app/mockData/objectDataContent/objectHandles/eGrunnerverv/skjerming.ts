@@ -1,20 +1,19 @@
 import { DataTypeDefinition } from '~/types/data/datatypes';
+import type { HandleData } from '~/types/handleTypes';
 
-const skjerming = [
+export const skjermingHandles = (nodeID: string, handleType: 's' | 't'): HandleData[] => [
     {
-        id: '01-tilgangsrestriksjon',
+        id: `${nodeID}:${handleType}:tilgangsrestriksjon`,
         type: DataTypeDefinition.Text,
         required: true,
         label: 'Tilgangsrestriksjon',
         typeName: 'tilgangsrestriksjon',
     },
     {
-        id: '02-skjermingshjemmel',
+        id: `${nodeID}:${handleType}:skjermingshjemmel`,
         type: DataTypeDefinition.Text,
         required: true,
         label: 'Skjermingshjemmel',
         typeName: 'skjermingshjemmel',
     },
 ];
-
-export default skjerming;

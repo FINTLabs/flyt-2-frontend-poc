@@ -22,6 +22,7 @@ type SaksstructureData = {
     };
 };
 
+// object defined
 type Part = {
     navn: string;
     rolle: string;
@@ -32,6 +33,7 @@ type Part = {
     kontaktinformasjon: Kontaktinformasjon;
 };
 
+// object defined
 type Klassering = {
     rekkefølge: string;
     klassifikasjonssystem: string; // datasource klassifikasjonssystemOptions
@@ -40,6 +42,7 @@ type Klassering = {
     skjerming: Skjerming;
 };
 
+// object defined
 type Journalpost = {
     tittel: string;
     offentlig_tittel: string;
@@ -59,6 +62,7 @@ type Journalpost = {
     };
 };
 
+// object defined
 type Korrespondansepart = {
     korrespondanseparttype: string; // datasource korrespondanseparttypeOptions
     organisasjonsnummer: string;
@@ -85,18 +89,21 @@ type Dokumentobjekt = {
     fil: string;
 };
 
+// object defined
 type Adresse = {
     adresselinsjer: { faste_elementer: string[]; generert_fra_samling: string[] };
     postnummer: string;
     poststed: string;
 };
 
+// object defined
 type Kontaktinformasjon = {
     e_post: string;
     mobiltelefonnummer: string;
     telefonnummer: string;
 };
 
+// object defined
 type Skjerming = {
     tilgangsrestriksjon: string;
     skjermingshjemmel: string;

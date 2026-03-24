@@ -1,5 +1,18 @@
 import type { HandleData } from '~/types/handleTypes';
 import { DataTypeDefinition } from '~/types/data/datatypes';
+import { eGrunnervervSaksHandles } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/eGrunnervervSak';
+import { archiveSakHandles } from '~/mockData/objectDataContent/objectHandles/archiveSak';
+import { skjermingHandles } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/skjerming';
+import { journalpost } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/journalpost';
+import { sakspart } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/sakspart';
+import { part } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/part';
+import { klassering } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/klassering';
+import { dokumentbeskrivelse } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/dokumentbeskrivelse';
+import { dokumentobjekt } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/dokumentobjekt';
+import { korrespondansepart } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/korrespondansepart';
+import { eGrunnervervJournalpostHandles } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/eGrunnervervJournalpost';
+import { vedleggHandles } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/vedlegg';
+import { mottakereHandles } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/mottakere';
 
 export const mockFetchDataContentHandles = (
     nodeID: string,
@@ -7,170 +20,33 @@ export const mockFetchDataContentHandles = (
     dataType: string,
     dataLabel?: string
 ): HandleData[] | undefined => {
-    console.log('mockFetchDataContentHandles', dataType, dataLabel);
     switch (dataType.toLowerCase()) {
         case 'egrv sak':
-            return [
-                {
-                    id: `${nodeID}:${handleType}:a`,
-                    label: 'Kommunenavn',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:b`,
-                    label: 'Prosjektnavn',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:c`,
-                    label: 'Gårdsnummer',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:d`,
-                    label: 'Bruksnummer',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:e`,
-                    label: 'Seksjonsnummer',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:f`,
-                    label: 'Tittel',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:g`,
-                    label: 'Adresse',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:h`,
-                    label: 'Saksansvarlig e-post',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:i`,
-                    label: 'Sakspartner',
-                    type: DataTypeDefinition.Object,
-                    typeName: 'eGrv Sakspart',
-                    required: true,
-                },
-            ];
-        case 'arkiv sak':
-            return [
-                {
-                    id: `${nodeID}:${handleType}:a`,
-                    type: DataTypeDefinition.Text,
-                    label: 'Tittel',
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:b`,
-                    type: DataTypeDefinition.Text,
-                    label: 'Offentlig tittel',
-                    required: false,
-                },
-                {
-                    id: `${nodeID}:${handleType}:c`,
-                    type: DataTypeDefinition.Reference,
-                    label: 'Saksmappetype',
-                    required: false,
-                },
-                {
-                    id: `${nodeID}:${handleType}:d`,
-                    type: DataTypeDefinition.Reference,
-                    label: 'Administrativ enhet',
-                    required: false,
-                },
-                {
-                    id: `${nodeID}:${handleType}:e`,
-                    type: DataTypeDefinition.Reference,
-                    label: 'Saksansvarlig',
-                    required: false,
-                },
-                {
-                    id: `${nodeID}:${handleType}:f`,
-                    type: DataTypeDefinition.Object,
-                    typeName: 'Arkiv Skjerming',
-                    label: 'Skjerming',
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:g`,
-                    type: DataTypeDefinition.Reference,
-                    label: 'Arkivdel',
-                    required: false,
-                },
-                {
-                    id: `${nodeID}:${handleType}:h`,
-                    type: DataTypeDefinition.Reference,
-                    label: 'Saksstatus',
-                    required: false,
-                },
-                {
-                    id: `${nodeID}:${handleType}:i`,
-                    type: DataTypeDefinition.CollectionObject,
-                    typeName: 'Arkiv Part',
-                    label: 'Parter',
-                    required: false,
-                },
-            ];
-        case 'egrv sakspart':
-            return [
-                {
-                    id: `${nodeID}:${handleType}:a`,
-                    label: 'Navn',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:b`,
-                    label: 'Organisasjonsnummer',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:c`,
-                    label: 'E-post',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:d`,
-                    label: 'Telefon',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:e`,
-                    label: 'Postadresse',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:f`,
-                    label: 'Postnummer',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-                {
-                    id: `${nodeID}:${handleType}:g`,
-                    label: 'Poststed',
-                    type: DataTypeDefinition.Text,
-                    required: true,
-                },
-            ];
+            return eGrunnervervSaksHandles(nodeID, handleType);
+        case 'egrv journalpost':
+            return eGrunnervervJournalpostHandles(nodeID, handleType);
+        case 'arkivsak':
+            return archiveSakHandles(nodeID, handleType);
+        case 'sakspart':
+            return sakspart(nodeID, handleType);
+        case 'part':
+            return part(nodeID, handleType);
+        case 'klassering':
+            return klassering(nodeID, handleType);
+        case 'skjerming':
+            return skjermingHandles(nodeID, handleType);
+        case 'journalpost':
+            return journalpost(nodeID, handleType);
+        case 'korrpart':
+            return korrespondansepart(nodeID, handleType);
+        case 'dokbeskr':
+            return dokumentbeskrivelse(nodeID, handleType);
+        case 'dokobj':
+            return dokumentobjekt(nodeID, handleType);
+        case 'mottakere':
+            return mottakereHandles(nodeID, handleType);
+        case 'vedlegg':
+            return vedleggHandles(nodeID, handleType);
         case 'acos':
             // AcosInstance
             return [
@@ -392,6 +268,57 @@ export const mockFetchDataContentHandles = (
                     id: `${nodeID}:${handleType}:d`,
                     type: DataTypeDefinition.Reference,
                     label: 'mediatype',
+                    required: true,
+                },
+            ];
+        case 'adresse':
+            return [
+                {
+                    id: `${nodeID}:${handleType}:a`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Postnummer',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:b`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Poststed',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:c`,
+                    type: DataTypeDefinition.CollectionText,
+                    label: 'Adresselinjer',
+                    required: false,
+                },
+            ];
+        case 'kontaktinformasjon':
+            return [
+                {
+                    id: `${nodeID}:${handleType}:a`,
+                    type: DataTypeDefinition.Text,
+                    label: 'E-post',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:b`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Mobiltelefonnummer',
+                    required: true,
+                },
+                {
+                    id: `${nodeID}:${handleType}:c`,
+                    type: DataTypeDefinition.Text,
+                    label: 'Telefonnummer',
+                    required: false,
+                },
+            ];
+        case 'text':
+            return [
+                {
+                    id: `${nodeID}:${handleType}:a`,
+                    type: DataTypeDefinition.Text,
+                    label: dataLabel ?? dataType,
                     required: true,
                 },
             ];

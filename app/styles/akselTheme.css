@@ -183,20 +183,3 @@ h6 {
     animation: spin 2s linear infinite;
 }
 
-.node-combobox {
-    width: 100%;
-    .navds-combobox__list-options {
-        li {
-            text-align: left;
-        }
-    }
-
-    .navds-text-field__input {
-        .navds-combobox__selected-options--no-bg {
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            max-width: 300px;
-        }
-    }
-}

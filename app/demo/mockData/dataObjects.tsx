@@ -1,13 +1,4 @@
-import type {
-    AcosDocumentType,
-    AcosInstanceElementType,
-    AcosInstanceMetadataType,
-    AcosInstanceType,
-    ArkivSakType,
-    EgrvSakspartType,
-    EgrvSakType,
-    MockDataTypes,
-} from '~/types/mockedDataTypes';
+import type { EgrvSakType } from '~/types/mockedDataTypes';
 
 export const eGrvSakMockData: EgrvSakType = {
     id: '123testID456',
@@ -28,72 +19,4 @@ export const eGrvSakMockData: EgrvSakType = {
         postnummer: '1234',
         poststed: 'Oslo',
     },
-};
-
-export const mockDataContent = (dataType: string): MockDataTypes => {
-    switch (dataType.toLowerCase()) {
-        case 'egrv sak':
-            return eGrvSakMockData;
-        case 'arkiv sak':
-            return {
-                tittel: '',
-                offentligTittel: '',
-                saksmappetype: '',
-                administrativEnhet: '',
-                saksansvarlig: '',
-                skjerming: {
-                    skjermingshjemmel: '',
-                    skjermingskode: '',
-                    skjermingsfrist: '',
-                    begrunnelse: '',
-                },
-                arkivdel: '',
-                saksstatus: '',
-                parter: [],
-            } as ArkivSakType;
-        case 'egrv sakspart':
-            return {
-                id: '',
-                navn: '',
-                organisasjonsnummer: '',
-                epost: '',
-                telefon: '',
-                postadresse: '',
-                postnummer: '',
-                poststed: '',
-            } as EgrvSakspartType;
-        case 'acos':
-            return {
-                metadata: {
-                    formId: '',
-                    instanceId: '',
-                    instanceUri: '',
-                },
-                formPdfBase64: '',
-                elements: [],
-                documents: [],
-            } as AcosInstanceType;
-        case 'acosinstancemetadata':
-            return {
-                formId: '',
-                instanceId: '',
-                instanceUri: '',
-            } as AcosInstanceMetadataType;
-        case 'acosinstanceelement':
-            return {
-                id: '',
-                value: '',
-                hashCode: 0,
-            } as AcosInstanceElementType;
-        case 'acosdocument':
-            return {
-                name: '',
-                encoding: '',
-                filinnhold: '',
-                mediatype: '',
-            } as AcosDocumentType;
-        case 'object':
-        default:
-            return undefined;
-    }
 };

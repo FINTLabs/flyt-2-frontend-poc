@@ -25,8 +25,8 @@ body {
     --theme-node-lightred: #ffe4df;
     --theme-node-gray: var(--a-surface-subtle);
     --theme-node-green: #aee8bc;
-    --theme-node-beige: #ffe6c1;
-    --theme-node-beige-hover: #f4d8ac;
+    --theme-node-beige: #fff0d7;
+    --theme-node-beige-hover: #ffe5be;
     --theme-node-input-selected: var(--a-data-surface-5);
 
     /* Node border */
