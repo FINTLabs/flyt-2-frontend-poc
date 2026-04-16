@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import {
     type NodeProps,
     type Node,
@@ -13,12 +13,14 @@ import { getNodeIcon } from '~/demo/utils/nodeHandlers';
 import type { HandleData } from '~/types/handleTypes';
 import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
 import { DataTypeDefinition } from '~/types/data/datatypes';
-import { useFlow } from '~/context/flowContext';
 import { innerFlowInput, innerFlowOutput } from '~/mockData/nodes/general';
 import { createAlmostRandomId } from '~/demo/utils/generalUtils';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 
 import { getNodeMinHeight } from '~/utils/nodeSizeUtils';
+import { NODE_HEIGHT_EXPANDED, NODE_WIDTH_EXPANDED } from '~/utils/constants';
+import { getTypeFromCollection } from '~/utils/datatypeUtils';
+import type { InnerFlowDataNodeData } from '~/components/customNodes/InnerFlowDataNode';
 
 function ResizeIcon() {
     return (
@@ -43,7 +45,7 @@ function ResizeIcon() {
     );
 }
 
-type InnerFlowListOperationData = {
+export type InnerFlowListOperationData = {
     label: string;
     iconType?: string;
     sourceHandles?: HandleData[];
@@ -53,14 +55,13 @@ type InnerFlowListOperationData = {
 type InnerFlowListOperationType = Node<InnerFlowListOperationData, 'listOperation'>;
 
 export const InnerFlowListOperation = memo(
-    ({ id, data, isConnectable, type }: NodeProps<InnerFlowListOperationType>) => {
-        const { getCustomNodeDataById } = useFlow();
+    ({ id, data, isConnectable, width, height }: NodeProps<InnerFlowListOperationType>) => {
         const minHeight = getNodeMinHeight({
             sources: data.sourceHandles?.length,
             targets: data.targetHandles?.length,
         });
 
-        const { updateNode, updateEdge, getNode, addNodes, getNodes } = useReactFlow();
+        const { updateNode, updateEdge, getNode, addNodes, getNodes, setNodes } = useReactFlow();
         const updateNodeInternals = useUpdateNodeInternals();
         const targetConnections = useNodeConnections({
             handleType: 'target',
@@ -72,20 +73,41 @@ export const InnerFlowListOperation = memo(
         });
 
         const [targetEdge, setTargetEdge] = useState<NodeConnection | undefined>(undefined);
+        const [sourceEdge, setSourceEdge] = useState<NodeConnection | undefined>(undefined);
 
         useEffect(() => {
-            if (targetConnections.length > 0) {
-                setTargetEdge(targetConnections[0]);
+            if (!sourceEdge && sourceConnections.length > 0) {
+                const newConnection = sourceConnections[0];
+                setSourceEdge(newConnection);
+
+                const isParent = getNodes().some((node) => node.parentId === id);
+
+                if (!isParent) {
+                    // TODO: Handle if users adds output first?????
+                } else if (
+                    data.sourceHandles?.[0].type === DataTypeDefinition.CollectionUndefined
+                ) {
+                    updateSourceHandleAndOutputNode(newConnection);
+                }
+            }
+        }, [sourceConnections]);
+
+        useEffect(() => {
+            if (!targetEdge && targetConnections.length > 0) {
+                const newConnection = targetConnections[0];
+                setTargetEdge(newConnection);
+
+                const isParent = getNodes().some((node) => node.parentId === id);
+                if (!isParent) {
+                    createInnerFlowNodesOnInitialTargetConnection(newConnection);
+                }
             }
         }, [targetConnections]);
 
-        useEffect(() => {
-            if (
-                targetEdge &&
-                data.targetHandles?.[0]?.type === DataTypeDefinition.CollectionObject
-            ) {
-                console.log('FOUND EDGE', targetEdge, data);
+        const createInnerFlowNodesOnInitialTargetConnection = useCallback(
+            (targetEdge: NodeConnection) => {
                 const objectDefinitionNode = getNode(targetEdge.source)?.data;
+
                 if (objectDefinitionNode) {
                     const incomingObjectHandle = objectDefinitionNode.sourceHandles
                         ? Object.values(objectDefinitionNode.sourceHandles).find(
@@ -93,39 +115,43 @@ export const InnerFlowListOperation = memo(
                           )
                         : undefined;
 
-                    const objectHandle = {
-                        id: `${id}:t:a`,
+                    const newObjectData = {
                         label: incomingObjectHandle.label,
                         type: DataTypeDefinition.Object,
                         typeName: incomingObjectHandle.typeName,
                         required: true,
                     };
-                    /*               const objectDefinitionHandles = mockFetchDataContent(
-                        objectHandle.typeName || 'Object',
-                        objectHandle.label
-                    );
-*/
+
+                    const existingHandle = data.targetHandles?.[0];
+
+                    if (!existingHandle) return;
+
                     updateNode(id, {
                         data: {
                             ...data,
                             targetHandles: [
                                 {
-                                    ...objectHandle,
+                                    ...existingHandle,
+                                    ...newObjectData,
+                                    id: existingHandle.id,
                                     type: DataTypeDefinition.CollectionObject,
                                 },
                             ],
                         },
-                        style: { height: 150, width: 270 },
+                        style: { height: NODE_HEIGHT_EXPANDED, width: NODE_WIDTH_EXPANDED },
                     });
+
+                    const inputId = createAlmostRandomId('node-id', 'innerFlowInput');
                     addNodes([
                         {
                             ...innerFlowInput,
                             parentId: id,
                             extent: 'parent',
-                            position: { x: 10, y: 55 },
-                            id: createAlmostRandomId('node-id', 'innerFlowInput'),
+                            // draggable: false,
+                            position: { x: 10, y: NODE_HEIGHT_EXPANDED / 2 - 10 },
+                            id: inputId,
                             data: {
-                                sourceHandles: [objectHandle],
+                                sourceHandles: [{ ...newObjectData, id: `${inputId}:s:a` }],
                                 type: DataTypeDefinition.Object,
                                 typeName: incomingObjectHandle.typeName || 'Object',
                                 label: incomingObjectHandle.label || 'object',
@@ -135,19 +161,113 @@ export const InnerFlowListOperation = memo(
                             ...innerFlowOutput,
                             parentId: id,
                             extent: 'parent',
-                            position: { x: 170, y: 55 },
+                            // draggable: false,
+                            position: {
+                                x: NODE_WIDTH_EXPANDED - 100,
+                                y: NODE_HEIGHT_EXPANDED / 2 - 10,
+                            },
                             id: createAlmostRandomId('node-id', 'innerFlowOutput'),
                         },
                     ]);
+                    updateNodeInternals(id);
                 }
-                const handleID = { targetHandle: `${id}:t:a` };
-                updateEdge(targetEdge.edgeId, {
-                    ...targetEdge,
-                    ...handleID,
-                });
-                updateNodeInternals(id);
-            }
-        }, [targetEdge]);
+            },
+            [data]
+        );
+
+        const updateSourceHandleAndOutputNode = useCallback(
+            (sourceEdge: NodeConnection) => {
+                const objectDefinitionNode = getNode(sourceEdge.target)?.data;
+
+                if (objectDefinitionNode) {
+                    const incomingObjectHandle = objectDefinitionNode.targetHandles
+                        ? Object.values(objectDefinitionNode.targetHandles).find(
+                              (h) => h.id === sourceEdge.targetHandle
+                          )
+                        : undefined;
+
+                    const newSourceData = {
+                        label: incomingObjectHandle.label,
+                        type: incomingObjectHandle.type,
+                        typeName: incomingObjectHandle.typeName,
+                        required: true,
+                    };
+
+                    updateNode(id, {
+                        data: {
+                            ...data,
+                            sourceHandles: [{ ...data.sourceHandles?.[0], ...newSourceData }],
+                        },
+                    });
+
+                    const outputNode = getNodes().find(
+                        (node): node is Node<InnerFlowDataNodeData> =>
+                            node.parentId === id && node.type === 'innerFlowOutput'
+                    );
+
+                    if (outputNode && outputNode.data.type === DataTypeDefinition.Undefined) {
+                        const currentOutputHandle = outputNode.data.targetHandles;
+                        updateNode(outputNode.id, {
+                            ...outputNode,
+                            data: {
+                                ...outputNode.data,
+                                label: newSourceData.label,
+                                type: getTypeFromCollection(newSourceData.type),
+                                typeName: newSourceData.typeName,
+                                targetHandles: [
+                                    {
+                                        ...currentOutputHandle?.[0],
+                                        ...newSourceData,
+                                        type: getTypeFromCollection(newSourceData.type),
+                                    },
+                                ],
+                            },
+                        });
+                        updateNodeInternals([id, outputNode.id]);
+                    }
+                }
+            },
+            [data]
+        );
+
+        const updateInnerNodePositions = useCallback(
+            (width?: number, height?: number) => {
+                if (!width || !height) return;
+
+                setNodes((nodes) =>
+                    nodes.map((node) => {
+                        if (node.parentId !== id) return node;
+
+                        if (node.id.includes('innerFlowInput')) {
+                            return {
+                                ...node,
+                                position: {
+                                    x: 10,
+                                    y: height / 2 - 10,
+                                },
+                            };
+                        }
+
+                        if (node.id.includes('innerFlowOutput')) {
+                            return {
+                                ...node,
+                                position: {
+                                    x: width - 100,
+                                    y: height / 2 - 10,
+                                },
+                            };
+                        }
+
+                        return node;
+                    })
+                );
+            },
+            [id, setNodes]
+        );
+
+        useEffect(() => {
+            updateInnerNodePositions(width, height);
+        }, [width, height]);
 
         return (
             <NodeContainerWithProgress label={data.label} minHeight={minHeight.cssString}>

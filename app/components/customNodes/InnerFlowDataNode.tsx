@@ -1,4 +1,5 @@
-import type { HandleData } from '~/types/handleTypes';
+import React, { memo, useEffect, useMemo, useState } from 'react';
+import { Detail, HStack } from '@navikt/ds-react';
 import {
     type Node,
     type NodeConnection,
@@ -6,16 +7,17 @@ import {
     useNodeConnections,
     useNodesData,
     useReactFlow,
+    useUpdateNodeInternals,
 } from '@xyflow/react';
-import React, { memo, useEffect, useState } from 'react';
-import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
-import { BodyShort, HStack } from '@navikt/ds-react';
+import type { HandleData } from '~/types/handleTypes';
 import { DataTypeDefinition, type DataTypeValue } from '~/types/data/datatypes';
+import { NodeContainerWithProgress } from '~/components/customNodes/nodeLayout/NodeContainerWithProgress';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 import { TypeTag } from '~/components/customHandles/TypeTag';
 import { getCollectionTypeFromType } from '~/utils/datatypeUtils';
+import type { InnerFlowListOperationData } from '~/components/customNodes/OperationListInnerFlowNode';
 
-type InnerFlowDataNodeData = {
+export type InnerFlowDataNodeData = {
     label: string;
     type: DataTypeValue;
     typeName: string;
@@ -28,12 +30,15 @@ type InnerFlowDataNodeType = Node<InnerFlowDataNodeData, 'innerFlowInput' | 'inn
 
 export const InnerFlowDataNode = memo(
     ({ id, data, isConnectable, type, parentId }: NodeProps<InnerFlowDataNodeType>) => {
-        const { updateNode, getNode } = useReactFlow();
+        const { updateNode, updateNodeData, getNode } = useReactFlow();
+        const updateNodeInternals = useUpdateNodeInternals();
 
         const isInput = type === 'innerFlowInput';
         const handleType = isInput ? 'source' : 'target';
 
-        const parentNode = parentId && useNodesData(parentId);
+        const parentNode = parentId
+            ? useNodesData<Node<InnerFlowListOperationData>>(parentId)
+            : undefined;
 
         const targetConnections = useNodeConnections({
             handleType: 'target',
@@ -51,7 +56,6 @@ export const InnerFlowDataNode = memo(
             if (!isInput && targetEdge && data.type === DataTypeDefinition.Undefined) {
                 const objectDefinitionNode = getNode(targetEdge.source)?.data;
                 if (objectDefinitionNode) {
-                    console.log('objectDefinitionNode: ', objectDefinitionNode);
                     const incomingObjectHandle: HandleData | undefined =
                         objectDefinitionNode.sourceHandles
                             ? Object.values(objectDefinitionNode.sourceHandles).find(
@@ -60,48 +64,55 @@ export const InnerFlowDataNode = memo(
                             : undefined;
 
                     if (!incomingObjectHandle) return;
-                    console.log('incomingObjectHandle: ', incomingObjectHandle);
 
-                    const objectHandle = {
-                        id: `${id}:t:a`,
+                    const objectHandleData = {
                         label: incomingObjectHandle.label,
                         type: incomingObjectHandle.type,
                         typeName: incomingObjectHandle.typeName,
                         required: incomingObjectHandle.required,
                     };
 
-                    updateNode(id, {
-                        data: {
-                            ...data,
-                            type: objectHandle.type,
-                            label: objectHandle.label,
-                            typeName: objectHandle.typeName,
-                            targetHandles: [objectHandle],
-                        },
+                    updateNodeData(id, {
+                        type: objectHandleData.type,
+                        label: objectHandleData.label,
+                        typeName: objectHandleData.typeName,
+
+                        targetHandles: [
+                            {
+                                ...(data?.targetHandles?.[0] ?? { id: `${id}:t:a` }),
+                                ...objectHandleData,
+                            },
+                        ],
                     });
+
+                    updateNodeInternals(id);
+
                     if (parentId && parentNode) {
+                        const currentParentSourceHandles = parentNode.data.sourceHandles;
                         updateNode(parentId, {
                             ...parentNode,
                             data: {
                                 ...parentNode.data,
                                 sourceHandles: [
                                     {
-                                        ...objectHandle,
-                                        type: getCollectionTypeFromType(objectHandle.type),
+                                        ...currentParentSourceHandles?.[0],
+                                        ...objectHandleData,
+                                        type: getCollectionTypeFromType(objectHandleData.type),
                                     },
                                 ],
                             },
                         });
+                        updateNodeInternals(id);
                     }
                 }
             }
         }, [targetEdge]);
 
         return (
-            <NodeContainerWithProgress>
+            <NodeContainerWithProgress padding={'2px 5px'}>
                 <HStack align={'center'} gap="1">
-                    <TypeTag type={data.type} typeName={data.typeName} />
-                    <BodyShort size={'small'}>{data.label}</BodyShort>
+                    <TypeTag type={data.type} typeName={data.typeName} size={'small'} />
+                    <Detail style={{ textWrap: 'nowrap', lineHeight: '1rem' }}>{data.label}</Detail>
                 </HStack>
                 {data.sourceHandles?.length && (
                     <HandlesWithLabel

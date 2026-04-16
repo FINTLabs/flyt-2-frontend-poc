@@ -49,6 +49,10 @@ export const isObjectSameAsCollection = (handle1: HandleData, handle2: HandleDat
     if (isCollectionType(handle1.type) && isCollectionType(handle2.type)) {
         const collectionType1 = getTypeFromCollection(handle1.type);
         const collectionType2 = getTypeFromCollection(handle2.type);
+
+        if ([collectionType1, collectionType2].includes(DataTypeDefinition.Undefined)) {
+            return true;
+        }
         return isObjectTypeEqual(
             collectionType1,
             handle1.typeName,
@@ -77,10 +81,11 @@ export const isConnectionAllowed = (
     sourceNode: Node,
     targetNode: Node
 ): boolean => {
-    if (targetNode.type === 'innerFlowOutput') return true;
+    if (targetNode?.type === 'innerFlowOutput') return true;
 
     const sourceNodeData = sourceNode.data;
     const targetNodeData = targetNode.data;
+
     if (!sourceNodeData || !targetNodeData) return false;
 
     const sourceHandle: HandleData = sourceNodeData.sourceHandles
@@ -92,9 +97,17 @@ export const isConnectionAllowed = (
         : targetNodeData;
 
     if (
-        sourceNode.type &&
-        ['openObject', 'createObject'].includes(sourceNode.type) &&
+        sourceNode?.type &&
+        sourceNode.type === 'createObject' &&
         (targetHandle.type === DataTypeDefinition.Object || isCollectionType(targetHandle.type))
+    ) {
+        return true;
+    }
+
+    if (
+        targetNode?.type &&
+        targetNode.type === 'openObject' &&
+        (sourceHandle.type === DataTypeDefinition.Object || isCollectionType(sourceHandle.type))
     ) {
         return true;
     }

@@ -29,7 +29,7 @@ import { SmartStepEdge } from '@tisoap/react-flow-smart-edge';
 import { useFlow } from '~/context/flowContext';
 import useLayoutNodes from '~/context/useLayoutNodes';
 import type { CustomNodeDemo } from '~/types/nodeTypes';
-import { IGNORED_CHANGES, NODE_BASE_HEIGHT } from '~/utils/constants';
+import { IGNORED_CHANGES, NODE_BASE_HEIGHT, NODE_BASE_WIDTH } from '~/utils/constants';
 import { getMinimapNodeColor, getMinimapNodeStrokeColor } from '~/utils/minimapUtils';
 import { isConnectionAllowed } from '~/utils/datatypeUtils';
 import { nodeTypes } from '~/components/customNodes/nodetypes';
@@ -70,14 +70,17 @@ const Flow = () => {
     }, [nodes, edges]);
 
     const handleNodePosition = useCallback(
-        (node: CustomNodeDemo, position?: XYPosition): CustomNodeDemo => {
+        (node: CustomNodeDemo, position: XYPosition): CustomNodeDemo => {
             const intersections = getIntersectingNodes(
-                position ? { ...position, width: NODE_BASE_HEIGHT, height: NODE_BASE_HEIGHT } : node
+                position ? { ...position, width: NODE_BASE_WIDTH, height: NODE_BASE_HEIGHT } : node
             );
 
-            if (intersections.some((n) => n.type === 'listOperation')) {
-                const parentNode = intersections.find((n) => n.type === 'listOperation');
-                return { ...node, parentId: parentNode?.id };
+            if (intersections.some((n) => n.type === 'listOperation' || n.type === 'innerFlow')) {
+                const parentNode = intersections.find(
+                    (n) => n.type === 'listOperation' || n.type === 'innerFlow'
+                );
+
+                return { ...node, parentId: parentNode?.id, extent: 'parent' };
             } else if (position) {
                 return { ...node, position };
             } else {
@@ -113,12 +116,10 @@ const Flow = () => {
         (event: React.DragEvent) => {
             event.preventDefault();
             if (!newNodeId) return;
-            console.log('event', event);
             const position = screenToFlowPosition({ x: event.clientX, y: event.clientY });
             let newNode = getCustomNodeDataById(newNodeId);
             const positionedNode = handleNodePosition(newNode, position);
 
-            console.log('New node:', positionedNode);
             setNodes((nds) => [...nds, positionedNode]);
             updateNodeInternals(positionedNode.id);
             setHasChanged(true);
@@ -131,7 +132,6 @@ const Flow = () => {
         event: React.DragEvent<HTMLDivElement>,
         nodeId: string
     ) => {
-        console.log('Flow onDragStart', nodeId);
         setNewNodeId(nodeId);
         event.dataTransfer.setData('text/plain', nodeId);
         event.dataTransfer.effectAllowed = 'move';

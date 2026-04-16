@@ -12,7 +12,8 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test": "vitest watch"
   },
   "dependencies": {
     "@navikt/ds-css": "^7.23.0",
@@ -38,6 +39,7 @@
     "tailwindcss": "^4.1.17",
     "typescript": "^5.8.3",
     "vite": "6.4.1",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.1.3"
   }
 }
