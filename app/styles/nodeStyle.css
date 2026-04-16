@@ -6,7 +6,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 5px;
+
     flex-direction: column;
     border: var(--theme-node-border-default);
     color: var(--xy-node-color-default);
@@ -50,13 +50,11 @@
 }
 
 .react-flow__node-innerFlowInput,
-.menu-node-innerFlowInput {
-    background-color: var(--theme-node-lightblue);
-}
-
+.menu-node-innerFlowInput,
 .react-flow__node-innerFlowOutput,
 .menu-node-innerFlowOutput {
-    background-color: var(--theme-node-lightred);
+    background-color: var(--theme-node-beige);
+
 }
 
 .react-flow__node-openObject,

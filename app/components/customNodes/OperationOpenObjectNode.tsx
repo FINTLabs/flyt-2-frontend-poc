@@ -100,15 +100,10 @@ export const OperationOpenObjectNode = memo(
             (newEdge: NodeConnection) => {
                 const targetNodeData = getNode(newEdge.target)?.data;
 
-                console.log('=== targetNodeData', targetNodeData);
-
                 if (targetNodeData && targetNodeData.targetHandles) {
                     const targetHandle = Object.values(targetNodeData.targetHandles).find(
                         (h) => h.id === newEdge.targetHandle
                     );
-
-                    console.log('=== targetHandle', targetHandle);
-
                     const handleID = `${id}:s:a`;
                     let type = DataTypeDefinition.Object;
                     let typeName = targetHandle.typeName ?? targetNodeData.typeName;

@@ -75,7 +75,7 @@ export type HandleWithLabelProps = {
     handlePosition: string;
 };
 
-const HandleWithLabel = ({
+export const HandleWithLabel = ({
     handle,
     type,
     isConnectable,
