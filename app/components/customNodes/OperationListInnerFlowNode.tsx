@@ -61,7 +61,7 @@ export const InnerFlowListOperation = memo(
             targets: data.targetHandles?.length,
         });
 
-        const { updateNode, updateEdge, getNode, addNodes, getNodes, setNodes } = useReactFlow();
+        const { updateNode, getNode, addNodes, getNodes, setNodes } = useReactFlow();
         const updateNodeInternals = useUpdateNodeInternals();
         const targetConnections = useNodeConnections({
             handleType: 'target',
@@ -74,6 +74,12 @@ export const InnerFlowListOperation = memo(
 
         const [targetEdge, setTargetEdge] = useState<NodeConnection | undefined>(undefined);
         const [sourceEdge, setSourceEdge] = useState<NodeConnection | undefined>(undefined);
+        const [nodeHeight, setNodeHeight] = useState<number>(0);
+        const [nodeWidth, setNodeWidth] = useState<number>(0);
+
+        useEffect(() => {
+            console.log('Size: ', width, height);
+        }, []);
 
         useEffect(() => {
             if (!sourceEdge && sourceConnections.length > 0) {
@@ -270,7 +276,12 @@ export const InnerFlowListOperation = memo(
         }, [width, height]);
 
         return (
-            <NodeContainerWithProgress label={data.label} minHeight={minHeight.cssString}>
+            <NodeContainerWithProgress
+                label={data.label}
+                minHeight={minHeight.cssString}
+                height={height ? `${height}px` : minHeight.cssString}
+                width={width ? `${width}px` : minHeight.cssString}
+            >
                 <HandlesWithLabel
                     handles={data.targetHandles}
                     type={'target'}
@@ -280,7 +291,7 @@ export const InnerFlowListOperation = memo(
                     align={'center'}
                     justify={'center'}
                     gap="1"
-                    style={{ minHeight: minHeight.cssString }}
+                    style={{ minHeight: minHeight.cssString, height, width }}
                     padding={'1'}
                 >
                     {targetConnections.length === 0 && data.iconType && getNodeIcon(data.iconType)}

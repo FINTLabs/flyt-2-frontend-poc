@@ -14,6 +14,7 @@ interface BaseNodeWrapperProps {
     currentStep?: number;
     maxWidth?: string;
     width?: string;
+    height?: string;
     sublabel?: string;
 }
 
@@ -27,6 +28,7 @@ export const NodeContainerWithProgress: React.FC<BaseNodeWrapperProps> = ({
     currentStep,
     maxWidth,
     width,
+    height,
 }) => {
     const { flowState, isEditable } = useFlow();
 
@@ -36,7 +38,7 @@ export const NodeContainerWithProgress: React.FC<BaseNodeWrapperProps> = ({
     }, [flowState, currentStep]);
 
     return (
-        <Box style={{ minHeight, padding: padding, maxWidth, width }}>
+        <Box style={{ minHeight, padding: padding, maxWidth, width, height }}>
             {label && <NodeLabel label={label} italic={italic} sublabel={sublabel} />}
             {nodeState && (
                 <Box
