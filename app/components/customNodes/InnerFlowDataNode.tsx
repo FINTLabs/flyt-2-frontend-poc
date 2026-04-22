@@ -110,7 +110,7 @@ export const InnerFlowDataNode = memo(
 
         return (
             <NodeContainerWithProgress padding={'2px 5px'}>
-                <HStack align={'center'} gap="1">
+                <HStack align={'center'} gap="1" wrap={false}>
                     <TypeTag type={data.type} typeName={data.typeName} size={'small'} />
                     <Detail style={{ textWrap: 'nowrap', lineHeight: '1rem' }}>{data.label}</Detail>
                 </HStack>
