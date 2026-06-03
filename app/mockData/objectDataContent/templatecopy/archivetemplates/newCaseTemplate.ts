@@ -1,9 +1,9 @@
-import type {
-    IElementTemplate,
-    IMappingTemplate,
-    IObjectTemplate,
-    ISelectableValueTemplate,
-    IValueTemplate,
+import {
+    type IElementTemplate,
+    type IObjectTemplate,
+    type ISelectableValueTemplate,
+    type IValueTemplate,
+    ValueType,
 } from '~/mockData/objectDataContent/templatecopy/archivetemplates/types';
 
 const title_valueTemplate: IElementTemplate<IValueTemplate> = {
@@ -13,7 +13,7 @@ const title_valueTemplate: IElementTemplate<IValueTemplate> = {
         displayName: 'Tittel',
         description: 'Tittel',
     },
-    template: { type: 'DYNAMIC_STRING' },
+    template: { type: ValueType.DYNAMIC_STRING },
 };
 
 const offentligTittel_valeTemplate: IElementTemplate<IValueTemplate> = {
@@ -23,7 +23,7 @@ const offentligTittel_valeTemplate: IElementTemplate<IValueTemplate> = {
         displayName: 'Offentlig tittel',
         description: 'Offentlig tittel. Husk å legge til eventuell skjerming.',
     },
-    template: { type: 'DYNAMIC_STRING' },
+    template: { type: ValueType.DYNAMIC_STRING },
 };
 
 const saksmappetype_selectableValueTemplates: IElementTemplate<ISelectableValueTemplate> = {
@@ -198,7 +198,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                     displayName: 'Navn',
                                     description: 'Navn på virksomhet eller person',
                                 },
-                                template: { type: 'DYNAMIC_STRING' },
+                                template: { type: ValueType.DYNAMIC_STRING },
                             },
                             {
                                 order: 2,
@@ -207,7 +207,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                     displayName: 'Kontaktperson',
                                     description: 'Kontaktperson hos en organisasjon',
                                 },
-                                template: { type: 'DYNAMIC_STRING' },
+                                template: { type: ValueType.DYNAMIC_STRING },
                             },
                             {
                                 order: 3,
@@ -216,7 +216,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                     displayName: 'Organisasjonsnummer',
                                     description: 'Organisasjonsnummer',
                                 },
-                                template: { type: 'DYNAMIC_STRING' },
+                                template: { type: ValueType.DYNAMIC_STRING },
                             },
                             {
                                 order: 4,
@@ -225,7 +225,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                     displayName: 'Fødselsnummer',
                                     description: 'Fødselsnummer',
                                 },
-                                template: { type: 'DYNAMIC_STRING' },
+                                template: { type: ValueType.DYNAMIC_STRING },
                             },
                         ],
                         selectableValueTemplates: [
@@ -263,7 +263,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                 displayName: 'Postnummer',
                                                 description: 'Postnummer',
                                             },
-                                            template: { type: 'DYNAMIC_STRING' },
+                                            template: { type: ValueType.DYNAMIC_STRING },
                                         },
                                         {
                                             order: 2,
@@ -272,7 +272,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                 displayName: 'Poststed',
                                                 description: 'Poststed',
                                             },
-                                            template: { type: 'DYNAMIC_STRING' },
+                                            template: { type: ValueType.DYNAMIC_STRING },
                                         },
                                     ],
                                     valueCollectionTemplates: [
@@ -286,7 +286,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                             },
                                             template: {
                                                 elementTemplate: {
-                                                    type: 'DYNAMIC_STRING',
+                                                    type: ValueType.DYNAMIC_STRING,
                                                 },
                                             },
                                         },
@@ -309,7 +309,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                 displayName: 'E-post',
                                                 description: 'E-postadresse',
                                             },
-                                            template: { type: 'DYNAMIC_STRING' },
+                                            template: { type: ValueType.DYNAMIC_STRING },
                                         },
                                         {
                                             order: 1,
@@ -318,7 +318,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                 displayName: 'Mobiltelefonnummer',
                                                 description: 'Mobiltelefonnummer',
                                             },
-                                            template: { type: 'DYNAMIC_STRING' },
+                                            template: { type: ValueType.DYNAMIC_STRING },
                                         },
                                         {
                                             order: 2,
@@ -327,7 +327,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                 displayName: 'Telefonnummer',
                                                 description: 'Telefonnummer',
                                             },
-                                            template: { type: 'DYNAMIC_STRING' },
+                                            template: { type: ValueType.DYNAMIC_STRING },
                                         },
                                     ],
                                 },
@@ -354,7 +354,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                     description:
                                         'Rekkefølge for klassifiseringer. \\nVed bruk av primær, sekundær og tertiærklasseringer, bruk følgende verdier: \\n1 for primær, 2 for sekundær, og 3 for tertiær.',
                                 },
-                                template: { type: 'STRING' },
+                                template: { type: ValueType.STRING },
                             },
                             {
                                 order: 3,
@@ -363,7 +363,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                     displayName: 'Tittel',
                                     description: 'Tittel eller navn på arkivenheten',
                                 },
-                                template: { type: 'DYNAMIC_STRING' },
+                                template: { type: ValueType.DYNAMIC_STRING },
                             },
                         ],
                         selectableValueTemplates: [
@@ -477,7 +477,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                     displayName: 'Tittel',
                                     description: 'Tittel',
                                 },
-                                template: { type: 'DYNAMIC_STRING' },
+                                template: { type: ValueType.DYNAMIC_STRING },
                             },
                             {
                                 order: 1,
@@ -487,7 +487,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                     description:
                                         'Offentlig tittel. Husk å legge til eventuell skjerming.',
                                 },
-                                template: { type: 'DYNAMIC_STRING' },
+                                template: { type: ValueType.DYNAMIC_STRING },
                             },
                         ],
                         selectableValueTemplates: [
@@ -645,7 +645,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                     displayName: 'Organisasjonsnummer',
                                                     description: 'Organisasjonsnummer',
                                                 },
-                                                template: { type: 'DYNAMIC_STRING' },
+                                                template: { type: ValueType.DYNAMIC_STRING },
                                             },
                                             {
                                                 order: 2,
@@ -654,7 +654,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                     displayName: 'Fødselsnummer',
                                                     description: 'Fødselsnummer',
                                                 },
-                                                template: { type: 'DYNAMIC_STRING' },
+                                                template: { type: ValueType.DYNAMIC_STRING },
                                             },
                                             {
                                                 order: 3,
@@ -664,7 +664,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                     description:
                                                         'Navn på person eller organisasjon',
                                                 },
-                                                template: { type: 'DYNAMIC_STRING' },
+                                                template: { type: ValueType.DYNAMIC_STRING },
                                             },
                                             {
                                                 order: 4,
@@ -674,7 +674,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                     description:
                                                         'Kontaktperson hos en organisasjon',
                                                 },
-                                                template: { type: 'DYNAMIC_STRING' },
+                                                template: { type: ValueType.DYNAMIC_STRING },
                                             },
                                         ],
                                         selectableValueTemplates: [
@@ -714,7 +714,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                                 description: 'Postnummer',
                                                             },
                                                             template: {
-                                                                type: 'DYNAMIC_STRING',
+                                                                type: ValueType.DYNAMIC_STRING,
                                                             },
                                                         },
                                                         {
@@ -725,7 +725,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                                 description: 'Poststed',
                                                             },
                                                             template: {
-                                                                type: 'DYNAMIC_STRING',
+                                                                type: ValueType.DYNAMIC_STRING,
                                                             },
                                                         },
                                                     ],
@@ -740,7 +740,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                             },
                                                             template: {
                                                                 elementTemplate: {
-                                                                    type: 'DYNAMIC_STRING',
+                                                                    type: ValueType.DYNAMIC_STRING,
                                                                 },
                                                             },
                                                         },
@@ -764,7 +764,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                                 description: 'E-postadresse',
                                                             },
                                                             template: {
-                                                                type: 'DYNAMIC_STRING',
+                                                                type: ValueType.DYNAMIC_STRING,
                                                             },
                                                         },
                                                         {
@@ -775,7 +775,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                                 description: 'Mobiltelefonnummer',
                                                             },
                                                             template: {
-                                                                type: 'DYNAMIC_STRING',
+                                                                type: ValueType.DYNAMIC_STRING,
                                                             },
                                                         },
                                                         {
@@ -786,7 +786,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                                 description: 'Telefonnummer',
                                                             },
                                                             template: {
-                                                                type: 'DYNAMIC_STRING',
+                                                                type: ValueType.DYNAMIC_STRING,
                                                             },
                                                         },
                                                     ],
@@ -862,7 +862,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                     description:
                                                         'Tittel eller navn på arkivenheten',
                                                 },
-                                                template: { type: 'DYNAMIC_STRING' },
+                                                template: { type: ValueType.DYNAMIC_STRING },
                                             },
                                         ],
                                         selectableValueTemplates: [
@@ -990,7 +990,7 @@ export const objectTemplateCaseNEW: IElementTemplate<IObjectTemplate> = {
                                                                         'Referanse til filen som inneholder det elektroniske dokumentet som dokumentobjektet beskriver',
                                                                 },
                                                                 template: {
-                                                                    type: 'FILE',
+                                                                    type: ValueType.FILE,
                                                                 },
                                                             },
                                                         ],
