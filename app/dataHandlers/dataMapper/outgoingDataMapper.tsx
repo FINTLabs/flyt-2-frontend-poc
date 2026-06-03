@@ -3,7 +3,6 @@ import type { IConfiguration, IValueMapping } from '~/types/data/configuration';
 import type { CustomNode, DynamicStringNodeData } from '~/types/flow/nodes';
 import type { Edge, Node } from '@xyflow/react';
 import { defaultPosition } from '~/utils/constants';
-import { DataTypeDefinition } from '~/types/data/datatypes';
 import { DataValueTypeAPI } from '~/types/data/dataValueTypeAPI';
 
 const createNodeForValueMappingPerKey = (

@@ -1,7 +1,8 @@
-import type {
-    IElementTemplate,
-    IMappingTemplate,
-    IObjectTemplate,
+import {
+    type IElementTemplate,
+    type IMappingTemplate,
+    type IObjectTemplate,
+    ValueType,
 } from '~/mockData/objectDataContent/templatecopy/archivetemplates/types';
 import { objectTemplateCaseNEW } from '~/mockData/objectDataContent/templatecopy/archivetemplates/newCaseTemplate';
 
@@ -587,7 +588,7 @@ const objectTemplateCaseBY_SEARCH_OR_NEW: IElementTemplate<IObjectTemplate> = {
                     displayName: 'Arkivdel',
                     description: '',
                 },
-                template: { type: 'BOOLEAN' },
+                template: { type: ValueType.BOOLEAN },
             },
             {
                 order: 1,
@@ -596,7 +597,7 @@ const objectTemplateCaseBY_SEARCH_OR_NEW: IElementTemplate<IObjectTemplate> = {
                     displayName: 'Administrativ enhet',
                     description: '',
                 },
-                template: { type: 'BOOLEAN' },
+                template: { type: ValueType.BOOLEAN },
             },
             {
                 order: 2,
@@ -605,7 +606,7 @@ const objectTemplateCaseBY_SEARCH_OR_NEW: IElementTemplate<IObjectTemplate> = {
                     displayName: 'Tilgangsrestriksjon',
                     description: '',
                 },
-                template: { type: 'BOOLEAN' },
+                template: { type: ValueType.BOOLEAN },
             },
             {
                 order: 3,
@@ -614,7 +615,7 @@ const objectTemplateCaseBY_SEARCH_OR_NEW: IElementTemplate<IObjectTemplate> = {
                     displayName: 'Saksmappetype',
                     description: '',
                 },
-                template: { type: 'BOOLEAN' },
+                template: { type: ValueType.BOOLEAN },
             },
             {
                 order: 4,
@@ -623,7 +624,7 @@ const objectTemplateCaseBY_SEARCH_OR_NEW: IElementTemplate<IObjectTemplate> = {
                     displayName: 'Saksstatus',
                     description: '',
                 },
-                template: { type: 'BOOLEAN' },
+                template: { type: ValueType.BOOLEAN },
             },
             {
                 order: 5,
@@ -632,7 +633,7 @@ const objectTemplateCaseBY_SEARCH_OR_NEW: IElementTemplate<IObjectTemplate> = {
                     displayName: 'Tittel',
                     description: '',
                 },
-                template: { type: 'BOOLEAN' },
+                template: { type: ValueType.BOOLEAN },
             },
             {
                 order: 6,
@@ -641,7 +642,7 @@ const objectTemplateCaseBY_SEARCH_OR_NEW: IElementTemplate<IObjectTemplate> = {
                     displayName: 'Klassering',
                     description: '',
                 },
-                template: { type: 'BOOLEAN' },
+                template: { type: ValueType.BOOLEAN },
             },
             {
                 order: 7,
@@ -653,7 +654,7 @@ const objectTemplateCaseBY_SEARCH_OR_NEW: IElementTemplate<IObjectTemplate> = {
                         hasAnyCombination: [[{ key: 'klassering', defined: true, value: 'true' }]],
                     },
                 },
-                template: { type: 'STRING' },
+                template: { type: ValueType.STRING },
             },
             {
                 order: 8,
@@ -674,7 +675,7 @@ const objectTemplateCaseBY_SEARCH_OR_NEW: IElementTemplate<IObjectTemplate> = {
                         ],
                     },
                 },
-                template: { type: 'BOOLEAN' },
+                template: { type: ValueType.BOOLEAN },
             },
             {
                 order: 9,
@@ -695,7 +696,7 @@ const objectTemplateCaseBY_SEARCH_OR_NEW: IElementTemplate<IObjectTemplate> = {
                         ],
                     },
                 },
-                template: { type: 'BOOLEAN' },
+                template: { type: ValueType.BOOLEAN },
             },
         ],
     },
@@ -725,7 +726,7 @@ const testObjectTemplateSak: IMappingTemplate = {
                     },
                 },
                 template: {
-                    type: 'DYNAMIC_STRING',
+                    type: ValueType.DYNAMIC_STRING,
                     search: {
                         urlTemplate: 'api/intern/arkiv/saker/{caseId}/tittel',
                         valueRefPerPathParamKey: {
