@@ -5,7 +5,6 @@
   "engines": {
     "node": ">=22.12.0"
   },
-  "proxy": "http://localhost:8080",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
@@ -16,30 +15,30 @@
     "test": "vitest watch"
   },
   "dependencies": {
-    "@navikt/ds-css": "^7.23.0",
-    "@navikt/ds-react": "^7.23.0",
-    "@react-router/node": "7.13.1",
-    "@react-router/serve": "7.13.1",
+    "@navikt/ds-css": "^7.40.0",
+    "@navikt/ds-react": "^7.40.0",
+    "@react-router/node": "7.16.0",
+    "@react-router/serve": "7.16.0",
     "@tisoap/react-flow-smart-edge": "^4.0.1",
     "@xyflow/react": "^12.10.1",
     "elkjs": "^0.11.0",
-    "isbot": "^5.1.27",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "react-hook-form": "^7.70.0",
-    "react-router": "7.13.1"
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "react-hook-form": "^7.77.0",
+    "react-router": "7.16.0",
+    "isbot": "^5"
   },
   "devDependencies": {
-    "@react-router/dev": "7.13.1",
+    "@react-router/dev": "7.16.0",
     "@tailwindcss/vite": "^4.1.17",
-    "@types/node": "^24",
-    "@types/react": "19.2.3",
+    "@types/node": "^25.9.1",
+    "@types/react": "19.2.16",
     "@types/react-dom": "19.2.3",
     "prettier": "^3.5.3",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.8.3",
     "vite": "6.4.2",
-    "vite-tsconfig-paths": "^5.1.4",
+    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.3"
   }
 }

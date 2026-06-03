@@ -4,9 +4,7 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(({mode}) => {
-
     const basePath = process.env.BASE_PATH ? `${process.env.BASE_PATH ?? ''}/` : ''
-    console.log("=== basePath", basePath);
 
     return {
         plugins: [tailwindcssVite(), reactRouter(), tsconfigPaths()],
