@@ -24,7 +24,6 @@ import {
     useUpdateNodeInternals,
     type XYPosition,
 } from '@xyflow/react';
-import { SmartStepEdge } from '@tisoap/react-flow-smart-edge';
 
 import { useFlow } from '~/context/flowContext';
 import useLayoutNodes from '~/context/useLayoutNodes';
@@ -34,10 +33,6 @@ import { getMinimapNodeColor, getMinimapNodeStrokeColor } from '~/utils/minimapU
 import { isConnectionAllowed } from '~/utils/datatypeUtils';
 import { nodeTypes } from '~/components/customNodes/nodetypes';
 import { allIntegrationsNodes } from '~/mockData/nodes/instances';
-
-const edgeTypes = {
-    smart: SmartStepEdge,
-};
 
 const Flow = () => {
     const {
@@ -181,7 +176,6 @@ const Flow = () => {
             isValidConnection={isValidConnection}
             onDragOver={onDragOver}
             nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
             fitView
             defaultEdgeOptions={{ type: 'smoothstep' }}
             selectNodesOnDrag={false}

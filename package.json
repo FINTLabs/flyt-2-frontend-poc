@@ -19,7 +19,6 @@
     "@navikt/ds-react": "^7.40.0",
     "@react-router/node": "7.16.0",
     "@react-router/serve": "7.16.0",
-    "@tisoap/react-flow-smart-edge": "^4.0.1",
     "@xyflow/react": "^12.10.1",
     "elkjs": "^0.11.0",
     "react": "19.2.7",
