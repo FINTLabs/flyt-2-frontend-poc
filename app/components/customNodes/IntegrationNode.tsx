@@ -22,9 +22,11 @@ export const IntegrationNode = memo(
     ({ data, isConnectable, type }: NodeProps<IntegrationNodeType>) => {
         return (
             <NodeContainerWithProgress>
-                <HStack align={'center'} gap="2" paddingInline={'1 2'}>
+                <HStack align={'center'} gap="2" paddingInline={'1 3'} wrap={false}>
                     {getNodeIcon(data.iconType)}
-                    <BodyShort size={'small'}>{data.label}</BodyShort>
+                    <BodyShort className="whitespace-nowrap" size={'small'}>
+                        {data.label}
+                    </BodyShort>
                 </HStack>
                 {data.sourceHandles?.length && (
                     <HandlesWithLabel
