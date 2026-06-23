@@ -1,4 +1,6 @@
 import { HANDLE_INTERVAL, NODE_BASE_HEIGHT } from '~/utils/constants';
+import type { NodeHandle } from '@xyflow/react';
+import type { HandleData } from '~/types/handleTypes';
 
 export const getNodeMinHeight = ({
     targets,

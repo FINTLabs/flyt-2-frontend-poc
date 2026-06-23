@@ -18,7 +18,12 @@ import { createAlmostRandomId } from '~/demo/utils/generalUtils';
 import { HandlesWithLabel } from '~/components/customHandles/HandlesWithLabel';
 
 import { getNodeMinHeight } from '~/utils/nodeSizeUtils';
-import { NODE_HEIGHT_EXPANDED, NODE_WIDTH_EXPANDED } from '~/utils/constants';
+import {
+    NODE_BASE_HEIGHT,
+    NODE_BASE_WIDTH,
+    NODE_HEIGHT_EXPANDED,
+    NODE_WIDTH_EXPANDED,
+} from '~/utils/constants';
 import { getTypeFromCollection } from '~/utils/datatypeUtils';
 import type { InnerFlowDataNodeData } from '~/components/customNodes/InnerFlowDataNode';
 
@@ -74,12 +79,13 @@ export const InnerFlowListOperation = memo(
 
         const [targetEdge, setTargetEdge] = useState<NodeConnection | undefined>(undefined);
         const [sourceEdge, setSourceEdge] = useState<NodeConnection | undefined>(undefined);
-        const [nodeHeight, setNodeHeight] = useState<number>(0);
-        const [nodeWidth, setNodeWidth] = useState<number>(0);
+        const [nodeHeight, setNodeHeight] = useState<number>(NODE_BASE_HEIGHT);
+        const [nodeWidth, setNodeWidth] = useState<number>(NODE_BASE_WIDTH);
 
         useEffect(() => {
             console.log('Size: ', width, height);
-        }, []);
+            console.log('minHeight: ', minHeight.cssString);
+        }, [width, height, minHeight.cssString]);
 
         useEffect(() => {
             if (!sourceEdge && sourceConnections.length > 0) {
@@ -112,6 +118,7 @@ export const InnerFlowListOperation = memo(
 
         const createInnerFlowNodesOnInitialTargetConnection = useCallback(
             (targetEdge: NodeConnection) => {
+                console.log('= createInnerFlowNodesOnInitialTargetConnection', targetEdge);
                 const objectDefinitionNode = getNode(targetEdge.source)?.data;
 
                 if (objectDefinitionNode) {
@@ -183,6 +190,7 @@ export const InnerFlowListOperation = memo(
 
         const updateSourceHandleAndOutputNode = useCallback(
             (sourceEdge: NodeConnection) => {
+                console.log('= updateSourceHandleAndOutputNode', sourceEdge);
                 const objectDefinitionNode = getNode(sourceEdge.target)?.data;
 
                 if (objectDefinitionNode) {
@@ -240,6 +248,8 @@ export const InnerFlowListOperation = memo(
             (width?: number, height?: number) => {
                 if (!width || !height) return;
 
+                // console.log('updateInnerNodePositions', width, height);
+
                 setNodes((nodes) =>
                     nodes.map((node) => {
                         if (node.parentId !== id) return node;
@@ -272,6 +282,7 @@ export const InnerFlowListOperation = memo(
         );
 
         useEffect(() => {
+            if (width === nodeWidth && height === nodeHeight) return;
             updateInnerNodePositions(width, height);
         }, [width, height]);
 
@@ -279,8 +290,8 @@ export const InnerFlowListOperation = memo(
             <NodeContainerWithProgress
                 label={data.label}
                 minHeight={minHeight.cssString}
-                height={height ? `${height}px` : minHeight.cssString}
-                width={width ? `${width}px` : minHeight.cssString}
+                height={`${nodeHeight}px`}
+                width={`${nodeWidth}px`}
             >
                 <HandlesWithLabel
                     handles={data.targetHandles}
