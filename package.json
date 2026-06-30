@@ -28,7 +28,7 @@
     "isbot": "^5"
   },
   "devDependencies": {
-    "@react-router/dev": "7.16.0",
+    "@react-router/dev": "8.1.0",
     "@tailwindcss/vite": "^4.1.17",
     "@types/node": "^25.9.1",
     "@types/react": "19.2.16",
@@ -36,7 +36,7 @@
     "prettier": "^3.5.3",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.8.3",
-    "vite": "6.4.2",
+    "vite": "8.1.0",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.3"
   }
