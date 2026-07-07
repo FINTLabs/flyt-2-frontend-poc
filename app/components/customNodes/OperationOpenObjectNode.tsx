@@ -106,7 +106,6 @@ export const OperationOpenObjectNode = memo(
                     );
                     const handleID = `${id}:s:a`;
                     let type = DataTypeDefinition.Object;
-                    let typeName = targetHandle.typeName ?? targetNodeData.typeName;
 
                     if (targetHandle.type === DataTypeDefinition.CollectionText) {
                         type = DataTypeDefinition.Text;

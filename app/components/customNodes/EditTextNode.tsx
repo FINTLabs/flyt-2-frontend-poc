@@ -11,7 +11,7 @@ import { getNodeMinHeight } from '~/utils/nodeSizeUtils';
 type JoinTextOperationNodeType = Node<BaseNodeData, 'operationJoinText'>;
 
 export const EditTextNode = memo(
-    ({ id, data, isConnectable }: NodeProps<JoinTextOperationNodeType>) => {
+    ({ data, isConnectable }: NodeProps<JoinTextOperationNodeType>) => {
         const minHeight = getNodeMinHeight({
             sources: data.sourceHandles?.length,
             targets: data.targetHandles?.length,

@@ -44,7 +44,7 @@ const Flow = () => {
         getCustomNodeDataById,
         saveFlow,
     } = useFlow();
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const [nodes, setNodes, onNodesChange] = useNodesState<CustomNodeDemo>(initNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initEdges);
@@ -97,7 +97,7 @@ const Flow = () => {
         setHasChanged(true);
     }, []);
 
-    const onNodeDrag: OnNodeDrag = useCallback((_: React.MouseEvent, node: Node) => {
+    const onNodeDrag: OnNodeDrag = useCallback(() => {
         // TODO: handle the possibility of dragging an existing node into a parentNode
         setHasChanged(true);
     }, []);
@@ -112,7 +112,7 @@ const Flow = () => {
             event.preventDefault();
             if (!newNodeId) return;
             const position = screenToFlowPosition({ x: event.clientX, y: event.clientY });
-            let newNode = getCustomNodeDataById(newNodeId);
+            const newNode = getCustomNodeDataById(newNodeId);
             const positionedNode = handleNodePosition(newNode, position);
 
             setNodes((nds) => [...nds, positionedNode]);
@@ -122,7 +122,8 @@ const Flow = () => {
         [screenToFlowPosition, newNodeId]
     );
 
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     const onDragStart: DragEventHandler<HTMLDivElement> = (
         event: React.DragEvent<HTMLDivElement>,
         nodeId: string

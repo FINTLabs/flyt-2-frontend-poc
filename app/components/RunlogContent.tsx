@@ -1,11 +1,10 @@
-import { Box, Button, Heading, HStack, VStack } from '@navikt/ds-react';
-import type { RunlogType } from '~/types/generalTypes';
+import { Box, HStack } from '@navikt/ds-react';
 import { Background, BackgroundVariant, Controls, ReactFlow, useReactFlow } from '@xyflow/react';
 import { nodeTypes } from '~/components/customNodes/nodetypes';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useFlow } from '~/context/flowContext';
 
-const RunlogContent = ({ runData, open }: { runData: RunlogType; open: boolean }) => {
+const RunlogContent = ({ open }: { open: boolean }) => {
     const { initNodes, initEdges } = useFlow();
 
     const { fitView, viewportInitialized } = useReactFlow();

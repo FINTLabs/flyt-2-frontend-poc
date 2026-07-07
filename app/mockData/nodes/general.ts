@@ -1,7 +1,7 @@
 import { DataTypeDefinition } from '~/types/data/datatypes';
 import type { BaseNodeData, InputNodeData } from '~/types/nodeTypes';
 import { type Node } from '@xyflow/react';
-import { allIntegrationsNodes, arkivInstanceOutput } from '~/mockData/nodes/instances';
+import { allIntegrationsNodes } from '~/mockData/nodes/instances';
 import { defaultPosition } from '~/utils/constants';
 import { allDataSources } from '~/mockData/nodes/datasources';
 import { allCreatePredefinedObjectNodes } from '~/mockData/nodes/createSpesificObjects';

@@ -1,5 +1,5 @@
 import { useFlow } from '~/context/flowContext';
-import { Heading, HStack, Page, Table, VStack } from '@navikt/ds-react';
+import { HStack, Table } from '@navikt/ds-react';
 import { useMemo, useState } from 'react';
 import ProgressIndicator from '~/components/customNodes/nodeLayout/ProgressIndicator';
 import RunlogContent from '~/components/RunlogContent';
@@ -42,9 +42,7 @@ const RunlogTable = () => {
                                 }
                             }}
                             togglePlacement={'right'}
-                            content={
-                                <RunlogContent runData={runData} open={openId === runData.id} />
-                            }
+                            content={<RunlogContent open={openId === runData.id} />}
                         >
                             <Table.HeaderCell scope="row">{runData.id}</Table.HeaderCell>
                             <Table.DataCell>

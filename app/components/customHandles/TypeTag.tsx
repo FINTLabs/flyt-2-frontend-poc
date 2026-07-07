@@ -24,7 +24,6 @@ type TypeProps = {
 export const TypeTag = ({
     type,
     typeName,
-    className = '',
     size = 'medium',
     required = true,
     inner = false,

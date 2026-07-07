@@ -2,7 +2,7 @@ import { DataTypeDefinition, type DataTypeValue } from '~/types/data/datatypes';
 import type { HandleData } from '~/types/handleTypes';
 import type { Connection, Edge, Node } from '@xyflow/react';
 
-export const isCollectionType = (type: DataTypeValue | string | undefined): boolean => {
+const isCollectionType = (type: DataTypeValue | string | undefined): boolean => {
     if (!type) return false;
     return type.startsWith('collection');
 };
@@ -33,7 +33,7 @@ export const getTypeFromCollection = (type: DataTypeValue | string | undefined):
     return DataTypeDefinition.CollectionUndefined;
 };
 
-export const isObjectTypeEqual = (
+const isObjectTypeEqual = (
     type1: DataTypeValue | string | undefined,
     typename1: DataTypeValue | string | undefined,
     type2: DataTypeValue | string | undefined,
@@ -45,7 +45,7 @@ export const isObjectTypeEqual = (
     return type1 === type2 && typename1 === typename2;
 };
 
-export const isObjectSameAsCollection = (handle1: HandleData, handle2: HandleData) => {
+const isObjectSameAsCollection = (handle1: HandleData, handle2: HandleData) => {
     if (isCollectionType(handle1.type) && isCollectionType(handle2.type)) {
         const collectionType1 = getTypeFromCollection(handle1.type);
         const collectionType2 = getTypeFromCollection(handle2.type);
@@ -69,7 +69,7 @@ export const isObjectSameAsCollection = (handle1: HandleData, handle2: HandleDat
     }
 };
 
-export const isObjectMatchingDefinition = (handle1: HandleData, handle2: HandleData) => {
+const isObjectMatchingDefinition = (handle1: HandleData, handle2: HandleData) => {
     if (handle1.type === handle2.type) {
         return handle1.typeName === handle2.typeName;
     }

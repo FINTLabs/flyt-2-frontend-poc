@@ -119,9 +119,6 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
                     updateNodeInternals([]);
                 }
             }
-
-            if (mode === 'view') {
-            }
         }
     }, [paramsFlowId]);
 
@@ -144,7 +141,6 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
             const parsedFlows = JSON.parse(allRawFlows) as LocalStorageFlow[];
             setAllFlows(parsedFlows);
             return parsedFlows;
-        } else {
         }
     }, []);
 
@@ -157,7 +153,7 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
     );
 
     const getCustomNodeDataById = (id: string): Node<BaseNodeData> => {
-        let newNode = allFunctionalNodes.find((node) => node.id === id);
+        const newNode = allFunctionalNodes.find((node) => node.id === id);
 
         const newNodeID = createAlmostRandomId('node', id);
 

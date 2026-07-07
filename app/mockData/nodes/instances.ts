@@ -24,7 +24,7 @@ export const egrunnervervSakInstance: Node<BaseNodeData> = {
     position: defaultPosition,
 };
 
-export const egrunnervervJournalpostInstance: Node<BaseNodeData> = {
+const egrunnervervJournalpostInstance: Node<BaseNodeData> = {
     id: 'instanceEGrunnervervJournalpost',
     type: 'flowInput',
     data: {
@@ -45,7 +45,7 @@ export const egrunnervervJournalpostInstance: Node<BaseNodeData> = {
     position: defaultPosition,
 };
 
-export const acosInstance: Node<BaseNodeData> = {
+const acosInstance: Node<BaseNodeData> = {
     id: 'acosInstance',
     type: 'flowInput',
     data: {
@@ -65,7 +65,7 @@ export const acosInstance: Node<BaseNodeData> = {
     },
     position: defaultPosition,
 };
-export const acosInstanceVIK304: Node<BaseNodeData> = {
+const acosInstanceVIK304: Node<BaseNodeData> = {
     id: 'acosInstanceVIK304',
     type: 'flowInput',
     data: {

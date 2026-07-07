@@ -1,6 +1,6 @@
 import { Page } from '@navikt/ds-react';
 import { ReactFlowProvider } from '@xyflow/react';
-import { Outlet, useParams } from 'react-router';
+import { Outlet } from 'react-router';
 import { FlowProvider } from '~/context/flowContext';
 
 export default function FlowLayout() {

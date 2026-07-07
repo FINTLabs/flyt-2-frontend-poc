@@ -8,7 +8,7 @@ import getInitialNodesOnCreateNew from '~/mockData/getInitialNodesOnCreateNew';
 
 const NewFlowPage = () => {
     const { saveNewFlow } = useFlow();
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const [name, setName] = useState('');
     const [inputIntegration, setInputIntegration] = useState('');

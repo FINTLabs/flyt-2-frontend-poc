@@ -1,5 +1,5 @@
 // EgrunnervervSakInstance
-export type EgrvSakspartType = {
+type EgrvSakspartType = {
     navn: string;
     organisasjonsnummer: string;
     epost: string;
@@ -29,25 +29,25 @@ export type ArkivSakType = {
     saksmappetype?: string; // Reference
     administrativEnhet?: string; // Reference
     saksansvarlig?: string; // Reference
-    skjerming: {};
+    skjerming: object;
     arkivdel?: string; // Reference
     saksstatus?: string; // Reference
-    parter?: Array<{}>;
+    parter?: Array<object>;
 };
 
-export type AcosInstanceMetadataType = {
+type AcosInstanceMetadataType = {
     formId: string;
     instanceId: string;
     instanceUri?: string;
 };
 
-export type AcosInstanceElementType = {
+type AcosInstanceElementType = {
     id: string;
     value?: string;
     hashCode?: number;
 };
 
-export type AcosDocumentType = {
+type AcosDocumentType = {
     name: string;
     encoding: string;
     filinnhold?: string; // Base64
@@ -55,7 +55,7 @@ export type AcosDocumentType = {
 };
 
 // AcosInstance
-export type AcosInstanceType = {
+type AcosInstanceType = {
     metadata: AcosInstanceMetadataType;
     formPdfBase64: string;
     elements: AcosInstanceElementType[];
