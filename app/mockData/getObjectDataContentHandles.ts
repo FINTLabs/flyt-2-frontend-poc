@@ -22,7 +22,6 @@ export const mockFetchDataContentHandles = (
     dataType: string,
     dataLabel?: string
 ): HandleData[] | undefined => {
-    console.log('mockFetchDataContentHandles', nodeID, handleType, dataType, dataLabel);
     switch (dataType.toLowerCase()) {
         case 'egrv sak':
             return eGrunnervervSaksHandles(nodeID, handleType);
