@@ -1,4 +1,4 @@
-import type { HandleData } from '~/types/handleTypes';
+import type { HandleData, HandleType } from '~/types/handleTypes';
 import { DataTypeDefinition } from '~/types/data/datatypes';
 import { eGrunnervervSaksHandles } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/eGrunnervervSak';
 import { archiveSakHandles } from '~/mockData/objectDataContent/objectHandles/archiveSak';
@@ -11,20 +11,25 @@ import { dokumentbeskrivelse } from '~/mockData/objectDataContent/objectHandles/
 import { dokumentobjekt } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/dokumentobjekt';
 import { korrespondansepart } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/korrespondansepart';
 import { eGrunnervervJournalpostHandles } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/eGrunnervervJournalpost';
-import { vedleggHandles } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/vedlegg';
+import { vedleggHandles } from '~/mockData/objectDataContent/objectHandles/vedlegg';
 import { mottakereHandles } from '~/mockData/objectDataContent/objectHandles/eGrunnerverv/mottakere';
+import { HMSRegSakHandles } from '~/mockData/objectDataContent/objectHandles/HMSReg/HMSRegSak';
+import { HMSRegHoveddokumentHandles } from '~/mockData/objectDataContent/objectHandles/HMSReg/HMSRegHoveddokumentHandles';
 
 export const mockFetchDataContentHandles = (
     nodeID: string,
-    handleType: 's' | 't',
+    handleType: HandleType,
     dataType: string,
     dataLabel?: string
 ): HandleData[] | undefined => {
+    console.log('mockFetchDataContentHandles', nodeID, handleType, dataType, dataLabel);
     switch (dataType.toLowerCase()) {
         case 'egrv sak':
             return eGrunnervervSaksHandles(nodeID, handleType);
         case 'egrv journalpost':
             return eGrunnervervJournalpostHandles(nodeID, handleType);
+        case 'vedlegg':
+            return vedleggHandles(nodeID, handleType);
         case 'arkivsak':
             return archiveSakHandles(nodeID, handleType);
         case 'sakspart':
@@ -45,8 +50,10 @@ export const mockFetchDataContentHandles = (
             return dokumentobjekt(nodeID, handleType);
         case 'mottakere':
             return mottakereHandles(nodeID, handleType);
-        case 'vedlegg':
-            return vedleggHandles(nodeID, handleType);
+        case 'hmsregsak':
+            return HMSRegSakHandles(nodeID, handleType);
+        case 'hmsreghoveddokument':
+            return HMSRegHoveddokumentHandles(nodeID, handleType);
         case 'acos':
             // AcosInstance
             return [

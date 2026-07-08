@@ -66,7 +66,7 @@ const NewFlowPage = () => {
                                 onChange={(e) => setOutputIntegration(e.target.value)}
                                 readOnly={true}
                             >
-                                <option value="arkivInstanceOutput">Arkivsak</option>
+                                <option value="arkivInstanceOutput">Arkiv</option>
                             </Select>
                         </HStack>
                         <TextField

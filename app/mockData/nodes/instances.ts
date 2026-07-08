@@ -85,6 +85,28 @@ const acosInstanceVIK304: Node<BaseNodeData> = {
     },
     position: defaultPosition,
 };
+
+const HMSRegInstance: Node<BaseNodeData> = {
+    id: 'instanceHMSReg',
+    type: 'flowInput',
+    data: {
+        label: 'HMSReg',
+        typeName: 'hmsregSak',
+        type: DataTypeDefinition.Object,
+        iconType: 'dataInstanceIn',
+        sourceHandles: [
+            {
+                id: 'instanceHMSReg:s:a',
+                label: 'HMSReg',
+                type: DataTypeDefinition.Object,
+                typeName: 'hmsregSak',
+                required: true,
+            },
+        ],
+    },
+    position: defaultPosition,
+};
+
 export const arkivInstanceOutput: Node<BaseNodeData> = {
     id: 'instanceOutputArkivsak',
     type: 'flowOutput',
@@ -109,5 +131,6 @@ export const allIntegrationsInputNodes = [
     egrunnervervJournalpostInstance,
     acosInstance,
     acosInstanceVIK304,
+    HMSRegInstance,
 ];
 export const allIntegrationsNodes = [...allIntegrationsInputNodes, arkivInstanceOutput];

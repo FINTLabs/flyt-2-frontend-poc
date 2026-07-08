@@ -1,9 +1,9 @@
 import { DataTypeDefinition } from '~/types/data/datatypes';
-import type { HandleData } from '~/types/handleTypes';
+import type { HandleData, HandleType } from '~/types/handleTypes';
 
 export const eGrunnervervJournalpostHandles = (
     nodeID: string,
-    handleType: 's' | 't'
+    handleType: HandleType
 ): HandleData[] => [
     {
         id: `${nodeID}:${handleType}:saksnummer`,
