@@ -9,6 +9,7 @@ const SIZE_15: readonly DataTypeValue[] = [
     DataTypeDefinition.Undefined,
     DataTypeDefinition.File,
     DataTypeDefinition.Boolean,
+    DataTypeDefinition.Number,
 ] as const;
 
 export const measureTextWidth = (

@@ -11,7 +11,6 @@ const getInitialNodesOnCreateNew = (
 } => {
     const nodes: Node<BaseNodeData>[] = [];
     const edges: Edge[] = [];
-    console.log('getInitialNodes', instanceID);
     const inputNode = allIntegrationsInputNodes.find((node) => node.id === instanceID);
     if (inputNode) {
         const outPut = arkivInstanceOutput;

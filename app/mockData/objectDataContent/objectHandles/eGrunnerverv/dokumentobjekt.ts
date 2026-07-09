@@ -16,7 +16,7 @@ export const dokumentobjekt = (nodeID: string, handleType: HandleType): HandleDa
     },
     {
         id: `${nodeID}:${handleType}:c`,
-        type: DataTypeDefinition.Text,
+        type: DataTypeDefinition.File,
         label: 'Fil',
         required: true,
     },

@@ -18,6 +18,8 @@ import { dokumenttypeOptions } from '~/mockData/datasources/dokumenttype';
 import { tilknyttetregistreringsomOptions } from '~/mockData/datasources/tilknyttetregistreringsom';
 import { variantformatOptions } from '~/mockData/datasources/variantformat';
 import { formatOptions } from '~/mockData/datasources/format';
+import { skjermingshjemmelOption } from '~/mockData/datasources/skjermingshjemmel';
+import { tilgangsrestriksjonOption } from '~/mockData/datasources/tilgangsrestriksjon';
 
 const dataSourceBaseNode: Node<SelectNodeData> = {
     id: 'dataSource',
@@ -280,6 +282,40 @@ const dataSourceFormat: Node<SelectNodeData> = {
     },
 };
 
+const tilgangsrestriksjon: Node<SelectNodeData> = {
+    ...dataSourceBaseNode,
+    id: 'tilgangsrestriksjon',
+    data: {
+        ...dataSourceBaseNode.data,
+        label: 'Tilgangsrestriksjon',
+        options: tilgangsrestriksjonOption,
+        sourceHandles: [
+            {
+                id: 'tilgangsrestriksjon:s:a',
+                type: DataTypeDefinition.Text,
+                required: true,
+            },
+        ],
+    },
+};
+
+const skjermingshjemmel: Node<SelectNodeData> = {
+    ...dataSourceBaseNode,
+    id: 'skjermingshjemmel',
+    data: {
+        ...dataSourceBaseNode.data,
+        label: 'Skjermingshjemmel',
+        options: skjermingshjemmelOption,
+        sourceHandles: [
+            {
+                id: 'skjermingshjemmel:s:a',
+                type: DataTypeDefinition.Text,
+                required: true,
+            },
+        ],
+    },
+};
+
 export const allDataSources = [
     dataSourceSaksmappe,
     dataSourceAdminEnhet,
@@ -297,4 +333,6 @@ export const allDataSources = [
     dataSourceTilknyttetRegistreringSom,
     dataSourceVariantformat,
     dataSourceFormat,
+    tilgangsrestriksjon,
+    skjermingshjemmel,
 ];

@@ -83,11 +83,6 @@ export const InnerFlowListOperation = memo(
         const [nodeWidth, setNodeWidth] = useState<number>(NODE_BASE_WIDTH);
 
         useEffect(() => {
-            console.log('Size: ', width, height);
-            console.log('minHeight: ', minHeight.cssString);
-        }, [width, height, minHeight.cssString]);
-
-        useEffect(() => {
             if (!sourceEdge && sourceConnections.length > 0) {
                 const newConnection = sourceConnections[0];
                 setSourceEdge(newConnection);
@@ -118,7 +113,6 @@ export const InnerFlowListOperation = memo(
 
         const createInnerFlowNodesOnInitialTargetConnection = useCallback(
             (targetEdge: NodeConnection) => {
-                console.log('= createInnerFlowNodesOnInitialTargetConnection', targetEdge);
                 const objectDefinitionNode = getNode(targetEdge.source)?.data;
 
                 if (objectDefinitionNode) {
@@ -190,7 +184,6 @@ export const InnerFlowListOperation = memo(
 
         const updateSourceHandleAndOutputNode = useCallback(
             (sourceEdge: NodeConnection) => {
-                console.log('= updateSourceHandleAndOutputNode', sourceEdge);
                 const objectDefinitionNode = getNode(sourceEdge.target)?.data;
 
                 if (objectDefinitionNode) {
@@ -247,9 +240,6 @@ export const InnerFlowListOperation = memo(
         const updateInnerNodePositions = useCallback(
             (width?: number, height?: number) => {
                 if (!width || !height) return;
-
-                // console.log('updateInnerNodePositions', width, height);
-
                 setNodes((nodes) =>
                     nodes.map((node) => {
                         if (node.parentId !== id) return node;

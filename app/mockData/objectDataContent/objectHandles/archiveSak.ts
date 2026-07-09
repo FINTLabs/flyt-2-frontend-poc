@@ -73,11 +73,11 @@ export const archiveSakHandles = (nodeID: string, handleType: HandleType): Handl
         typeName: 'skjerming',
     },
     {
-        id: `${nodeID}:${handleType}:klasse`,
+        id: `${nodeID}:${handleType}:klassering`,
         type: DataTypeDefinition.CollectionObject,
         required: true,
         label: 'Klassering',
-        typeName: 'klasse',
+        typeName: 'klassering',
     },
     {
         id: `${nodeID}:${handleType}:journalpost`,
