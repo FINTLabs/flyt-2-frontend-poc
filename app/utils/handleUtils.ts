@@ -1,5 +1,6 @@
 import { DataTypeDefinition, type DataTypeValue } from '~/types/data/datatypes';
 import { HANDLE_HEIGHT, HANDLE_INTERVAL } from '~/utils/constants';
+import type { HandleData } from '~/types/handleTypes';
 
 const SIZE_15: readonly DataTypeValue[] = [
     DataTypeDefinition.Text,
@@ -80,4 +81,28 @@ export const calculateHandlePosition = (
     const middleIndex = isEven ? totalHandles / 2 - 1 : Math.floor(totalHandles / 2);
     const offsetFromMiddle = index - middleIndex;
     return `calc(50% + ${(offsetFromMiddle - (isEven ? 0.5 : 0)) * interval - HANDLE_HEIGHT / 2}px)`;
+};
+
+export const getHandleWidthForElk = (nodeType: string | undefined, handle: HandleData): number => {
+    if (
+        nodeType &&
+        ['flowInput', 'flowOutput', 'innerFlowInput', 'innerFlowOutput'].includes(nodeType)
+    ) {
+        return 0;
+    }
+
+    const typeWidth = getValueTypeSymbolWidth(handle.type, handle.typeName);
+
+    const text = handle.label ?? '';
+    const fontSize = '0.875rem';
+    const fontFamily = '"Source Sans 3", "Source Sans Pro", Arial, sans-serif';
+
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    if (context) {
+        context.font = `${fontSize} ${fontFamily}`;
+        const metrics = context.measureText(text);
+        return metrics.width + typeWidth;
+    }
+    return text.length + typeWidth;
 };

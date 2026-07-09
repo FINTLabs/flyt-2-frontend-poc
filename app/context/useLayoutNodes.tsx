@@ -3,6 +3,7 @@ import ELK, { type LayoutOptions, type ElkNode } from 'elkjs/lib/elk.bundled.js'
 import { type Edge, type Node, useNodesInitialized, useReactFlow } from '@xyflow/react';
 import type { CustomNode } from '~/types/flow/nodes';
 import { NODE_HEIGHT_EXPANDED, NODE_WIDTH_EXPANDED } from '~/utils/constants';
+import { getHandleWidthForElk, measureTextWidth } from '~/utils/handleUtils';
 
 const elk = new ELK();
 
@@ -22,6 +23,11 @@ export const layoutOptions: LayoutOptions = {
     'elk.layered.spacing.edgeNodeBetweenLayers': '150',
 
     'elk.hierarchyHandling': 'INCLUDE_CHILDREN',
+
+    'elk.portConstraints': 'FIXED_SIDE',
+    'elk.spacing.portPort': '12',
+
+    'elk.layered.edgeSpacingFactor': '2.0',
 };
 
 function createSuperRootGraph(nodes: CustomNode[], edges: Edge[]) {
@@ -80,36 +86,34 @@ function buildPorts(node: CustomNode) {
     const targetPorts = node.data.targetHandles?.map((t) => ({
         id: t.id,
         properties: { side: 'WEST' },
+        width: getHandleWidthForElk(node.type, t),
     })) ?? [{ id: node.id }];
 
     const sourcePorts = node.data.sourceHandles?.map((s) => ({
         id: s.id,
         properties: { side: 'EAST' },
+        width: getHandleWidthForElk(node.type, s),
     })) ?? [{ id: node.id }];
 
-    return [{ id: node.id }, ...targetPorts, ...sourcePorts];
+    return [...targetPorts, ...sourcePorts];
 }
 
 function isParentNode(node: CustomNode, nodes?: CustomNode[]) {
     // return nodes.some((n) => n.parentId === node.id);
     return node.type === 'listOperation';
 }
-
 function buildElkNodeMap(nodes: CustomNode[]): Map<string, ElkNode> {
     const map = new Map<string, ElkNode>();
 
     nodes.forEach((node) => {
         map.set(node.id, {
             id: node.id,
-
             width: isParentNode(node)
                 ? (node.width ?? NODE_WIDTH_EXPANDED)
                 : (node.measured?.width ?? 150),
-
             height: isParentNode(node)
                 ? (node.height ?? NODE_HEIGHT_EXPANDED)
                 : (node.measured?.height ?? 50),
-
             layoutOptions: buildNodeProperties(node),
             ports: buildPorts(node),
             children: [],
