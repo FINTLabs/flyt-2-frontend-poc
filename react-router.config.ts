@@ -1,7 +1,9 @@
 import type { Config } from "@react-router/dev/config";
 
 export default {
-    basename: process.env.BASE_PATH || "",
+    basename: process.env.BASE_PATH
+        ? `${process.env.BASE_PATH.replace(/\/$/, "")}/`
+        : "/",
     ssr: true,
     future: {
         v8_middleware: true,

@@ -3,16 +3,14 @@ import tailwindcssVite from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 
 export default defineConfig(({mode}) => {
-    const basePath = process.env.BASE_PATH
-        ? `${process.env.BASE_PATH.replace(/\/$/, "")}/`
-        : "/";
-
     return {
         plugins: [tailwindcssVite(), reactRouter()],
         resolve: {
             tsconfigPaths: true,
         },
-        base: basePath,
+        base: process.env.BASE_PATH
+            ? `${process.env.BASE_PATH.replace(/\/$/, "")}/`
+            : "/",
         build: {
             chunkSizeWarningLimit: 2500,
         },

@@ -22,7 +22,7 @@ export const getNodeIcon = (iconType: string | undefined, isSmall?: true) => {
             return <CogIcon height={isSmall ? 15 : 55} width={isSmall ? 15 : 55} />;
         case 'conversion':
             return (
-                <NodeOperationConversionIcon height={isSmall ? 15 : 45} width={isSmall ? 15 : 45} />
+                <NodeOperationConversionIcon height={isSmall ? 15 : 40} width={isSmall ? 15 : 45} />
             );
         case 'textEdit':
             return <PencilWritingFillIcon height={isSmall ? 15 : 35} width={isSmall ? 15 : 35} />;
