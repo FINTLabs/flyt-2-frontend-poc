@@ -2,16 +2,6 @@ import type { DataTypeDefinition } from '~/types/data/datatypes';
 import type { HandleData } from '~/types/handleTypes';
 import { type Node } from '@xyflow/react';
 
-export type CustomNodeType =
-    | 'flowInput'
-    | 'flowOutput'
-    | 'operation'
-    | 'externalFunction'
-    | 'inputText'
-    | 'operationJoinText';
-
-export type CustomNodeTypeValue = `${CustomNodeType}`;
-
 export type BaseNodeData = {
     label: string;
     typeName?: string;

@@ -12,5 +12,4 @@ export default [
             route('log/:flowId', 'routes/flow/runlog.tsx'),
         ]),
     ]),
-    route('integration/configuration/edit/:id', 'routes/configuration/edit.tsx'),
 ] satisfies RouteConfig;

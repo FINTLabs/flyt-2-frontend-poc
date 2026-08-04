@@ -1,4 +1,3 @@
-import type { ChangeEvent } from 'react';
 import { arkivInstanceOutput, egrunnervervSakInstance } from '~/mockData/nodes/instances';
 import { DataTypeDefinition } from '~/types/data/datatypes';
 import {
@@ -9,9 +8,7 @@ import {
     operationExternalGetSaksansvarlig,
 } from '~/mockData/nodes/general';
 
-export const getDemoNodes = (
-    onChangeNodeColor?: (event: ChangeEvent<HTMLInputElement>) => void
-) => {
+export const getDemoNodes = () => {
     return [
         { ...egrunnervervSakInstance, id: 'n1-startNode', position: { x: 0, y: 0 } },
         {

@@ -7,6 +7,5 @@ export async function clientLoader() {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-    console.log(loaderData);
     return <Welcome />;
 }

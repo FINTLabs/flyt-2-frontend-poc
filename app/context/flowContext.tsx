@@ -94,7 +94,6 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
 
     useEffect(() => {
         if (paramsFlowId) {
-            console.log('useeffect paramsFlowId', paramsFlowId);
             if (paramsFlowId === 'demo') {
                 const nodes = getDemoNodes();
                 const demoFlow = getDemoFLow();
@@ -104,23 +103,17 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
                 updateNodeInternals(nodes.map((node) => node.id));
             } else {
                 const flow = getFlowById(paramsFlowId);
-                console.log('paramsFlowId', paramsFlowId);
-                console.log('flow', flow);
                 if (flow) {
                     setCurrentFlow(flow);
                     setInitialNodes(flow.nodes);
                     setInitialEdges(flow.edges);
                     updateNodeInternals(flow.nodes.map((node) => node.id));
                 } else {
-                    console.log('fant ingen flow i localstorage');
                     setCurrentFlow(undefined);
                     setInitialNodes([]);
                     setInitialEdges([]);
                     updateNodeInternals([]);
                 }
-            }
-
-            if (mode === 'view') {
             }
         }
     }, [paramsFlowId]);
@@ -144,7 +137,6 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
             const parsedFlows = JSON.parse(allRawFlows) as LocalStorageFlow[];
             setAllFlows(parsedFlows);
             return parsedFlows;
-        } else {
         }
     }, []);
 
@@ -157,7 +149,7 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
     );
 
     const getCustomNodeDataById = (id: string): Node<BaseNodeData> => {
-        let newNode = allFunctionalNodes.find((node) => node.id === id);
+        const newNode = allFunctionalNodes.find((node) => node.id === id);
 
         const newNodeID = createAlmostRandomId('node', id);
 
@@ -300,7 +292,6 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
             setTestFlowOutput(undefined);
             await simulateFlowProgress();
             const egrData = data as EgrvSakType;
-            console.log('Running data through flow:', data);
             const title = `${egrData.kommunenavn} kommune - ${egrData.prosjektnavn} gbnr ${egrData.gaardsnummer}/${egrData.bruksnummer} - Grunnerverv`;
             setTestFlowOutput({
                 runType: 'egrv sak',

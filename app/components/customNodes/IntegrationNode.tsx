@@ -18,33 +18,31 @@ type IntegrationNodeData = {
 
 type IntegrationNodeType = Node<IntegrationNodeData, 'flowOutput' | 'flowInput'>;
 
-export const IntegrationNode = memo(
-    ({ data, isConnectable, type }: NodeProps<IntegrationNodeType>) => {
-        return (
-            <NodeContainerWithProgress>
-                <HStack align={'center'} gap="2" paddingInline={'1 3'} wrap={false}>
-                    {getNodeIcon(data.iconType)}
-                    <BodyShort className="whitespace-nowrap" size={'small'}>
-                        {data.label}
-                    </BodyShort>
-                </HStack>
-                {data.sourceHandles?.length && (
-                    <HandlesWithLabel
-                        handles={data.sourceHandles}
-                        type={'source'}
-                        isConnectable={isConnectable}
-                        hideLabels={true}
-                    />
-                )}
-                {data.targetHandles?.length && (
-                    <HandlesWithLabel
-                        handles={data.targetHandles}
-                        type={'target'}
-                        isConnectable={isConnectable}
-                        hideLabels={true}
-                    />
-                )}
-            </NodeContainerWithProgress>
-        );
-    }
-);
+export const IntegrationNode = memo(({ data, isConnectable }: NodeProps<IntegrationNodeType>) => {
+    return (
+        <NodeContainerWithProgress>
+            <HStack align={'center'} gap="2" paddingInline={'1 3'} wrap={false}>
+                {getNodeIcon(data.iconType)}
+                <BodyShort className="whitespace-nowrap" size={'small'}>
+                    {data.label}
+                </BodyShort>
+            </HStack>
+            {data.sourceHandles?.length && (
+                <HandlesWithLabel
+                    handles={data.sourceHandles}
+                    type={'source'}
+                    isConnectable={isConnectable}
+                    hideLabels={true}
+                />
+            )}
+            {data.targetHandles?.length && (
+                <HandlesWithLabel
+                    handles={data.targetHandles}
+                    type={'target'}
+                    isConnectable={isConnectable}
+                    hideLabels={true}
+                />
+            )}
+        </NodeContainerWithProgress>
+    );
+});

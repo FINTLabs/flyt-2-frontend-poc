@@ -8,11 +8,7 @@ interface DictionaryTooltipProps {
     className?: string;
 }
 
-export const DictionaryTooltip: React.FC<DictionaryTooltipProps> = ({
-    termId,
-    children,
-    className,
-}) => {
+const DictionaryTooltip: React.FC<DictionaryTooltipProps> = ({ termId, children, className }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const term = dictionaryData.find((t) => t.id === termId);
@@ -35,6 +31,8 @@ export const DictionaryTooltip: React.FC<DictionaryTooltipProps> = ({
     );
 
     return (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         <Tooltip open={isOpen} onOpenChange={setIsOpen} content={tooltipContent}>
             <span
                 className={`cursor-help border-b border-dotted border-gray-400 hover:border-gray-600 ${className || ''}`}

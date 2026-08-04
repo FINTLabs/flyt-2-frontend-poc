@@ -1,5 +1,5 @@
 import { Handle, Position } from '@xyflow/react';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Detail, HStack } from '@navikt/ds-react';
 import { TypeTag } from '~/components/customHandles/TypeTag';
 import { HANDLE_HEIGHT } from '~/utils/constants';
@@ -67,7 +67,7 @@ export const HandlesWithLabel = ({
     );
 };
 
-export type HandleWithLabelProps = {
+type HandleWithLabelProps = {
     handle: HandleData;
     type: 'target' | 'source';
     isConnectable: boolean;
@@ -75,7 +75,7 @@ export type HandleWithLabelProps = {
     handlePosition: string;
 };
 
-export const HandleWithLabel = ({
+const HandleWithLabel = ({
     handle,
     type,
     isConnectable,

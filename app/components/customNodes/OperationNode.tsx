@@ -26,7 +26,6 @@ export const OperationNode = memo(
         const { currentFlow } = useFlow();
         const step = useMemo(() => {
             if (currentFlow?.id !== 'demo') return undefined;
-            console.log('OperationNode step', { id, type });
             if (type === 'externalFunction') return 4;
             if (type === 'operation') {
                 if (id === 'n2-openOperation') return 2;

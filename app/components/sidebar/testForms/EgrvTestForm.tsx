@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BodyShort, Button, Heading, HStack, Textarea, TextField, VStack } from '@navikt/ds-react';
+import { Button, Heading, HStack, Textarea, TextField, VStack } from '@navikt/ds-react';
 import type { EgrvSakType, MockDataTypes } from '~/types/mockedDataTypes';
 
 type TestFormPropsType = {

@@ -8,7 +8,7 @@ import getInitialNodesOnCreateNew from '~/mockData/getInitialNodesOnCreateNew';
 
 const NewFlowPage = () => {
     const { saveNewFlow } = useFlow();
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const [name, setName] = useState('');
     const [inputIntegration, setInputIntegration] = useState('');
@@ -66,7 +66,7 @@ const NewFlowPage = () => {
                                 onChange={(e) => setOutputIntegration(e.target.value)}
                                 readOnly={true}
                             >
-                                <option value="arkivInstanceOutput">Arkivsak</option>
+                                <option value="arkivInstanceOutput">Arkiv</option>
                             </Select>
                         </HStack>
                         <TextField

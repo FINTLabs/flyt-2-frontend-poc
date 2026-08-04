@@ -1,6 +1,6 @@
 import { useFlow } from '~/context/flowContext';
 import { useEffect } from 'react';
-import { Heading, Page, Table, VStack } from '@navikt/ds-react';
+import { Heading, Page, VStack } from '@navikt/ds-react';
 import RunlogTable from '~/components/RunlogTable';
 
 export default function RunLog() {

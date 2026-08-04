@@ -16,7 +16,7 @@ import { Page } from '@navikt/ds-react';
 import { AppBar } from '~/components/pageLayout/AppBar';
 import Footer from '~/components/pageLayout/Footer';
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
     return [
         { title: 'FINT Flyt' },
         { name: 'description', content: 'Velkommen til FINT Flyt 2' },

@@ -9,7 +9,6 @@ export const BaseNode = ({ label, node }: { label: string; node: Node<BaseNodeDa
     const { setNewNodeId } = useFlow();
 
     const onDragStart = (event: React.DragEvent<HTMLDivElement>, nodeId: string) => {
-        console.log('Sidebar onDragStart', nodeId);
         setNewNodeId(nodeId);
         event.dataTransfer.effectAllowed = 'move';
     };

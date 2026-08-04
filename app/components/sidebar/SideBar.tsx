@@ -16,6 +16,7 @@ import {
 import { useParams } from 'react-router';
 import { allDataSources } from '~/mockData/nodes/datasources';
 import { createPart, createSkjerming } from '~/mockData/nodes/createSpesificObjects';
+import { vcHMSregDeptToAdminUnit, HMSregMediaToFile } from '~/mockData/nodes/valueconvertings';
 
 export const Sidebar = () => {
     const { currentFlow } = useFlow();
@@ -142,6 +143,22 @@ export const Sidebar = () => {
                     <Accordion.Item>
                         <Accordion.Header>Matte</Accordion.Header>
                         <Accordion.Content>Todo.</Accordion.Content>
+                    </Accordion.Item>
+
+                    <Accordion.Item>
+                        <Accordion.Header>Verdikonverteringer</Accordion.Header>
+                        <Accordion.Content>
+                            <VStack gap={'2'}>
+                                <BaseNode
+                                    label={'HMSreg avdeling til adminenhet v1'}
+                                    node={vcHMSregDeptToAdminUnit}
+                                />
+                                <BaseNode
+                                    label={'HMSReg mediatype til filformat'}
+                                    node={HMSregMediaToFile}
+                                />
+                            </VStack>
+                        </Accordion.Content>
                     </Accordion.Item>
                 </Accordion>
             )}

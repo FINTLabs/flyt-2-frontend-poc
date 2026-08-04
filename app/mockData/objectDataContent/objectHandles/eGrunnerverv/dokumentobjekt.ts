@@ -1,7 +1,7 @@
-import type { HandleData } from '~/types/handleTypes';
+import type { HandleData, HandleType } from '~/types/handleTypes';
 import { DataTypeDefinition } from '~/types/data/datatypes';
 
-export const dokumentobjekt = (nodeID: string, handleType: 's' | 't'): HandleData[] => [
+export const dokumentobjekt = (nodeID: string, handleType: HandleType): HandleData[] => [
     {
         id: `${nodeID}:${handleType}:a`,
         type: DataTypeDefinition.Text,
@@ -16,7 +16,7 @@ export const dokumentobjekt = (nodeID: string, handleType: 's' | 't'): HandleDat
     },
     {
         id: `${nodeID}:${handleType}:c`,
-        type: DataTypeDefinition.Text,
+        type: DataTypeDefinition.File,
         label: 'Fil',
         required: true,
     },

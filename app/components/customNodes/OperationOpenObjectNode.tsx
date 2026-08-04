@@ -106,7 +106,6 @@ export const OperationOpenObjectNode = memo(
                     );
                     const handleID = `${id}:s:a`;
                     let type = DataTypeDefinition.Object;
-                    let typeName = targetHandle.typeName ?? targetNodeData.typeName;
 
                     if (targetHandle.type === DataTypeDefinition.CollectionText) {
                         type = DataTypeDefinition.Text;
@@ -128,7 +127,7 @@ export const OperationOpenObjectNode = memo(
                     );
 
                     updateNodeData(id, {
-                        label: `Opprett ${targetHandle?.label?.toLowerCase() ?? (targetNodeData.label as string)?.toLowerCase()}`, // TODO: Håndter flertall hvis det er en liste
+                        label: `Opprett ${targetHandle?.label?.toLowerCase() ?? (targetNodeData.label as string)?.toLowerCase()}`,
                         targetHandles: objectDefinitionHandles,
                         sourceHandles: [outgoingObjectSourceHandle],
                     });

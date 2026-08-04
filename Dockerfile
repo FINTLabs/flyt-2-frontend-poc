@@ -1,15 +1,20 @@
 ARG BASE_PATH=/
 
-FROM node:22.22.3-alpine AS build
+FROM node:22.23.1-alpine AS build
 WORKDIR /app
 ARG BASE_PATH
 ENV BASE_PATH=$BASE_PATH
+
+
+RUN echo "BASE_PATH=$BASE_PATH"
+
+
 COPY package*.json ./
 RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM node:22.22.3-alpine
+FROM node:22.23.1-alpine
 WORKDIR /app
 ENV PORT=8000
 COPY --from=build /app/node_modules ./node_modules

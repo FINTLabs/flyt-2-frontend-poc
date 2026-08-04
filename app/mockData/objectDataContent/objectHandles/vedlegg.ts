@@ -1,7 +1,7 @@
-import type { HandleData } from '~/types/handleTypes';
+import type { HandleData, HandleType } from '~/types/handleTypes';
 import { DataTypeDefinition } from '~/types/data/datatypes';
 
-export const vedleggHandles = (nodeID: string, handleType: 's' | 't'): HandleData[] => [
+export const vedleggHandles = (nodeID: string, handleType: HandleType): HandleData[] => [
     {
         id: `${nodeID}:${handleType}:tittel`,
         type: DataTypeDefinition.Text,

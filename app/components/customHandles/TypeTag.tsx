@@ -8,6 +8,7 @@ import {
     LinkIcon,
     QuestionmarkDiamondIcon,
     QuestionmarkIcon,
+    HashtagIcon,
 } from '@navikt/aksel-icons';
 import { TAG_HEIGHT } from '~/utils/constants';
 import { getValueTypeFromCollection } from '~/utils/handleUtils';
@@ -24,7 +25,6 @@ type TypeProps = {
 export const TypeTag = ({
     type,
     typeName,
-    className = '',
     size = 'medium',
     required = true,
     inner = false,
@@ -78,6 +78,7 @@ const TypeSymbol = ({ type, typeName, size }: TypeProps) => {
     if (type === DataTypeDefinition.Reference) return <LinkIcon fontSize="0.95rem" />;
     if (type === DataTypeDefinition.Undefined) return <QuestionmarkIcon fontSize="0.9rem" />;
     if (type === DataTypeDefinition.Boolean) return <QuestionmarkDiamondIcon fontSize="0.9rem" />;
+    if (type === DataTypeDefinition.Number) return <HashtagIcon fontSize="0.9rem" />;
 
     if (type.startsWith('collection')) {
         const innertype = getValueTypeFromCollection(type);

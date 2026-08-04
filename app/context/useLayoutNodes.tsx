@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import ELK, { type LayoutOptions, type ElkNode } from 'elkjs/lib/elk.bundled.js';
-import { type Edge, type Node, useNodesInitialized, useReactFlow } from '@xyflow/react';
+import { type Edge, useNodesInitialized, useReactFlow } from '@xyflow/react';
 import type { CustomNode } from '~/types/flow/nodes';
 import { NODE_HEIGHT_EXPANDED, NODE_WIDTH_EXPANDED } from '~/utils/constants';
 import { getHandleWidthForElk, measureTextWidth } from '~/utils/handleUtils';
@@ -10,7 +10,7 @@ const elk = new ELK();
 // https://www.eclipse.org/elk/reference/algorithms/org-eclipse-elk-layered.html
 // https://eclipse.dev/elk/blog/posts/2025/25-08-21-layered.html
 
-export const layoutOptions: LayoutOptions = {
+const layoutOptions: LayoutOptions = {
     'elk.algorithm': 'layered',
     'elk.direction': 'RIGHT',
 
@@ -98,7 +98,7 @@ function buildPorts(node: CustomNode) {
     return [...targetPorts, ...sourcePorts];
 }
 
-function isParentNode(node: CustomNode, nodes?: CustomNode[]) {
+function isParentNode(node: CustomNode) {
     // return nodes.some((n) => n.parentId === node.id);
     return node.type === 'listOperation';
 }
@@ -165,7 +165,7 @@ function flattenElkLayout(
     return result;
 }
 
-export const getGraphWithLayout = async (
+const getGraphWithLayout = async (
     nodes: CustomNode[],
     edges: Edge[]
 ): Promise<{ nodesWithLayout: CustomNode[]; edgesWithLayout: Edge[] }> => {
@@ -212,7 +212,8 @@ export const getGraphWithLayout = async (
         .map((edge) => {
             const initialEdge = edges.find((e) => e.id === edge.id);
             if (initialEdge) {
-                // @ts-ignore
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 const points = edge.sections[0].bendPoints;
 
                 return {
@@ -221,7 +222,8 @@ export const getGraphWithLayout = async (
                     targets: edge.targets[0],
                     sourceHandle: initialEdge.sourceHandle,
                     targetHandle: initialEdge.targetHandle,
-                    // @ts-ignore
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
                     data: { ...edge.data, bendPoints: points },
                 };
             }
@@ -236,7 +238,7 @@ export const getGraphWithLayout = async (
 
 export default function useLayoutNodes() {
     const nodesInitialized = useNodesInitialized();
-    const { getNodes, getEdges, setNodes, setEdges, fitView } = useReactFlow<CustomNode>();
+    const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<CustomNode>();
 
     const resetLayout = useCallback(() => {
         if (nodesInitialized) {

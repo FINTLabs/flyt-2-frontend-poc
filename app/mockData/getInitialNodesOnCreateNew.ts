@@ -3,15 +3,14 @@ import { allIntegrationsInputNodes, arkivInstanceOutput } from '~/mockData/nodes
 import type { BaseNodeData } from '~/types/nodeTypes';
 import { operationCreateObject, operationOpenObject } from '~/mockData/nodes/general';
 
-export const getInitialNodesOnCreateNew = (
+const getInitialNodesOnCreateNew = (
     instanceID: string
 ): {
     nodes: Node<BaseNodeData>[];
     edges: Edge[];
 } => {
-    let nodes: Node<BaseNodeData>[] = [];
-    let edges: Edge[] = [];
-    console.log('getInitialNodes', instanceID);
+    const nodes: Node<BaseNodeData>[] = [];
+    const edges: Edge[] = [];
     const inputNode = allIntegrationsInputNodes.find((node) => node.id === instanceID);
     if (inputNode) {
         const outPut = arkivInstanceOutput;

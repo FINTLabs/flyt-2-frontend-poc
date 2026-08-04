@@ -1,10 +1,11 @@
 import { DataTypeDefinition } from '~/types/data/datatypes';
 import type { BaseNodeData, InputNodeData } from '~/types/nodeTypes';
 import { type Node } from '@xyflow/react';
-import { allIntegrationsNodes, arkivInstanceOutput } from '~/mockData/nodes/instances';
+import { allIntegrationsNodes } from '~/mockData/nodes/instances';
 import { defaultPosition } from '~/utils/constants';
 import { allDataSources } from '~/mockData/nodes/datasources';
 import { allCreatePredefinedObjectNodes } from '~/mockData/nodes/createSpesificObjects';
+import { allValueConvertings } from '~/mockData/nodes/valueconvertings';
 
 export const innerFlowInput: Node<BaseNodeData> = {
     id: 'innerFlowInput',
@@ -404,4 +405,5 @@ export const allFunctionalNodes = [
     acosUploadFile,
     ...allDataSources,
     ...allCreatePredefinedObjectNodes,
+    ...allValueConvertings,
 ];

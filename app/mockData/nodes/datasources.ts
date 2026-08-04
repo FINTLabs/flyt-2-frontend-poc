@@ -18,8 +18,10 @@ import { dokumenttypeOptions } from '~/mockData/datasources/dokumenttype';
 import { tilknyttetregistreringsomOptions } from '~/mockData/datasources/tilknyttetregistreringsom';
 import { variantformatOptions } from '~/mockData/datasources/variantformat';
 import { formatOptions } from '~/mockData/datasources/format';
+import { skjermingshjemmelOption } from '~/mockData/datasources/skjermingshjemmel';
+import { tilgangsrestriksjonOption } from '~/mockData/datasources/tilgangsrestriksjon';
 
-export const dataSourceBaseNode: Node<SelectNodeData> = {
+const dataSourceBaseNode: Node<SelectNodeData> = {
     id: 'dataSource',
     type: 'dataSource',
     data: {
@@ -32,7 +34,7 @@ export const dataSourceBaseNode: Node<SelectNodeData> = {
     position: defaultPosition,
 };
 
-export const dataSourceSaksmappe: Node<SelectNodeData> = {
+const dataSourceSaksmappe: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceSaksmappe',
     data: {
@@ -45,7 +47,7 @@ export const dataSourceSaksmappe: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceAdminEnhet: Node<SelectNodeData> = {
+const dataSourceAdminEnhet: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceAdminEnhet',
     data: {
@@ -58,7 +60,7 @@ export const dataSourceAdminEnhet: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceSaksansvarlig: Node<SelectNodeData> = {
+const dataSourceSaksansvarlig: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceSaksansvarlig',
     data: {
@@ -71,7 +73,7 @@ export const dataSourceSaksansvarlig: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceArkivdel: Node<SelectNodeData> = {
+const dataSourceArkivdel: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceArkivdel',
     data: {
@@ -84,7 +86,7 @@ export const dataSourceArkivdel: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceSaksstatus: Node<SelectNodeData> = {
+const dataSourceSaksstatus: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceSaksstatus',
     data: {
@@ -97,7 +99,7 @@ export const dataSourceSaksstatus: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceTilgangsgruppe: Node<SelectNodeData> = {
+const dataSourceTilgangsgruppe: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceTilgangsgruppe',
     data: {
@@ -110,7 +112,7 @@ export const dataSourceTilgangsgruppe: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceKlassifikasjonssystem: Node<SelectNodeData> = {
+const dataSourceKlassifikasjonssystem: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceKlassifikasjonssystem',
     data: {
@@ -127,7 +129,7 @@ export const dataSourceKlassifikasjonssystem: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceKlassID: Node<SelectNodeData> = {
+const dataSourceKlassID: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceKlassID',
     data: {
@@ -144,7 +146,7 @@ export const dataSourceKlassID: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceJournalposttype: Node<SelectNodeData> = {
+const dataSourceJournalposttype: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceJournalposttype',
     data: {
@@ -161,7 +163,7 @@ export const dataSourceJournalposttype: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceJournalpostStatus: Node<SelectNodeData> = {
+const dataSourceJournalpostStatus: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceJournalpostStatus',
     data: {
@@ -178,7 +180,7 @@ export const dataSourceJournalpostStatus: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceKorrespondanseparttype: Node<SelectNodeData> = {
+const dataSourceKorrespondanseparttype: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceKorrespondanseparttype',
     data: {
@@ -195,7 +197,7 @@ export const dataSourceKorrespondanseparttype: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceDokumentstatus: Node<SelectNodeData> = {
+const dataSourceDokumentstatus: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceDokumentstatus',
     data: {
@@ -212,7 +214,7 @@ export const dataSourceDokumentstatus: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceDokumenttype: Node<SelectNodeData> = {
+const dataSourceDokumenttype: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceDokumenttype',
     data: {
@@ -229,7 +231,7 @@ export const dataSourceDokumenttype: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceTilknyttetRegistreringSom: Node<SelectNodeData> = {
+const dataSourceTilknyttetRegistreringSom: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceTilknyttetRegistreringSom',
     data: {
@@ -246,7 +248,7 @@ export const dataSourceTilknyttetRegistreringSom: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceVariantformat: Node<SelectNodeData> = {
+const dataSourceVariantformat: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceVariantformat',
     data: {
@@ -263,7 +265,7 @@ export const dataSourceVariantformat: Node<SelectNodeData> = {
     },
 };
 
-export const dataSourceFormat: Node<SelectNodeData> = {
+const dataSourceFormat: Node<SelectNodeData> = {
     ...dataSourceBaseNode,
     id: 'dataSourceFormat',
     data: {
@@ -273,6 +275,40 @@ export const dataSourceFormat: Node<SelectNodeData> = {
         sourceHandles: [
             {
                 id: 'dataSourceFormat:s:a',
+                type: DataTypeDefinition.Text,
+                required: true,
+            },
+        ],
+    },
+};
+
+const tilgangsrestriksjon: Node<SelectNodeData> = {
+    ...dataSourceBaseNode,
+    id: 'tilgangsrestriksjon',
+    data: {
+        ...dataSourceBaseNode.data,
+        label: 'Tilgangsrestriksjon',
+        options: tilgangsrestriksjonOption,
+        sourceHandles: [
+            {
+                id: 'tilgangsrestriksjon:s:a',
+                type: DataTypeDefinition.Text,
+                required: true,
+            },
+        ],
+    },
+};
+
+const skjermingshjemmel: Node<SelectNodeData> = {
+    ...dataSourceBaseNode,
+    id: 'skjermingshjemmel',
+    data: {
+        ...dataSourceBaseNode.data,
+        label: 'Skjermingshjemmel',
+        options: skjermingshjemmelOption,
+        sourceHandles: [
+            {
+                id: 'skjermingshjemmel:s:a',
                 type: DataTypeDefinition.Text,
                 required: true,
             },
@@ -297,4 +333,6 @@ export const allDataSources = [
     dataSourceTilknyttetRegistreringSom,
     dataSourceVariantformat,
     dataSourceFormat,
+    tilgangsrestriksjon,
+    skjermingshjemmel,
 ];

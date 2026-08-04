@@ -7,3 +7,5 @@ export type HandleData = {
     typeName?: string;
     required: boolean;
 };
+
+export type HandleType = 's' | 't';

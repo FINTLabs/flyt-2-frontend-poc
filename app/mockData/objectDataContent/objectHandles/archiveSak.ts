@@ -1,7 +1,7 @@
 import { DataTypeDefinition } from '~/types/data/datatypes';
-import type { HandleData } from '~/types/handleTypes';
+import type { HandleData, HandleType } from '~/types/handleTypes';
 
-export const archiveSakHandles = (nodeID: string, handleType: 's' | 't'): HandleData[] => [
+export const archiveSakHandles = (nodeID: string, handleType: HandleType): HandleData[] => [
     {
         id: `${nodeID}:${handleType}:tittel`,
         type: DataTypeDefinition.Text,
@@ -73,11 +73,11 @@ export const archiveSakHandles = (nodeID: string, handleType: 's' | 't'): Handle
         typeName: 'skjerming',
     },
     {
-        id: `${nodeID}:${handleType}:klasse`,
+        id: `${nodeID}:${handleType}:klassering`,
         type: DataTypeDefinition.CollectionObject,
         required: true,
         label: 'Klassering',
-        typeName: 'klasse',
+        typeName: 'klassering',
     },
     {
         id: `${nodeID}:${handleType}:journalpost`,

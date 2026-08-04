@@ -1,7 +1,7 @@
 import { DataTypeDefinition } from '~/types/data/datatypes';
-import type { HandleData } from '~/types/handleTypes';
+import type { HandleData, HandleType } from '~/types/handleTypes';
 
-export const eGrunnervervSaksHandles = (nodeID: string, handleType: 's' | 't'): HandleData[] => [
+export const eGrunnervervSaksHandles = (nodeID: string, handleType: HandleType): HandleData[] => [
     {
         id: `${nodeID}:${handleType}:kommunenavn`,
         type: DataTypeDefinition.Text,

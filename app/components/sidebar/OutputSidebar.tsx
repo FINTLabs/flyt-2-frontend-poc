@@ -1,10 +1,10 @@
 import { useFlow } from '~/context/flowContext';
 import { useRef } from 'react';
-import { BodyShort, Button, FormSummary, HStack, Label, Modal, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, FormSummary, Modal, VStack } from '@navikt/ds-react';
 import type { ArkivSakType } from '~/types/mockedDataTypes';
 
 const OutputSidebar = () => {
-    const { currentFlow, testFlowOutput, outputNode } = useFlow();
+    const { testFlowOutput, outputNode } = useFlow();
 
     return (
         <aside className={'sidebar-form output'}>
@@ -83,17 +83,6 @@ const OutputSidebar = () => {
 
 export default OutputSidebar;
 
-const DisplayData = ({ label, data }: { label: string; data?: string | object }) => {
-    return (
-        <HStack gap={'2'} maxWidth={'100%'}>
-            <Label size={'small'}>{label}:</Label>
-            <BodyShort style={{ maxWidth: '100%', overflowWrap: 'break-word' }} size={'small'}>
-                {data ? data.toString() : '-'}
-            </BodyShort>
-        </HStack>
-    );
-};
-
 const ViewJSONDataModal = ({ data }: { data?: ArkivSakType }) => {
     const ref = useRef<HTMLDialogElement>(null);
 
@@ -103,7 +92,8 @@ const ViewJSONDataModal = ({ data }: { data?: ArkivSakType }) => {
                 <Button
                     variant={'tertiary'}
                     size={'small'}
-                    onClick={() => ref.current?.showModal()}>
+                    onClick={() => ref.current?.showModal()}
+                >
                     Se JSON
                 </Button>
             )}
@@ -111,7 +101,8 @@ const ViewJSONDataModal = ({ data }: { data?: ArkivSakType }) => {
             <Modal
                 ref={ref}
                 header={{ heading: 'Arkivsak JSON', size: 'medium' }}
-                style={{ maxWidth: '100%', overflowWrap: 'break-word' }}>
+                style={{ maxWidth: '100%', overflowWrap: 'break-word' }}
+            >
                 <Modal.Body>
                     <code>
                         <pre>{JSON.stringify(data, null, 2)}</pre>

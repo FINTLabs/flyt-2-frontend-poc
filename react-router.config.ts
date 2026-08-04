@@ -1,14 +1,16 @@
 import type { Config } from "@react-router/dev/config";
-const BASE_PATH = process.env.BASE_PATH
 
 export default {
-    basename: BASE_PATH,
-    ssr: false,
+    basename: process.env.BASE_PATH
+        ? `${process.env.BASE_PATH.replace(/\/$/, "")}/`
+        : "/",
+    ssr: true,
     future: {
-        v8_middleware: false,
-        v8_splitRouteModules: false,
+        v8_middleware: true,
+        v8_splitRouteModules: true,
         v8_viteEnvironmentApi: false,
-        v8_passThroughRequests: false,
-        v8_trailingSlashAwareDataRequests: false,
+        v8_passThroughRequests: true,
+        v8_trailingSlashAwareDataRequests: true,
     },
+
 } satisfies Config;
