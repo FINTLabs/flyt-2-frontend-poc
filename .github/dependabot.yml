@@ -28,4 +28,3 @@ updates:
     schedule:
       interval: "daily"
       timezone: "Europe/Oslo"
-      
