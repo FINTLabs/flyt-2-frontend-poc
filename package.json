@@ -22,7 +22,7 @@
         "@react-router/node": "7.18.4",
         "@react-router/serve": "7.18.4",
         "@xyflow/react": "^12.10.1",
-        "elkjs": "^0.11.0",
+        "elkjs": "^0.12.0",
         "isbot": "^5",
         "react": "19.3.0",
         "react-dom": "19.2.7",
