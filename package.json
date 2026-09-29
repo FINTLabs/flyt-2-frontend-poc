@@ -21,7 +21,7 @@
         "@navikt/ds-react": "^7.40.0",
         "@react-router/node": "7.18.4",
         "@react-router/serve": "7.18.4",
-        "@xyflow/react": "^12.10.1",
+        "@xyflow/react": "^12.12.0",
         "elkjs": "^0.11.0",
         "isbot": "^5",
         "react": "19.3.0",
