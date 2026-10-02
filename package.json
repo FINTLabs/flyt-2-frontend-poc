@@ -25,7 +25,7 @@
         "elkjs": "^0.11.0",
         "isbot": "^5",
         "react": "19.3.0",
-        "react-dom": "19.2.7",
+        "react-dom": "19.3.0",
         "react-router": "7.18.4"
     },
     "devDependencies": {
@@ -34,7 +34,7 @@
         "@tailwindcss/vite": "^4.3.2",
         "@types/node": "^25.9.1",
         "@types/react": "^19.3.0",
-        "@types/react-dom": "19.2.3",
+        "@types/react-dom": "19.3.0",
         "eslint": "^10.6.0",
         "prettier": "^3.9.4",
         "tailwindcss": "^4.1.17",
