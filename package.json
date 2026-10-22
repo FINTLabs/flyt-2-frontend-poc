@@ -24,7 +24,7 @@
         "@xyflow/react": "^12.10.1",
         "elkjs": "^0.11.0",
         "isbot": "^5",
-        "react": "19.3.0",
+        "react": "19.3.1",
         "react-dom": "19.2.7",
         "react-router": "7.18.4"
     },
